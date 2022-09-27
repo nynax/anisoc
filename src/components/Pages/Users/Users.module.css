@@ -1,0 +1,37 @@
+.users {
+    padding: 10px;
+}
+.name {
+    padding: 10px;
+}
+
+.status {
+    font-size: small;
+    font-style: italic;
+}
+
+.avatar img {
+    width: 50px;
+    border-radius: 10px;
+    border: 1px solid #aaa ;
+}
+
+.avatar {
+    text-align: center;
+}
+
+.user {
+    display: grid;
+    grid-template-columns: 1fr 11fr;
+    padding-top: 10px;
+}
+.selectedPage{
+    font-weight: bolder;
+}
+.page{
+    cursor: pointer;
+    font-size: smaller;
+}
+
+
+

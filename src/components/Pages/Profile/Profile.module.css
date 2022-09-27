@@ -1,0 +1,54 @@
+.profile {
+    padding: 10px;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr 11fr;
+}
+
+.photo {
+padding: 10px;
+}
+
+.photo img{
+    width: 100px;
+    border-radius: 5px;
+    border: 1px solid #aaa ;
+}
+
+.about{
+    padding: 10px;
+}
+
+.post {
+    display: grid;
+    grid-template-columns: 1fr 11fr;
+    padding-top: 10px;
+}
+
+
+.avatar img {
+    width: 50px;
+    border-radius: 10px;
+    border: 1px solid #aaa ;
+}
+
+.like {
+    text-align: center;
+}
+
+.avatar {
+    text-align: center;
+}
+
+.text {
+    color: #333;
+}
+
+.posts {
+}
+
+.sendform {
+    padding: 10px;
+}

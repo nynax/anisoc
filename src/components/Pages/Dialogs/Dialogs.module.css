@@ -1,0 +1,28 @@
+.dialogs {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 2fr 10fr;
+}
+
+.chat {
+}
+
+.chats {
+    padding: 0;
+}
+
+.msg {
+    padding-left: 10px;
+}
+
+.msg img {
+    width: 50px;
+    border-radius: 30px;
+    border: 1px solid red ;
+}
+
+.sendform {
+    padding: 10px;
+}
+
+

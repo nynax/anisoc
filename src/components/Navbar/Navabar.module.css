@@ -1,0 +1,11 @@
+.navbar {
+    padding: 20px;
+}
+
+.item  a  {
+    color: #000;
+}
+
+.item a.active  {
+    font-weight: bolder;
+}
