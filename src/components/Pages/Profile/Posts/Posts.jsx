@@ -8,7 +8,9 @@ const Posts = (props) => {
     console.log('Step 5: Posts')
     console.log(props)
     //console.log(props)
-    if (!props.myUserId) return <>Please login...</>
+
+    //if (!props.myUserId) return <>Please login...</>
+
     //console.log(props.profile)
 
     let posts = props.posts

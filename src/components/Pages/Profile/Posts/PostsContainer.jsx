@@ -1,8 +1,8 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {addPost, setCurrentProfile, setProfile, updateArea} from "../../../../redux/profileReducer";
 import Posts from "./Posts";
 import {connect} from "react-redux";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 
 class PostsContainer extends React.Component{
@@ -26,6 +26,7 @@ class PostsContainer extends React.Component{
 
         console.log(prevProps)
         console.log(this.props)
+
         if (this.props.userId !== prevProps.userId)
         {
             console.log('Page was changed...')
@@ -62,10 +63,21 @@ const mapStateToProps = (state) => {
         postTextarea: state.pageProfile.postTextarea,
         profile: state.pageProfile.profile,
         myUserId: state.auth.data.id,
+        isAuth: state.auth.isAuth
     }
 }
 
-const WithRouterComponent = (props) => {
+
+const AuthRedirectComponent = (props) => {
+    let navigate = useNavigate();
+    useEffect(() => {
+
+        if (!props.isAuth) {
+            console.log('isAuth - false')
+            return navigate("/settings");
+        }
+    },[]);
+
 
     const params = useParams()
 
@@ -78,11 +90,6 @@ const WithRouterComponent = (props) => {
     }else{
         console.log('userId is not set')
     }
-
-    //for what?
-    //let newProps = produce(props, draft => {
-     //   draft = props
-    //})
 
     return (
         <PostsContainer
@@ -100,4 +107,4 @@ export default connect(mapStateToProps, {
     updateArea,
     setCurrentProfile,
     setProfile
-})(WithRouterComponent)
+})(AuthRedirectComponent)
