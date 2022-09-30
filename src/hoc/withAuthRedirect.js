@@ -1,15 +1,21 @@
 import React, {useEffect} from "react"
 import {connect} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 let mapStateToPropsRedirect = (state) => ({isAuth: state.auth.isAuth})
 
 
 export const withAuthRedirect = (Component) => {
     const RedirectComponent = (props) => {
-        console.log('ya tut')
+
+        console.log('RedirectComponent Start')
+
+        const params = useParams()
+
+
         console.log(props)
-        console.log('ya uxoju')
+        console.log(params)
+        console.log('--------')
 
         let navigate = useNavigate();
         useEffect(() => {
@@ -19,7 +25,9 @@ export const withAuthRedirect = (Component) => {
             }
         },[]);
 
-        return <Component {...props}/>
+
+
+        return <Component {...props} pageNumber={params.userId ? params.userId : props.myUserId}/>
     }
 
     return connect(mapStateToPropsRedirect)(RedirectComponent)

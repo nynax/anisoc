@@ -27,23 +27,12 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 
-// let AuthRedirectComponent = (props) => {
-//
-//     let navigate = useNavigate();
-//     useEffect(() => {
-//         if (!props.isAuth) {
-//             console.log('isAuth - false')
-//             return navigate("/settings");
-//         }
-//     },[]);
-//     return (
-//         <Dialogs {...props}/>
-//     )
-// }
 
-let HocAuthRedirect = withAuthRedirect(Dialogs)
+//Так,
+//let HocAuthRedirect = withAuthRedirect(Dialogs)
+//const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(HocAuthRedirect)
 
-//const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(AuthRedirectComponent)
-const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(HocAuthRedirect)
+//и так - одно и тоже :)
+export default withAuthRedirect(connect(mapStateToProps, mapDispatchToProps)(Dialogs))
 
-export default DialogsContainer
+//export default DialogsContainer

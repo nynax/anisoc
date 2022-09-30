@@ -1,8 +1,8 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {addPost, setCurrentProfile, setProfile, updateArea} from "../../../../redux/profileReducer";
 import Posts from "./Posts";
 import {connect} from "react-redux";
-import {useNavigate, useParams} from "react-router-dom";
+import {withAuthRedirect} from "../../../../hoc/withAuthRedirect";
 
 
 class PostsContainer extends React.Component{
@@ -11,12 +11,12 @@ class PostsContainer extends React.Component{
     componentDidMount() {
         console.log('componentDidMount')
         console.log(this.props)
-        this.props.data.setProfile(this.props.userId)
+        this.props.setProfile(this.props.pageNumber)
 
     }
     //when close
     componentWillUnmount(){
-        this.props.data.setCurrentProfile(null)
+        this.props.setCurrentProfile(null)
         console.log('componentWillUnmount')
         console.log(this.props.data)
     }
@@ -27,33 +27,32 @@ class PostsContainer extends React.Component{
         console.log(prevProps)
         console.log(this.props)
 
-        if (this.props.userId !== prevProps.userId)
+        if (this.props.pageNumber !== prevProps.pageNumber)
         {
             console.log('Page was changed...')
-            this.props.data.setProfile(this.props.userId)
+            this.props.setProfile(this.props.pageNumber)
         }
     }
 
     updateArea = (value) => {
-        this.props.data.updateArea(value)
+        this.props.updateArea(value)
     }
 
     addPost = () => {
-        this.props.data.addPost()
+        this.props.addPost()
     }
 
     render() {
         console.log('Step 4 PostsContainer > render()')
-        return <Posts myUserId={this.props.data.myUserId}
-                      posts={this.props.data.posts}
-                      profile={this.props.data.profile}
-                      postTextarea={this.props.data.postTextarea}
+        return <Posts myUserId={this.props.myUserId}
+                      posts={this.props.posts}
+                      profile={this.props.profile}
+                      postTextarea={this.props.postTextarea}
                       updateArea={this.updateArea}
                       addPost={this.addPost}
                       />
     }
 }
-
 
 const mapStateToProps = (state) => {
     console.log('Step 2: mapStateToProps')
@@ -67,44 +66,18 @@ const mapStateToProps = (state) => {
     }
 }
 
-
-const AuthRedirectComponent = (props) => {
-    let navigate = useNavigate();
-    useEffect(() => {
-
-        if (!props.isAuth) {
-            console.log('isAuth - false')
-            return navigate("/settings");
-        }
-    },[]);
-
-
-    const params = useParams()
-
-    console.log('Step 3: WithRouterComponent')
-    console.log(props)
-    console.log(params)
-
-    if (params.userId){
-        console.log('userId is set ' + params.userId)
-    }else{
-        console.log('userId is not set')
-    }
-
-    return (
-        <PostsContainer
-            data={props} // Пропсы из mapStateToProps, {setUserProfile}
-            userId={params.userId ? params.userId : props.myUserId} // Если userId нету, то отобразить myUserId
-        />
-    )
-}
-
-
-
-//Передаем в connect текущий state и массив с ActionCreate функциями в dispatch и функциональную компонету WithRouterComponent
-export default connect(mapStateToProps, {
+export default withAuthRedirect(connect(mapStateToProps, {
     addPost,
     updateArea,
     setCurrentProfile,
     setProfile
-})(AuthRedirectComponent)
+})(PostsContainer))
+
+
+//Передаем в connect текущий state и массив с ActionCreate функциями в dispatch и функциональную компонету WithRouterComponent
+// export default connect(mapStateToProps, {
+//     addPost,
+//     updateArea,
+//     setCurrentProfile,
+//     setProfile
+// })(AuthRedirectComponent)
