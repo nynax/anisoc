@@ -2,8 +2,6 @@ import React from "react"
 import {addMsgAC, updateMsgTextareaAC} from "../../../redux/dialogsReducer";
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
-//import {useNavigate} from "react-router-dom";
-//import {useEffect} from "react";
 import {withAuthRedirect} from "../../../hoc/withAuthRedirect";
 
 

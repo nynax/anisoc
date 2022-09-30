@@ -11,7 +11,13 @@ class PostsContainer extends React.Component{
     componentDidMount() {
         console.log('componentDidMount')
         console.log(this.props)
-        this.props.setProfile(this.props.pageNumber)
+        if (this.props.pageNumber) {
+            console.log('true')
+            this.props.setProfile(this.props.pageNumber)
+        }else{
+            console.log('false')
+            this.props.setProfile(this.props.myUserId)
+        }
 
     }
     //when close
@@ -29,8 +35,19 @@ class PostsContainer extends React.Component{
 
         if (this.props.pageNumber !== prevProps.pageNumber)
         {
+            console.log('========')
+            console.log(this.props)
+            console.log(this.props.pageNumber)
+            console.log(this.props.myUserId)
+            if (this.props.pageNumber) {
+                console.log('true')
+                this.props.setProfile(this.props.pageNumber)
+            }else{
+                console.log('false')
+                this.props.setProfile(this.props.myUserId)
+            }
             console.log('Page was changed...')
-            this.props.setProfile(this.props.pageNumber)
+
         }
     }
 
