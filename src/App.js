@@ -1,7 +1,6 @@
 import React from "react";
 import './App.css'
 import Navbar from "./components/Navbar/Navbar"
-import {Profile} from "./components/Pages/Profile/Profile"
 import News from "./components/Pages/News/News"
 import Music from "./components/Pages/Music/Music"
 import Settings from "./components/Pages/Settings/Settings"
@@ -10,6 +9,7 @@ import {Route, Routes, BrowserRouter} from "react-router-dom"
 import DialogsContainer from "./components/Pages/Dialogs/DialogsContainer";
 import UsersContainer from "./components/Pages/Users/UsersContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
+import ProfileContainer from "./components/Pages/Profile/ProfileContainer";
 
 
 const App = (props) => {
@@ -27,15 +27,15 @@ const App = (props) => {
                         <Route path='/dialogs/*' element={<DialogsContainer store={props.store}/>}/>
                         <Route path='/users' element={<UsersContainer store={props.store}/>}/>
 
-                        <Route path="/profile/" element={<Profile store={props.store}/>}/>
-                        <Route path="/profile/:userId" element={<Profile store={props.store}/>}/>
+                        <Route path="/profile/" element={<ProfileContainer store={props.store}/>}/>
+                        <Route path="/profile/:userId" element={<ProfileContainer store={props.store}/>}/>
 
 
                         <Route path='/news' element={<News/>}/>
                         <Route path='/music' element={<Music/>}/>
                         <Route path='/settings' element={<Settings/>}/>
-                        <Route path='/*' element={<Profile store={props.store}/>}/>
-                        <Route path='/' element={<Profile store={props.store}/>}/>
+                        <Route path='/*' element={<ProfileContainer store={props.store}/>}/>
+                        <Route path='/' element={<ProfileContainer store={props.store}/>}/>
                     </Routes>
                 </div>
                 <div className='footer'>

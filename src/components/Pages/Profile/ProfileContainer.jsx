@@ -1,19 +1,20 @@
 import React from "react";
-import {addPost, setCurrentProfile, setProfile, updateArea} from "../../../../redux/profileReducer";
+import {addPost, setCurrentProfile, setProfile, updateArea} from "../../../redux/profileReducer";
 import Posts from "./Posts";
 import {connect} from "react-redux";
-import {withAuthRedirect} from "../../../../hoc/withAuthRedirect";
+import {withAuthRedirect} from "../../../hoc/withAuthRedirect";
+import {compose} from "redux";
 
 
-class PostsContainer extends React.Component{
+class ProfileContainer extends React.Component{
 
     //after render
     componentDidMount() {
         console.log('componentDidMount')
         console.log(this.props)
-        if (this.props.pageNumber) {
+        if (this.props.userId) {
             console.log('true')
-            this.props.setProfile(this.props.pageNumber)
+            this.props.setProfile(this.props.userId)
         }else{
             console.log('false')
             this.props.setProfile(this.props.myUserId)
@@ -33,15 +34,15 @@ class PostsContainer extends React.Component{
         console.log(prevProps)
         console.log(this.props)
 
-        if (this.props.pageNumber !== prevProps.pageNumber)
+        if (this.props.userId !== prevProps.userId)
         {
             console.log('========')
             console.log(this.props)
-            console.log(this.props.pageNumber)
+            console.log(this.props.userId)
             console.log(this.props.myUserId)
-            if (this.props.pageNumber) {
+            if (this.props.userId) {
                 console.log('true')
-                this.props.setProfile(this.props.pageNumber)
+                this.props.setProfile(this.props.userId)
             }else{
                 console.log('false')
                 this.props.setProfile(this.props.myUserId)
@@ -83,12 +84,24 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default withAuthRedirect(connect(mapStateToProps, {
+export default compose(
+
+    connect(mapStateToProps, {
+        addPost,
+        updateArea,
+        setCurrentProfile,
+        setProfile
+    }),
+    withAuthRedirect
+)(ProfileContainer)
+
+
+/*export default withAuthRedirect(connect(mapStateToProps, {
     addPost,
     updateArea,
     setCurrentProfile,
     setProfile
-})(PostsContainer))
+})(PostsContainer))*/
 
 
 //Передаем в connect текущий state и массив с ActionCreate функциями в dispatch и функциональную компонету WithRouterComponent

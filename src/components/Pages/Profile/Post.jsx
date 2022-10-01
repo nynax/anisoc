@@ -1,6 +1,6 @@
 import React from "react"
-import photo from "../../../../../avatars/dart.png";
-import css from "./../../Profile.module.css"
+import photo from "../../../avatars/dart.png";
+import css from "./Profile.module.css"
 
 const Post = (props) => {
     return (

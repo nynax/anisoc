@@ -27,7 +27,7 @@ export const withAuthRedirect = (Component) => {
 
 
 
-        return <Component {...props} pageNumber={params.userId ? params.userId : props.myUserId}/>
+        return <Component {...props} userId={params.userId ? params.userId : props.myUserId}/>
     }
 
     return connect(mapStateToPropsRedirect)(RedirectComponent)

@@ -1,7 +1,7 @@
 import React from "react"
-import css from "./../Profile.module.css"
-import Post from "./Post/Post"
-import photo from "../../../../avatars/dart.png";
+import css from "./Profile.module.css"
+import Post from "./Post"
+import photo from "../../../avatars/dart.png";
 import {NavLink} from "react-router-dom";
 
 const Posts = (props) => {
@@ -9,9 +9,9 @@ const Posts = (props) => {
     console.log(props)
     //console.log(props)
 
-    //if (!props.myUserId) return <>Please login...</>
 
-    //console.log(props.profile)
+
+    console.log(props.profile)
 
     let posts = props.posts
     let postTextarea = props.postTextarea
@@ -38,6 +38,9 @@ const Posts = (props) => {
                     {<div className={css.about}>{props.profile.aboutMe}</div>}
 
                 </div>
+                {props.profile && props.profile.userId === props.myUserId &&
+                    <div>My profile</div>
+                }
                 <div className={css.posts}>
                     <div className={css.sendform}>
                         <div><textarea onChange={onUpdateArea} cols='30' placeholder='Type any message here...'
@@ -53,7 +56,6 @@ const Posts = (props) => {
                         {allPosts}
                     </div>
                 </div>
-
             </>
         )
     }
