@@ -21,7 +21,9 @@ export const withAuthRedirect = (Component) => {
         useEffect(() => {
             if (!props.isAuth) {
                 console.log('isAuth - false')
-                return navigate("/settings");
+                return navigate("/login");
+            }else{
+                console.log('isAuth - true')
             }
         },[]);
 

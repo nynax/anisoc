@@ -1,5 +1,5 @@
 import React from "react";
-import {addPost, setCurrentProfile, setProfile, updateArea} from "../../../redux/profileReducer";
+import {addPost, getStatus, setCurrentProfile, setProfile, setStatus, updateArea} from "../../../redux/profileReducer";
 import Posts from "./Posts";
 import {connect} from "react-redux";
 import {withAuthRedirect} from "../../../hoc/withAuthRedirect";
@@ -12,13 +12,11 @@ class ProfileContainer extends React.Component{
     componentDidMount() {
         console.log('componentDidMount')
         console.log(this.props)
-        if (this.props.userId) {
-            console.log('true')
-            this.props.setProfile(this.props.userId)
-        }else{
-            console.log('false')
-            this.props.setProfile(this.props.myUserId)
-        }
+
+        let userId = this.props.userId ? this.props.userId : this.props.myUserId
+
+        this.props.setProfile(userId)
+        this.props.getStatus(userId)
 
     }
     //when close
@@ -30,7 +28,6 @@ class ProfileContainer extends React.Component{
     //if props changed
     componentDidUpdate(prevProps) {
         console.log('componentDidUpdate')
-
         console.log(prevProps)
         console.log(this.props)
 
@@ -48,27 +45,12 @@ class ProfileContainer extends React.Component{
                 this.props.setProfile(this.props.myUserId)
             }
             console.log('Page was changed...')
-
         }
-    }
-
-    updateArea = (value) => {
-        this.props.updateArea(value)
-    }
-
-    addPost = () => {
-        this.props.addPost()
     }
 
     render() {
         console.log('Step 4 PostsContainer > render()')
-        return <Posts myUserId={this.props.myUserId}
-                      posts={this.props.posts}
-                      profile={this.props.profile}
-                      postTextarea={this.props.postTextarea}
-                      updateArea={this.updateArea}
-                      addPost={this.addPost}
-                      />
+        return <Posts {...this.props} />
     }
 }
 
@@ -80,7 +62,8 @@ const mapStateToProps = (state) => {
         postTextarea: state.pageProfile.postTextarea,
         profile: state.pageProfile.profile,
         myUserId: state.auth.data.id,
-        isAuth: state.auth.isAuth
+        isAuth: state.auth.isAuth,
+        status: state.pageProfile.status
     }
 }
 
@@ -90,7 +73,9 @@ export default compose(
         addPost,
         updateArea,
         setCurrentProfile,
-        setProfile
+        setProfile,
+        setStatus,
+        getStatus
     }),
     withAuthRedirect
 )(ProfileContainer)

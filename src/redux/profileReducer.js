@@ -4,6 +4,7 @@ import {requestAPI} from "../api/api";
 const ADD_POST = 'ADD-POST'
 const UPDATE_POST_TEXTAREA = 'UPDATE-POST-TEXTAREA'
 const SET_CURRENT_PROFILE = 'SET_CURRENT_PROFILE'
+const SET_STATUS = 'SET_STATUS'
 
 let initialState = {
     posts: [
@@ -15,7 +16,8 @@ let initialState = {
         {id: 6, msg: "Lets go", likes: 4},
     ],
     postTextarea: '',
-    profile: null
+    profile: null,
+    status: 'set status...'
 }
 
 export const profileReducer = (state = initialState, action) => {
@@ -39,6 +41,10 @@ export const profileReducer = (state = initialState, action) => {
             return produce(state, draft => {
                 draft.profile = action.currentProfile
             })
+        case SET_STATUS:
+            return produce(state, draft => {
+                draft.status = action.status
+            })
         default:
             //debugger
             return state
@@ -48,6 +54,7 @@ export const profileReducer = (state = initialState, action) => {
 export const addPost = () => ({type: ADD_POST})
 export const updateArea = (msg) => ({type: UPDATE_POST_TEXTAREA, msg})
 export const setCurrentProfile = (currentProfile) => ({type: SET_CURRENT_PROFILE, currentProfile})
+export const setProfileStatus = (status) => ({type: SET_STATUS, status})
 
 export const setProfile = (userId) => {
     return (dispatch) => {
@@ -59,5 +66,25 @@ export const setProfile = (userId) => {
                 dispatch(setCurrentProfile(response.data))
             })
         }
+    }
+}
+
+export const setStatus = (status) => {
+    return (dispatch) => {
+        console.log('requestAPI (setStatus)')
+        requestAPI.updateStatus(status).then(response => {
+            if (response.data.resultCode === 0) {
+                dispatch(setProfileStatus(status))
+            }
+        })
+    }
+}
+
+export const getStatus = (userId) => {
+    return (dispatch) => {
+        console.log('requestAPI (getStatus)')
+        requestAPI.getStatus(userId).then(response => {
+                dispatch(setProfileStatus(response.data))
+        })
     }
 }

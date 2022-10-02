@@ -3,6 +3,7 @@ import css from "./Profile.module.css"
 import Post from "./Post"
 import photo from "../../../avatars/dart.png";
 import {NavLink} from "react-router-dom";
+import StatusUpdate from "./StatusUpdate";
 
 const Posts = (props) => {
     console.log('Step 5: Posts')
@@ -34,12 +35,17 @@ const Posts = (props) => {
                 <div className={css.dashboard}>
                     <div className={css.photo}><img
                         src={props.profile.photos.large ? props.profile.photos.large : photo} alt='ohuenno'/></div>
-                    <div className={css.about}>{props.profile.fullName}</div>
-                    {<div className={css.about}>{props.profile.aboutMe}</div>}
+                    <div>
+                        <div className={css.fullName}>{props.profile.fullName}</div>
+                        <div className={css.aboutMe}>{props.profile.aboutMe}</div>
+                    </div>
+
 
                 </div>
                 {props.profile && props.profile.userId === props.myUserId &&
-                    <div>My profile</div>
+                    <div className={css.status}>
+                        <StatusUpdate status={props.status} setStatus={props.setStatus}/>
+                    </div>
                 }
                 <div className={css.posts}>
                     <div className={css.sendform}>

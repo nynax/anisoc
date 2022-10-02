@@ -1,13 +1,14 @@
 import axios from "axios";
 
-const config = (path, method) => {
+const config = (path, method, data = null) => {
     return {
         url: 'https://social-network.samuraijs.com/api/1.0/' + path,
         method: method,
         headers: {
             'API-KEY': '906b77de-4d9f-49ba-b479-baf195e5855b'
         },
-        withCredentials: true
+        withCredentials: true,
+        data: data ? data : null
     }
 }
 
@@ -27,5 +28,11 @@ export const requestAPI =  {
     },
     getProfile(userId){
         return axios(config('profile/' + userId, 'get'))
+    },
+    updateStatus(status){
+        return axios(config('/profile/status', 'put', {status: status}))
+    },
+    getStatus(userId){
+        return axios(config('/profile/status/' + userId, 'get'))
     }
 }

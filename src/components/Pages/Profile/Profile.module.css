@@ -8,7 +8,11 @@
 }
 
 .photo {
-padding: 10px;
+    padding: 10px;
+}
+
+.status {
+    padding-left: 10px;
 }
 
 .photo img{
@@ -17,7 +21,12 @@ padding: 10px;
     border: 1px solid #aaa ;
 }
 
-.about{
+.fullName{
+    padding: 10px;
+    font-weight: bolder;
+}
+
+.aboutMe{
     padding: 10px;
 }
 
