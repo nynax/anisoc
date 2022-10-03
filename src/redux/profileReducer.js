@@ -2,7 +2,6 @@ import produce from "immer";
 import {requestAPI} from "../api/api";
 
 const ADD_POST = 'ADD-POST'
-const UPDATE_POST_TEXTAREA = 'UPDATE-POST-TEXTAREA'
 const SET_CURRENT_PROFILE = 'SET_CURRENT_PROFILE'
 const SET_STATUS = 'SET_STATUS'
 
@@ -15,7 +14,6 @@ let initialState = {
         {id: 5, msg: "Iam fine", likes: 1},
         {id: 6, msg: "Lets go", likes: 4},
     ],
-    postTextarea: '',
     profile: null,
     status: 'set status...'
 }
@@ -26,16 +24,11 @@ export const profileReducer = (state = initialState, action) => {
         case ADD_POST:
             let newPost = {
                 id: 7,
-                msg: state.postTextarea,
+                msg: action.postMsg,
                 likes: 0
             }
             return produce(state, draft => {
                 draft.posts.push(newPost)
-                draft.postTextarea = ''
-            })
-        case UPDATE_POST_TEXTAREA:
-            return produce(state, draft => {
-                draft.postTextarea = action.msg
             })
         case SET_CURRENT_PROFILE:
             return produce(state, draft => {
@@ -51,8 +44,7 @@ export const profileReducer = (state = initialState, action) => {
     }
 }
 
-export const addPost = () => ({type: ADD_POST})
-export const updateArea = (msg) => ({type: UPDATE_POST_TEXTAREA, msg})
+export const addPost = (postMsg) => ({type: ADD_POST, postMsg})
 export const setCurrentProfile = (currentProfile) => ({type: SET_CURRENT_PROFILE, currentProfile})
 export const setProfileStatus = (status) => ({type: SET_STATUS, status})
 

@@ -1,6 +1,5 @@
 import produce from "immer";
 const ADD_MSG = 'ADD-MSG'
-const UPDATE_MSG_TEXTAREA = 'UPDATE-MSG-TEXTAREA'
 
 let initialState = {
     msg: [
@@ -17,8 +16,7 @@ let initialState = {
         {id: 4, name: "Masha", likes: 12},
         {id: 5, name: "Vanya", likes: 1},
         {id: 6, name: "Dima", likes: 4}
-    ],
-    msgTextarea: ''
+    ]
 }
 
 export const dialogsReducer = (state = initialState, action) => {
@@ -26,22 +24,16 @@ export const dialogsReducer = (state = initialState, action) => {
         case ADD_MSG:
             let newMsg = {
                 id: 7,
-                msg: state.msgTextarea,
+                msg: action.dialogMsg,
                 likes: 0,
                 ts: '22:01'
             }
             return produce(state, draft => {
                 draft.msg.push(newMsg)
-                draft.msgTextarea = ''
-            })
-        case UPDATE_MSG_TEXTAREA:
-            return produce(state, draft => {
-                draft.msgTextarea = action.msg
             })
         default:
             return state
     }
 }
 
-export const addMsgAC = () => ({type: ADD_MSG})
-export const updateMsgTextareaAC = (value) => ({type: UPDATE_MSG_TEXTAREA, msg: value})
+export const addMsg = (dialogMsg) => ({type: ADD_MSG, dialogMsg})

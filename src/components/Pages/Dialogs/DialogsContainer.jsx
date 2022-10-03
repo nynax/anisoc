@@ -1,5 +1,5 @@
 //import React from "react"
-import {addMsgAC, updateMsgTextareaAC} from "../../../redux/dialogsReducer";
+import {addMsg} from "../../../redux/dialogsReducer";
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
 import {withAuthRedirect} from "../../../hoc/withAuthRedirect";
@@ -14,19 +14,9 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        addMsg: () => {
-            dispatch(addMsgAC())
-        },
-        updateArea: (text) => {
-            dispatch(updateMsgTextareaAC(text))
-        }
-    }
-}
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(mapStateToProps, {addMsg}),
     withAuthRedirect,
 )(Dialogs)
 

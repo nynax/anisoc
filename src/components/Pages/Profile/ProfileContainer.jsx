@@ -1,5 +1,5 @@
 import React from "react";
-import {addPost, getStatus, setCurrentProfile, setProfile, setStatus, updateArea} from "../../../redux/profileReducer";
+import {addPost, getStatus, setCurrentProfile, setProfile, setStatus} from "../../../redux/profileReducer";
 import Posts from "./Posts";
 import {connect} from "react-redux";
 import {withAuthRedirect} from "../../../hoc/withAuthRedirect";
@@ -71,7 +71,6 @@ export default compose(
 
     connect(mapStateToProps, {
         addPost,
-        updateArea,
         setCurrentProfile,
         setProfile,
         setStatus,
