@@ -24,7 +24,7 @@ const Posts = (props) => {
 
         const { register, handleSubmit, formState: { errors } } = useForm()
 
-        return (<>
+        return (<div>
 
                 <div className={css.status}><NavLink to={'/profile/25964'}>&lt;&lt;</NavLink>&emsp;&emsp;&emsp;&ensp;
                     <NavLink to={'/profile/26002'}>&gt;&gt;</NavLink></div>
@@ -66,7 +66,7 @@ const Posts = (props) => {
                         {allPosts}
                     </div>
                 </div>
-            </>
+            </div>
 
         )
     }

@@ -23,6 +23,12 @@ export const requestAPI =  {
     authMe(){
         return axios(config('auth/me', 'get'))
     },
+    authLogin(email, password, rememberMe){
+        return axios(config('auth/login', 'post', {email, password, rememberMe}))
+    },
+    authLogout(){
+        return axios(config('auth/login', 'delete'))
+    },
     getUsers(count, page){
         return axios(config(`users/?count=${count}&page=${page}`, 'get'))
     },

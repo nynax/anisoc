@@ -11,41 +11,60 @@ import UsersContainer from "./components/Pages/Users/UsersContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import ProfileContainer from "./components/Pages/Profile/ProfileContainer";
 import LoginContainer from "./components/Pages/Login/LoginContainer";
+import {connect} from "react-redux";
+import {initializeApp} from "./redux/appReducer";
 
 
+class App extends React.Component {
+    componentDidMount() {
+        this.props.initializeApp()
+    }
 
-const App = (props) => {
-    return (
-        <BrowserRouter>
-            <div className='app-wrapper'>
-                <div className='header'>
-                    <HeaderContainer store={props.store}/>
+    render() {
+
+        if (!this.props.initialize) {
+            return <div>loading...</div>
+        }
+
+
+        return (
+            <BrowserRouter>
+                <div className='app-wrapper'>
+                    <div className='header'>
+                        <HeaderContainer store={this.props.store}/>
+                    </div>
+                    <div className='navbar'>
+                        <Navbar store={this.props.store}/>
+                    </div>
+                    <div className='content'>
+                        <Routes>
+                            <Route path='/dialogs/*' element={<DialogsContainer store={this.props.store}/>}/>
+                            <Route path='/users' element={<UsersContainer store={this.props.store}/>}/>
+
+                            <Route path="/profile/" element={<ProfileContainer store={this.props.store}/>}/>
+                            <Route path="/profile/:userId" element={<ProfileContainer store={this.props.store}/>}/>
+
+                            <Route path='/login' element={<LoginContainer {...this.props.store}/>}/>
+                            <Route path='/news' element={<News/>}/>
+                            <Route path='/music' element={<Music/>}/>
+                            <Route path='/settings' element={<Settings/>}/>
+                            <Route path='/*' element={<ProfileContainer store={this.props.store}/>}/>
+                            <Route path='/' element={<ProfileContainer store={this.props.store}/>}/>
+                        </Routes>
+                    </div>
+                    <div className='footer'>
+                        <Footer/>
+                    </div>
                 </div>
-                <div className='navbar'>
-                    <Navbar store={props.store}/>
-                </div>
-                <div className='content'>
-                    <Routes>
-                        <Route path='/dialogs/*' element={<DialogsContainer store={props.store}/>}/>
-                        <Route path='/users' element={<UsersContainer store={props.store}/>}/>
-
-                        <Route path="/profile/" element={<ProfileContainer store={props.store}/>}/>
-                        <Route path="/profile/:userId" element={<ProfileContainer store={props.store}/>}/>
-
-                        <Route path='/login' element={<LoginContainer/>}/>
-                        <Route path='/news' element={<News/>}/>
-                        <Route path='/music' element={<Music/>}/>
-                        <Route path='/settings' element={<Settings/>}/>
-                        <Route path='/*' element={<ProfileContainer store={props.store}/>}/>
-                        <Route path='/' element={<ProfileContainer store={props.store}/>}/>
-                    </Routes>
-                </div>
-                <div className='footer'>
-                    <Footer/>
-                </div>
-            </div>
-        </BrowserRouter>
-    )
+            </BrowserRouter>
+        )
+    }
 }
 
-export default App
+let mapStateToProps = (state) => {
+    return {
+        initialize: state.app.initialize
+    }
+}
+
+export default connect(mapStateToProps, {initializeApp})(App)

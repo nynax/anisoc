@@ -3,12 +3,20 @@
 }
 
 .header img {
-    width: 65px;
+    width: 90px;
 }
 
 .login {
     float: right;
-    padding: 10px 10px 0 0;
+    padding: 5px 15px 0 0;
+    font-weight: bold;
+}
+
+.logout {
+    font-size: smaller;
+    text-decoration: underline;
+    font-weight: normal;
+    cursor: pointer;
 }
 
 .login a {

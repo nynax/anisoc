@@ -1,20 +1,27 @@
 import React from "react"
 import css from "./Login.module.css"
 import { useForm }from "react-hook-form"
+import {connect} from "react-redux";
+import {login} from "../../../redux/authReducer";
 
 
 
-const LoginContainer = () => {
+const LoginContainer = (props) => {
 
+    if (props.isAuth) return <div className={css.text}>Already logged in!</div>
+
+    console.log(props)
     //Form Init
     const { register, handleSubmit, formState: { errors } } = useForm()
     console.log(errors)
+    //debugger
     return (
         <div className={css.form}>
             <form className={css.formInline} onSubmit={handleSubmit ((data) => {
-                console.log(data)
+                props.login(data.login, data.password, data.rememberMe)
+
             })}>
-                <label htmlFor="login">Login:</label>
+
                 <input id="login" {...register("login", {
                     required: "Login is required",
                     minLength:{
@@ -22,17 +29,15 @@ const LoginContainer = () => {
                         message: "Login minLength is 5"
                     },
                     maxLength:{
-                        value: 20,
-                        message: "Login maxLength is 20"
+                        value: 50,
+                        message: "Login maxLength is 50"
                     }
-                })} placeholder="Login please..." aria-invalid={errors.login ? "true" : "false"} />
+                })} placeholder="Type login here..." aria-invalid={errors.login ? "true" : "false"} />
 
 
-
-
-                <label htmlFor="password">Password:</label>
                 <input type="password" id="password" {...register("password", {
-                    required: "Password is required"}) } placeholder="Password please..."/>
+                    required: "Password is required"}) } placeholder="...and password..."/>
+                <div><input type="checkbox" id="rememberMe" {...register("rememberMe")} /><span className={css.rememberMe}>remember me</span></div>
                 <button>Send</button>
             </form>
             <div className={css.errors}>
@@ -43,5 +48,15 @@ const LoginContainer = () => {
     )
 }
 
+const mapStateToProps = (state) => {
+    return {
+        isAuth: state.auth.isAuth
+    }
+}
 
-export default LoginContainer
+
+export default connect(mapStateToProps, {login})(LoginContainer)
+
+
+
+//export default LoginContainer

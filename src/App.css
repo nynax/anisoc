@@ -3,7 +3,7 @@
     margin: 0 auto;
     display: grid;
     grid-template-areas: "h h" "n c" "f f";
-    grid-template-rows: 50px 1fr;
+    grid-template-rows: 70px 1fr;
     grid-auto-columns: 2fr 10fr;
     grid-gap: 10px;
     padding-top: 10px;

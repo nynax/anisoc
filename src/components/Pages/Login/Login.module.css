@@ -8,6 +8,11 @@
     color: brown;
 }
 
+.rememberMe{
+    padding: 10px;
+    font-size: smaller;
+}
+
 .formInline {
     padding: 10px;
     display: flex;
