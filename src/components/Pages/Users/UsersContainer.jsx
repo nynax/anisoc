@@ -3,58 +3,45 @@ import {connect} from "react-redux";
 import {
     setCurrentPage,
     setFollowInProgress,
-    getUsers,
-    followAndUnfollow
+    requestUsers,
+    followAndUnfollow, changePage
 } from "../../../redux/usersReducer";
-import React from "react";
-import preloader from '../../../avatars/Running_dog.gif'
+import React, {useEffect} from "react";
+import {
+    getCurrentPage,
+    getFollowInProgress,
+    getShowPreloader,
+    getTotalUsers,
+    getUsers,
+    getUsersPerPage
+} from "../../../redux/usersSelector";
 
+const UsersContainer = (props) => {
 
-class UsersContainer extends React.Component {
+    useEffect(() => {
+        props.requestUsers(props.usersPerPage, props.currentPage)
+    },[props.currentPage]);
 
-    componentDidMount() {
-        this.props.getUsers(this.props.usersPerPage, this.props.currentPage)
-    }
-
-    changePage = (pageNumber) => {
-        this.props.setCurrentPage(pageNumber)
-        this.props.getUsers(this.props.usersPerPage, pageNumber)
-    }
-
-    render() {
-        //debugger
-        return <>
-        <div>{this.props.showPreloader ? <img src={preloader} alt='bla bla bla'/> : null}</div>
-        <Users totalUsers={this.props.totalUsers}
-               usersPerPage={this.props.usersPerPage}
-               currentPage={this.props.currentPage}
-               changePage={this.changePage}
-               users={this.props.users}
-               followInProgress={this.props.followInProgress}
-               setFollowInProgress={this.props.setFollowInProgress}
-               followAndUnfollow={this.props.followAndUnfollow}
-        />
-        </>}
+    //console.log(props)
+    return <Users {...props} />
 }
-
 
 const mapStateToProps = (state) => {
     return {
-        users: state.pageUsers.users,
-        totalUsers: state.pageUsers.totalUsers,
-        currentPage: state.pageUsers.currentPage,
-        usersPerPage: state.pageUsers.usersPerPage,
-        showPreloader: state.pageUsers.showPreloader,
-        followInProgress: state.pageUsers.followInProgress
+        users: getUsers(state),
+        totalUsers: getTotalUsers(state),
+        currentPage: getCurrentPage(state),
+        usersPerPage: getUsersPerPage(state),
+        showPreloader: getShowPreloader(state),
+        followInProgress: getFollowInProgress(state)
     }
 }
-
-
 
 export default connect(mapStateToProps, {
     setCurrentPage,
     setFollowInProgress,
-    getUsers,
-    followAndUnfollow
+    requestUsers,
+    followAndUnfollow,
+    changePage
 })(UsersContainer)
 

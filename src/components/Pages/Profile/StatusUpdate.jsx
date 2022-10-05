@@ -4,8 +4,6 @@ const StatusUpdate = (props) => {
     console.log('StatusUpdate')
     console.log(props)
 
-
-
     const [editMode, setEditMode] = useState(false);
     const [textStatus, setTextStatus] = useState(props.status);
 

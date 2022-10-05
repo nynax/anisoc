@@ -11,7 +11,7 @@ const Posts = (props) => {
     console.log(props)
     //console.log(props)
 
-
+    const { register, handleSubmit, formState: { errors } } = useForm()
 
     console.log(props.profile)
 
@@ -22,9 +22,7 @@ const Posts = (props) => {
 
     if (props.profile) {
 
-        const { register, handleSubmit, formState: { errors } } = useForm()
-
-        return (<div>
+        return (<>
 
                 <div className={css.status}><NavLink to={'/profile/25964'}>&lt;&lt;</NavLink>&emsp;&emsp;&emsp;&ensp;
                     <NavLink to={'/profile/26002'}>&gt;&gt;</NavLink></div>
@@ -47,8 +45,6 @@ const Posts = (props) => {
                         <form className={css.formInline} onSubmit={handleSubmit ((data) => {
                             console.log(data)
                             props.addPost(data.postMsg)
-
-
                         })}>
                             <textarea {...register("postMsg", {
                                 required: "Cant be empty"})} cols='30' placeholder='Type any message here...' />
@@ -60,13 +56,14 @@ const Posts = (props) => {
                         </div>
                     </div>
                 }
+
                 <div className={css.posts}>
 
                     <div className={css.allposts}>
                         {allPosts}
                     </div>
                 </div>
-            </div>
+            </>
 
         )
     }

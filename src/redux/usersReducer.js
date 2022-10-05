@@ -82,7 +82,7 @@ export const setFollowInProgress = (userId) => ({type: SET_FOLLOW_IN_PROGRESS, u
 
 
 //thunks
-export const getUsers = (usersPerPage, currentPage) => {
+export const requestUsers = (usersPerPage, currentPage) => {
     return (dispatch) => {
         dispatch(callPreloader(true))
         requestAPI.getUsers(usersPerPage, currentPage).then(response => {
@@ -90,6 +90,13 @@ export const getUsers = (usersPerPage, currentPage) => {
             dispatch(setUsers(response.data.items))
             dispatch(setTotalUsers(response.data.totalCount))
         })
+    }
+}
+
+export const changePage = (pageNumber) => {
+    return (dispatch) => {
+        dispatch(setCurrentPage(pageNumber))
+        dispatch(requestUsers(initialState.usersPerPage, pageNumber))
     }
 }
 

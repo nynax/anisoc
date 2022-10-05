@@ -1,10 +1,14 @@
 import React from "react"
 import css from "./Navabar.module.css"
 import {NavLink} from "react-router-dom"
+import Preloader from "../common/Preloader";
+import {getShowPreloader} from "../../redux/usersSelector";
+import {connect} from "react-redux";
 
-const Navbar = () => {
-    //console.log('Navbar')
-    //console.log(props)
+
+const Navbar = (props) => {
+    console.log('Navbar')
+    console.log(props)
     return (
         <nav className={css.navbar}>
             <div className={css.item}>
@@ -25,8 +29,17 @@ const Navbar = () => {
             <div className={css.item}>
                 <NavLink to='/settings' className={({ isActive }) => isActive ? css.active : undefined}>Settings</NavLink>
             </div>
+            <div className={css.preloader}>
+            <Preloader showPreloader={props.showPreloader}/>
+            </div>
         </nav>
     )
 }
 
-export default Navbar
+const mapStateToProps = (state) => {
+    return {
+        showPreloader: getShowPreloader(state)
+    }
+}
+
+export default connect(mapStateToProps)(Navbar)

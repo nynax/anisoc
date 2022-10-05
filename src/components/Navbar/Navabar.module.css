@@ -9,3 +9,7 @@
 .item a.active  {
     font-weight: bolder;
 }
+
+.preloader {
+    padding-top: 15px;
+}
