@@ -1,5 +1,6 @@
 import produce from "immer"
 import {requestAPI} from "../api/api";
+import {callPreloader} from "./usersReducer";
 
 const SET_USER_DATA = 'SET_USER_DATA'
 
@@ -39,9 +40,11 @@ export const setAuthData = () => (dispatch) => {
 
 export const login = (email, password, rememberMe = false) => {
     return (dispatch) => {
+        dispatch(callPreloader(true))
         requestAPI.authLogin(email, password, rememberMe).then(response => {
             if (response.data.resultCode === 0){
                 dispatch(setAuthData())
+                dispatch(callPreloader(false))
             }
         })
     }

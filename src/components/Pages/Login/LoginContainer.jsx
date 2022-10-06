@@ -8,7 +8,7 @@ import {login} from "../../../redux/authReducer";
 
 const LoginContainer = (props) => {
 
-    if (props.isAuth) return <div className={css.text}>Already logged in!</div>
+    //if (props.isAuth) return <div className={css.text}>Already logged in!</div>
 
     console.log(props)
     //Form Init

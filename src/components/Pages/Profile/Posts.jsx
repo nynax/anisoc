@@ -8,12 +8,11 @@ import {useForm} from "react-hook-form";
 
 const Posts = (props) => {
     console.log('Step 5: Posts')
-    console.log(props)
     //console.log(props)
 
     const { register, handleSubmit, formState: { errors } } = useForm()
 
-    console.log(props.profile)
+    //console.log(props.profile)
 
     let posts = props.posts
 

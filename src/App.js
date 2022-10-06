@@ -10,7 +10,6 @@ import DialogsContainer from "./components/Pages/Dialogs/DialogsContainer";
 import UsersContainer from "./components/Pages/Users/UsersContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import ProfileContainer from "./components/Pages/Profile/ProfileContainer";
-import LoginContainer from "./components/Pages/Login/LoginContainer";
 import {connect} from "react-redux";
 import {initializeApp} from "./redux/appReducer";
 
@@ -44,7 +43,7 @@ class App extends React.Component {
                             <Route path="/profile/" element={<ProfileContainer store={this.props.store}/>}/>
                             <Route path="/profile/:userId" element={<ProfileContainer store={this.props.store}/>}/>
 
-                            <Route path='/login' element={<LoginContainer {...this.props.store}/>}/>
+                            {/*<Route path='/login' element={<LoginContainer {...this.props.store}/>}/>*/}
                             <Route path='/news' element={<News/>}/>
                             <Route path='/music' element={<Music/>}/>
                             <Route path='/settings' element={<Settings/>}/>

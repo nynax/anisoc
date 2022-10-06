@@ -1,12 +1,14 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {addPost, getStatus, setCurrentProfile, setProfile, setStatus} from "../../../redux/profileReducer";
 import Posts from "./Posts";
 import {connect} from "react-redux";
 import {withAuthRedirect} from "../../../hoc/withAuthRedirect";
 import {compose} from "redux";
+import {getAuthData, getIsAuth} from "../../../redux/authSelector";
+import {getPageProfilePosts, getPageProfileProfile, getPageProfileStatus} from "../../../redux/profileSelector";
 
 
-class ProfileContainer extends React.Component{
+/*class ProfileContainerOld extends React.Component{
 
     //after render
     componentDidMount() {
@@ -49,26 +51,37 @@ class ProfileContainer extends React.Component{
     }
 
     render() {
-        console.log('Step 4 PostsContainer > render()')
+        console.log('Step 4 PostsContainerOld > render()')
         return <Posts {...this.props} />
     }
+}*/
+
+const ProfileContainer = (props) => {
+
+    useEffect(() => {
+        let userId = props.userId ? props.userId : props.myUserId
+        props.setProfile(userId)
+        props.getStatus(userId)
+    },[props.userId]);
+
+    console.log('Step 4 PostsContainer > return')
+    //console.log(props)
+    return <Posts {...props} />
 }
 
 const mapStateToProps = (state) => {
     console.log('Step 2: mapStateToProps')
-    console.log(state.pageProfile)
+    //console.log(state.pageProfile)
     return {
-        posts: state.pageProfile.posts,
-        postTextarea: state.pageProfile.postTextarea,
-        profile: state.pageProfile.profile,
-        myUserId: state.auth.data.id,
-        isAuth: state.auth.isAuth,
-        status: state.pageProfile.status
+        posts: getPageProfilePosts(state),
+        profile: getPageProfileProfile(state),
+        myUserId: getAuthData(state).id,
+        isAuth: getIsAuth(state),
+        status: getPageProfileStatus(state)
     }
 }
 
 export default compose(
-
     connect(mapStateToProps, {
         addPost,
         setCurrentProfile,

@@ -8,7 +8,7 @@ import {connect} from "react-redux";
 
 const Navbar = (props) => {
     console.log('Navbar')
-    console.log(props)
+    //console.log(props)
     return (
         <nav className={css.navbar}>
             <div className={css.item}>

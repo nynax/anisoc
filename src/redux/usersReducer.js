@@ -14,7 +14,7 @@ let initialState = {
     totalUsers: 0,
     currentPage: 1,
     usersPerPage: 20,
-    showPreloader: true,
+    showPreloader: false,
     followInProgress: []
 }
 

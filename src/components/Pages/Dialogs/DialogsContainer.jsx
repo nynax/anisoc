@@ -4,13 +4,15 @@ import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
 import {withAuthRedirect} from "../../../hoc/withAuthRedirect";
 import {compose} from "redux";
+import {getIsAuth} from "../../../redux/authSelector";
+import {getPageDialogs, getPageDialogsChats} from "../../../redux/dialogsSelector";
 
 
 const mapStateToProps = (state) => {
     return {
-        chatsData: state.pageDialogs.chats,
-        messagesData: state.pageDialogs,
-        isAuth: state.auth.isAuth
+        chatsData: getPageDialogsChats(state),
+        messagesData: getPageDialogs(state),
+        isAuth: getIsAuth(state)
     }
 }
 

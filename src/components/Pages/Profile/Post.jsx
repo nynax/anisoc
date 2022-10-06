@@ -2,7 +2,8 @@ import React from "react"
 import photo from "../../../avatars/dart.png";
 import css from "./Profile.module.css"
 
-const Post = (props) => {
+const Post = React.memo((props) => {
+
     return (
         <div className={css.post}>
             <div className={css.avatar}>
@@ -12,7 +13,7 @@ const Post = (props) => {
             <div className={css.text}>{props.post.msg}</div>
         </div>
     )
-}
+})
 
 
 export default Post

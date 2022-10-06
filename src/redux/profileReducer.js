@@ -1,5 +1,6 @@
 import produce from "immer";
 import {requestAPI} from "../api/api";
+import {callPreloader} from "./usersReducer";
 
 const ADD_POST = 'ADD-POST'
 const SET_CURRENT_PROFILE = 'SET_CURRENT_PROFILE'
@@ -53,9 +54,11 @@ export const setProfile = (userId) => {
         if(userId === null){
             dispatch(setCurrentProfile(null))
         }else{
+            dispatch(callPreloader(true))
             console.log('requestAPI')
             requestAPI.getProfile(userId).then(response => {
                 dispatch(setCurrentProfile(response.data))
+                dispatch(callPreloader(false))
             })
         }
     }
