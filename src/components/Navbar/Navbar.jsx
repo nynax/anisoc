@@ -1,7 +1,7 @@
 import React from "react"
 import css from "./Navabar.module.css"
 import {NavLink} from "react-router-dom"
-import Preloader from "../common/Preloader";
+import Preloader from "../common/Preloader/Preloader";
 import {getShowPreloader} from "../../redux/usersSelector";
 import {connect} from "react-redux";
 

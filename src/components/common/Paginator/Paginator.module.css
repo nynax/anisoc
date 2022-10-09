@@ -1,0 +1,24 @@
+.pagination {
+    font-size: smaller;
+}
+
+li {
+    display: inline;
+    list-style-type: none;
+}
+
+li a {
+    padding: 0.1rem 1rem;
+    cursor: pointer;
+}
+
+li.active a {
+    background-color: #0366d6;
+    border-color: transparent;
+    color: white;
+    min-width: 32px;
+}
+ul {
+    text-align: center;
+    padding-right: 50px;
+}

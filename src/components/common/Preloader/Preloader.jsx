@@ -1,5 +1,5 @@
 import React from "react";
-import preloader from "../../avatars/Running_dog.gif";
+import preloader from "../../../avatars/Running_dog.gif";
 
 const Preloader = (props) => {
     return <div>{props.showPreloader ? <img src={preloader} alt='bla bla bla'/> : null}</div>

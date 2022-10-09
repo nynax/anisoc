@@ -57,7 +57,7 @@ import {getPageProfilePosts, getPageProfileProfile, getPageProfileStatus} from "
 }*/
 
 const ProfileContainer = (props) => {
-
+    //props.setProfile(null)
     useEffect(() => {
         let userId = props.userId ? props.userId : props.myUserId
         props.setProfile(userId)

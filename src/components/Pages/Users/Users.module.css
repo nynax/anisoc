@@ -25,13 +25,8 @@
     grid-template-columns: 1fr 11fr;
     padding-top: 10px;
 }
-.selectedPage{
-    font-weight: bolder;
-}
-.page{
-    cursor: pointer;
-    font-size: smaller;
-}
+
+
 
 
 
