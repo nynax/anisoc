@@ -6,6 +6,7 @@ import {withAuthRedirect} from "../../../hoc/withAuthRedirect";
 import {compose} from "redux";
 import {getAuthData, getIsAuth} from "../../../redux/authSelector";
 import {getPageProfilePosts, getPageProfileProfile, getPageProfileStatus} from "../../../redux/profileSelector";
+import {getShowPreloader} from "../../../redux/usersSelector";
 
 
 /*class ProfileContainerOld extends React.Component{
@@ -66,7 +67,10 @@ const ProfileContainer = (props) => {
 
     console.log('Step 4 PostsContainer > return')
     //console.log(props)
-    return <Posts {...props} />
+    if (!props.showPreloader){
+        return <Posts {...props} />
+    }
+
 }
 
 const mapStateToProps = (state) => {
@@ -77,7 +81,8 @@ const mapStateToProps = (state) => {
         profile: getPageProfileProfile(state),
         myUserId: getAuthData(state).id,
         isAuth: getIsAuth(state),
-        status: getPageProfileStatus(state)
+        status: getPageProfileStatus(state),
+        showPreloader: getShowPreloader(state)
     }
 }
 
