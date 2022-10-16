@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
-import {addPost, getStatus, setCurrentProfile, setProfile, setStatus} from "../../../redux/profileReducer";
-import Posts from "./Posts";
+import {addPost, getStatus, setCurrentProfile, setProfile, setStatus, updatePhoto} from "../../../redux/profileReducer";
+import ProfilePage from "./ProfilePage";
 import {connect} from "react-redux";
 import {withAuthRedirect} from "../../../hoc/withAuthRedirect";
 import {compose} from "redux";
@@ -9,53 +9,6 @@ import {getPageProfilePosts, getPageProfileProfile, getPageProfileStatus} from "
 import {getShowPreloader} from "../../../redux/usersSelector";
 
 
-/*class ProfileContainerOld extends React.Component{
-
-    //after render
-    componentDidMount() {
-        console.log('componentDidMount')
-        console.log(this.props)
-
-        let userId = this.props.userId ? this.props.userId : this.props.myUserId
-
-        this.props.setProfile(userId)
-        this.props.getStatus(userId)
-
-    }
-    //when close
-    componentWillUnmount(){
-        this.props.setCurrentProfile(null)
-        console.log('componentWillUnmount')
-        console.log(this.props.data)
-    }
-    //if props changed
-    componentDidUpdate(prevProps) {
-        console.log('componentDidUpdate')
-        console.log(prevProps)
-        console.log(this.props)
-
-        if (this.props.userId !== prevProps.userId)
-        {
-            console.log('========')
-            console.log(this.props)
-            console.log(this.props.userId)
-            console.log(this.props.myUserId)
-            if (this.props.userId) {
-                console.log('true')
-                this.props.setProfile(this.props.userId)
-            }else{
-                console.log('false')
-                this.props.setProfile(this.props.myUserId)
-            }
-            console.log('Page was changed...')
-        }
-    }
-
-    render() {
-        console.log('Step 4 PostsContainerOld > render()')
-        return <Posts {...this.props} />
-    }
-}*/
 
 const ProfileContainer = (props) => {
     //props.setProfile(null)
@@ -68,7 +21,7 @@ const ProfileContainer = (props) => {
     console.log('Step 4 PostsContainer > return')
     //console.log(props)
     if (!props.showPreloader){
-        return <Posts {...props} />
+        return <ProfilePage {...props} />
     }
 
 }
@@ -92,7 +45,8 @@ export default compose(
         setCurrentProfile,
         setProfile,
         setStatus,
-        getStatus
+        getStatus,
+        updatePhoto
     }),
     withAuthRedirect
 )(ProfileContainer)

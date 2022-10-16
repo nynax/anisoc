@@ -5,6 +5,7 @@ import {callPreloader} from "./usersReducer";
 const ADD_POST = 'ADD-POST'
 const SET_CURRENT_PROFILE = 'SET_CURRENT_PROFILE'
 const SET_STATUS = 'SET_STATUS'
+const SET_PHOTOS = 'SET_PHOTOS'
 
 let initialState = {
     posts: [
@@ -35,6 +36,10 @@ export const profileReducer = (state = initialState, action) => {
             return produce(state, draft => {
                 draft.profile = action.currentProfile
             })
+        case SET_PHOTOS:
+            return produce(state, draft => {
+                draft.profile.photos = action.photos
+            })
         case SET_STATUS:
             return produce(state, draft => {
                 draft.status = action.status
@@ -48,6 +53,8 @@ export const profileReducer = (state = initialState, action) => {
 export const addPost = (postMsg) => ({type: ADD_POST, postMsg})
 export const setCurrentProfile = (currentProfile) => ({type: SET_CURRENT_PROFILE, currentProfile})
 export const setProfileStatus = (status) => ({type: SET_STATUS, status})
+
+export const setProfilePhoto = (photos) => ({type: SET_PHOTOS, photos})
 
 export const setProfile = (userId) => {
     return (dispatch) => {
@@ -67,7 +74,7 @@ export const setProfile = (userId) => {
 export const setStatus = (status) => {
     return (dispatch) => {
         console.log('requestAPI (setStatus)')
-        requestAPI.updateStatus(status).then(response => {
+        requestAPI.setStatus(status).then(response => {
             if (response.data.resultCode === 0) {
                 dispatch(setProfileStatus(status))
             }
@@ -80,6 +87,16 @@ export const getStatus = (userId) => {
         console.log('requestAPI (getStatus)')
         requestAPI.getStatus(userId).then(response => {
                 dispatch(setProfileStatus(response.data))
+        })
+    }
+}
+
+export const updatePhoto = (photo) => {
+    return (dispatch) => {
+        console.log('requestAPI (setPhoto)')
+        requestAPI.setPhoto(photo).then(response => {
+            console.log(response.data)
+            dispatch(setProfilePhoto(response.data.data.photos))
         })
     }
 }

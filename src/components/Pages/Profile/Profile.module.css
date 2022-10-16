@@ -1,5 +1,9 @@
-.profile {
-    padding: 10px;
+.profileInfo {
+
+}
+
+.addPost {
+
 }
 
 .dashboard {
@@ -8,7 +12,7 @@
 }
 
 .photo {
-    padding: 10px;
+    padding: 10px 0 0 10px;
 }
 
 .status {
@@ -22,12 +26,11 @@
 }
 
 .fullName{
-    padding: 10px;
+    padding: 10px 0 0 10px;
     font-weight: bolder;
 }
 
 .aboutMe{
-    padding: 10px;
 }
 
 .post {
@@ -59,7 +62,7 @@
 }
 
 .sendform {
-    padding: 10px;
+    padding: 0 0 0 10px;
 }
 
 
@@ -70,11 +73,12 @@
 }
 
 .formInline {
-    padding: 10px;
+    padding: 10px 0 0 10px;
     display: flex;
     flex-flow: column wrap;
     align-items: flex-start;
 }
+
 
 /* Add some margins for each label */
 .formInline label {
