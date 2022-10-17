@@ -7,7 +7,7 @@ const Post = React.memo((props) => {
     return (
         <div className={css.post}>
             <div className={css.avatar}>
-                <img alt='oxuenno ochen' src={photo}/>
+                <img alt='oxuenno ochen' src={props.photo ? props.photo : photo}/>
                 <div className={css.like}>{props.likes}</div>
             </div>
             <div className={css.text}>{props.post.msg}</div>

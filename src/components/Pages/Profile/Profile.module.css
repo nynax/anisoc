@@ -2,6 +2,11 @@
 
 }
 
+.profilePage {
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
 .addPost {
 
 }
@@ -31,6 +36,7 @@
 }
 
 .aboutMe{
+    padding-left: 10px;
 }
 
 .post {

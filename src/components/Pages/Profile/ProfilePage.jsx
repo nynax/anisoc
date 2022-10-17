@@ -5,15 +5,16 @@ import ProfileInfo from "./ProfileInfo";
 
 const ProfilePage = (props) => {
     console.log('Step 5: ProfilePage')
+    console.log(props)
 
     let posts = props.posts
 
     // debugger
-    let allPosts = posts.map( post => <Post post={post} key={post.id}/>)
+    let allPosts = posts.map( post => <Post post={post} key={post.id} photo={props.profile != null && props.profile.photos.small ? props.profile.photos.small : null}/>)
 
     if (props.profile) {
 
-        return (<div>
+        return (<div className={css.profilePage}>
                 <div className={css.profileInfo}>
                     <ProfileInfo {...props}/>
                 </div>
