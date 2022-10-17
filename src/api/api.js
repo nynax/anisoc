@@ -29,8 +29,9 @@ export const requestAPI =  {
     authMe(){
         return axios(config('auth/me', 'get'))
     },
-    authLogin(email, password, rememberMe){
-        return axios(config('auth/login', 'post', {email, password, rememberMe}))
+    authLogin(email, password, rememberMe, captcha){
+        console.log(captcha)
+        return axios(config('auth/login', 'post', {email, password, rememberMe, captcha}))
     },
     authLogout(){
         return axios(config('auth/login', 'delete'))
@@ -42,12 +43,15 @@ export const requestAPI =  {
         return axios(config('profile/' + userId, 'get'))
     },
     setStatus(status){
-        return axios(config('/profile/status', 'put', {status: status}))
+        return axios(config('profile/status', 'put', {status: status}))
     },
     getStatus(userId){
-        return axios(config('/profile/status/' + userId, 'get'))
+        return axios(config('profile/status/' + userId, 'get'))
     },
     setPhoto(image){
-        return axios(config('/profile/photo', 'put',{image: image[0]}, 'multipart/form-data'))
+        return axios(config('profile/photo', 'put',{image: image[0]}, 'multipart/form-data'))
+    },
+    getCaptcha(){
+        return axios(config('security/get-captcha-url', 'get'))
     }
 }

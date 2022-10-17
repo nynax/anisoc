@@ -2,6 +2,10 @@
     padding: 10px;
 }
 
+.captchaImg{
+    border: 1px solid #ddd;
+}
+
 .errors {
     padding: 10px;
     font-size: smaller;
