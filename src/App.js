@@ -6,10 +6,10 @@ import Music from "./components/Pages/Music/Music"
 import Settings from "./components/Pages/Settings/Settings"
 import Footer from "./components/Footer/Footer"
 import {Route, Routes, BrowserRouter} from "react-router-dom"
-//import DialogsContainer from "./components/Pages/Dialogs/DialogsContainer";
-//import UsersContainer from "./components/Pages/Users/UsersContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
-//import ProfileContainer from "./components/Pages/Profile/ProfileContainer";
+/*import DialogsContainer from "./components/Pages/Dialogs/DialogsContainer";
+import UsersContainer from "./components/Pages/Users/UsersContainer";
+import ProfileContainer from "./components/Pages/Profile/ProfileContainer";*/
 
 import {connect} from "react-redux";
 import {initializeApp} from "./redux/appReducer";
@@ -44,16 +44,16 @@ class App extends React.Component {
                             <Route path='/dialogs/*' element={<Suspense fallback={<div>Loading...</div>}><DialogsContainer store={this.props.store}/></Suspense>}/>
                             <Route path='/users' element={<Suspense fallback={<div>Loading...</div>}><UsersContainer store={this.props.store}/></Suspense>}/>
                             <Route path="/profile/" element={<Suspense fallback={<div>Loading...</div>}><ProfileContainer store={this.props.store}/></Suspense>}/>
-                            {/*<Route path="/profile/" element={<Suspense fallback={<div>Loading...</div>}><ProfileContainer store={this.props.store}/></Suspense>}/>
-                            <Route path='/dialogs/*' element={<DialogsContainer store={this.props.store}/>}/>
-                            <Route path='/users' element={<UsersContainer store={this.props.store}/>}/>*/}
-                            {/*<Route path="/profile/" element={<ProfileContainer store={this.props.store}/>}/>*/}
-                            <Route path="/profile/:userId" element={<ProfileContainer store={this.props.store}/>}/>
+                            <Route path="/profile/:userId" element={<Suspense fallback={<div>Loading...</div>}><ProfileContainer store={this.props.store}/></Suspense>}/>
+                            {/*<Route path='/dialogs/*' element={<DialogsContainer store={this.props.store}/>}/>
+                            <Route path='/users' element={<UsersContainer store={this.props.store}/>}/>
+                            <Route path="/profile/" element={<ProfileContainer store={this.props.store}/>}/>
+                            <Route path="/profile/:userId" element={<ProfileContainer store={this.props.store}/>}/>*/}
                             <Route path='/news' element={<News/>}/>
                             <Route path='/music' element={<Music/>}/>
                             <Route path='/settings' element={<Settings/>}/>
-                            <Route path='/*' element={<ProfileContainer store={this.props.store}/>}/>
-                            <Route path='/' element={<ProfileContainer store={this.props.store}/>}/>
+                            <Route path='/*' element={<Suspense fallback={<div>Loading...</div>}><ProfileContainer store={this.props.store}/></Suspense>}/>
+                            <Route path='/' element={<Suspense fallback={<div>Loading...</div>}><ProfileContainer store={this.props.store}/></Suspense>}/>
                         </Routes>
                     </div>
                     <div className='footer'>
