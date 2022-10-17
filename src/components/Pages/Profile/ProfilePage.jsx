@@ -15,7 +15,7 @@ const ProfilePage = (props) => {
     if (props.profile) {
 
         return (<div className={css.profilePage}>
-                <div className={css.profileInfo}>
+                <div>
                     <ProfileInfo {...props}/>
                 </div>
                 <div className={css.posts}>

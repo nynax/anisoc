@@ -1,5 +1,17 @@
 .profileInfo {
+    display: inline-block;
+    width: 45%;
+}
 
+.profileContacts {
+    padding-top: 10px;
+    display: inline-block;
+    width: 45%;
+    vertical-align:top;
+}
+
+.contacts {
+    padding-top: 10px;
 }
 
 .profilePage {

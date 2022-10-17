@@ -13,7 +13,7 @@ const ProfileInfo = (props) => {
         return <ProfileOwner {...props}/>
     }else{
         return (
-            <div>
+            <div className={css.profileInfo}>
                 <div className={css.status}><NavLink to={'/profile/25964'}>&lt;&lt;</NavLink>&emsp;&emsp;&emsp;&ensp;
                     <NavLink to={'/profile/26002'}>&gt;&gt;</NavLink></div>
                 <div className={css.dashboard}>
