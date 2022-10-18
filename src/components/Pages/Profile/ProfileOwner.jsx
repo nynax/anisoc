@@ -2,12 +2,13 @@ import css from "./Profile.module.css";
 import UpdateInputOnClick from "./UpdateInputOnClick";
 import React from "react";
 import {NavLink} from "react-router-dom";
-import photo from "../../../avatars/dart.png";
+import photo from "../../../images/dart.png";
 import AddPost from "./AddPost";
 import UploadPhoto from "./UploadPhoto";
 
 const ProfileOwner = (props) => {
     console.log('ProfileOwner')
+    console.log(props)
 
     return (
         <div>
@@ -20,16 +21,21 @@ const ProfileOwner = (props) => {
 
                     </div>
                     <div>
-                        <div className={css.fullName}>{props.profile.fullName}</div>
-
+                        <div className={css.fullName}>
+                            <UpdateInputOnClick textValue={props.profile.fullName} setValue={props.setStatus} inputName="fullName"/>
+                        </div>
+                        <div className={css.aboutMe}>
+                            <UpdateInputOnClick textValue={props.profile.aboutMe} setValue={props.setStatus} inputName="aboutMe"/>
+                        </div>
                         <div className={css.status}>
-                            
-                            <UpdateInputOnClick textValue={props.status} setStatus={props.setStatus}/>
-
+                            <UpdateInputOnClick textValue={props.status} setValue={props.setStatus} inputName="status"/>
                         </div>
 
                         <div className={css.lookingForAJob}>{props.profile.lookingForAJob}</div>
-                        <div className={css.lookingForAJobDescription}>{props.profile.lookingForAJobDescription}</div>
+
+                        <div className={css.lookingForAJobDescription}>
+                            <UpdateInputOnClick textValue={props.profile.lookingForAJobDescription} setValue={props.setStatus} inputName="lookingForAJobDescription"/>
+                        </div>
 
 
 

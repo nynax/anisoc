@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from "react";
+import editsvg from "../../../images/pencil.svg"
+import css from "./Profile.module.css";
 
 const UpdateInputOnClick = (props) => {
     console.log('StatusUpdate')
@@ -17,14 +19,28 @@ const UpdateInputOnClick = (props) => {
         setTextInput(value)
     }
 
+    const nameReplace = {
+        lookingForAJobDescription: null,
+        status: null,
+        fullName: null,
+        aboutMe: null
+    }
+
     return (
     <>
         {editMode
-            ? <div><input autoFocus={true} onChange={onUpdateStatus} onBlur={() => {
+            ? <div className={css.inputOnClick}><input autoFocus={true} onChange={onUpdateStatus} onBlur={() => {
                 setEditMode(false)
-                props.setStatus(textInput, "status")
-            }} value={textInput} placeholder={'set status...'}></input></div>
-            : <div onClick={() => setEditMode(true)}>{textInput}</div>
+                if (props.textValue !== textInput){
+                    props.setValue(textInput, props.inputName)
+                }
+            }} value={textInput}></input></div>
+            :
+                <div className={css.inputOnClick} onClick={() => setEditMode(true)}>
+                    <b>{nameReplace[props.inputName]}</b>
+                    {textInput ? textInput : "touch me"}
+                    &emsp;<object className={css.editsvg} type="image/svg+xml" data={editsvg} width="10" height="10">Your browser does not support SVG</object>
+                </div>
         }
     </>
     )

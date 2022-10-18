@@ -1,5 +1,5 @@
 import React from "react"
-import photo from "../../../avatars/dart.png";
+import photo from "../../../images/dart.png";
 import css from "./Profile.module.css"
 
 const Post = React.memo((props) => {

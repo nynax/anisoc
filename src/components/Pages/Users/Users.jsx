@@ -1,6 +1,6 @@
 import React from "react"
 import css from "./Users.module.css"
-import avatar from "../../../avatars/maul.png";
+import avatar from "../../../images/maul.png";
 import {NavLink} from "react-router-dom";
 import PaginatedItems from "../../common/Paginator/Paginator";
 

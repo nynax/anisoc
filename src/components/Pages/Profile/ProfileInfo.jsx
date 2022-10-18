@@ -1,6 +1,6 @@
 import css from "./Profile.module.css";
 import {NavLink} from "react-router-dom";
-import photo from "../../../avatars/dart.png";
+import photo from "../../../images/dart.png";
 import React from "react";
 import ProfileOwner from "./ProfileOwner";
 

@@ -74,23 +74,30 @@ export const setProfile = (userId) => {
 
 export const setStatus = (value, inputName) => {
 
-    return (dispatch) => {
+    return (dispatch, getState) => {
+
         switch (inputName) {
 
             case "status":
                 console.log('requestAPI (setStatus)')
-                return requestAPI.setStatus(value).then(response => {
-                    if (response.data.resultCode === 0) {
-                        dispatch(setProfileStatus(value))
-                    }
-                })
+                return requestAPI.setStatus(value)
             case "lookingForAJobDescription":
-                console.log('requestAPI (lookingForAJobDescription)')
-                return requestAPI.setStatus(value).then(response => {
-                    if (response.data.resultCode === 0) {
-                        dispatch(setProfileStatus(value))
-                    }
-                })
+            case "fullName":
+            case "aboutMe":
+                let profile = {...getState().pageProfile.profile}
+
+                //method API required aboutMe forever!
+                if (inputName === "aboutMe" && value === ""){
+                        value = "Tell me about you, baby ;)"
+                }
+                profile[inputName] = value
+
+                if (!profile.aboutMe){
+                    profile.aboutMe = "Tell me about you, baby ;)"
+                }
+
+                return requestAPI.setProfile(profile)
+
             default:
                 //debugger
                 return

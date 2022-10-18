@@ -1,3 +1,11 @@
+.inputOnClick{
+
+}
+
+.editsvg {
+
+}
+
 .profileInfo {
     display: inline-block;
     width: 45%;
@@ -32,8 +40,8 @@
     padding: 10px 0 0 10px;
 }
 
-.status {
-    padding-left: 10px;
+.status, .lookingForAJobDescription, .aboutMe, .fullName{
+     padding-left: 10px;
 }
 
 .photo img{
@@ -43,13 +51,10 @@
 }
 
 .fullName{
-    padding: 10px 0 0 10px;
+    padding-top: 10px;
     font-weight: bolder;
 }
 
-.aboutMe{
-    padding-left: 10px;
-}
 
 .post {
     display: grid;

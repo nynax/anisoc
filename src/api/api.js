@@ -53,5 +53,8 @@ export const requestAPI =  {
     },
     getCaptcha(){
         return axios(config('security/get-captcha-url', 'get'))
+    },
+    setProfile(profile){
+        return axios(config('profile', 'put', profile))
     }
 }
