@@ -12,10 +12,13 @@ import {getShowPreloader} from "../../../redux/usersSelector";
 
 const ProfileContainer = (props) => {
     //props.setProfile(null)
+
+    //if userid for profile page was changed, update
     useEffect(() => {
+        console.log('iam here!')
         let userId = props.userId ? props.userId : props.myUserId
         props.setProfile(userId)
-        props.getStatus(userId)
+        //props.getStatus(userId)
     },[props.userId]);
 
     console.log('Step 4 PostsContainer > return')

@@ -1,5 +1,5 @@
-import {applyMiddleware, combineReducers} from "redux";
-import {configureStore} from "@reduxjs/toolkit";
+import {applyMiddleware, combineReducers, compose, createStore} from "redux";
+//import {configureStore} from "@reduxjs/toolkit";
 import {profileReducer} from "./profileReducer";
 import {dialogsReducer} from "./dialogsReducer";
 import {usersReducer} from "./usersReducer";
@@ -19,6 +19,11 @@ let reducers = combineReducers({
 })
 
 //Создаем store. Добавляем reducers и включаем thunk
-let store = configureStore({reducer: reducers}, applyMiddleware(thunkMiddleware))
+//let store = configureStore({reducer: reducers}, applyMiddleware(thunkMiddleware))
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducers, /* preloadedState, */ composeEnhancers(applyMiddleware(thunkMiddleware)
+));
+
 
 export default store

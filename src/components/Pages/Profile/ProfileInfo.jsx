@@ -13,17 +13,22 @@ const ProfileInfo = (props) => {
         return <ProfileOwner {...props}/>
     }else{
         return (
-            <div className={css.profileInfo}>
-                <div className={css.status}><NavLink to={'/profile/25964'}>&lt;&lt;</NavLink>&emsp;&emsp;&emsp;&ensp;
-                    <NavLink to={'/profile/26002'}>&gt;&gt;</NavLink></div>
-                <div className={css.dashboard}>
-                    <div className={css.photo}><img
-                        src={props.profile.photos.large ? props.profile.photos.large : photo} alt='ohuenno'/></div>
-                    <div>
-                        <div className={css.fullName}>{props.profile.fullName}</div>
-                        <div className={css.aboutMe}>{props.profile.aboutMe}</div>
+            <div>
+                <div className={css.profileInfo}>
+                    <div className={css.status}><NavLink to={'/profile/25964'}>&lt;&lt;</NavLink>&emsp;&emsp;&emsp;&ensp;
+                        <NavLink to={'/profile/26002'}>&gt;&gt;</NavLink></div>
+                    <div className={css.dashboard}>
+                        <div className={css.photo}><img
+                            src={props.profile.photos.large ? props.profile.photos.large : photo} alt='ohuenno'/></div>
+                        <div>
+                            <div className={css.fullName}>{props.profile.fullName}</div>
+                            <div className={css.aboutMe}>{props.profile.aboutMe}</div>
+                        </div>
                     </div>
                 </div>
+                <div className={css.profileContacts}>
+                <div className={css.contacts}>hello</div>
+            </div>
             </div>
         )
     }

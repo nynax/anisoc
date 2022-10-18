@@ -13,6 +13,7 @@ import ProfileContainer from "./components/Pages/Profile/ProfileContainer";*/
 
 import {connect} from "react-redux";
 import {initializeApp} from "./redux/appReducer";
+import Preloader from "./components/common/Preloader/Preloader";
 
 const ProfileContainer = React.lazy(() => import("./components/Pages/Profile/ProfileContainer"))
 const DialogsContainer = React.lazy(() => import("./components/Pages/Dialogs/DialogsContainer"))
@@ -26,7 +27,7 @@ class App extends React.Component {
     render() {
 
         if (!this.props.initialize) {
-            return <div>loading...</div>
+            return <div className="mainPreloader"><Preloader showPreloader={true}/></div>
         }
 
 

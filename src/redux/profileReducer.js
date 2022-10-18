@@ -1,6 +1,8 @@
 import produce from "immer";
 import {requestAPI} from "../api/api";
 import {callPreloader} from "./usersReducer";
+//import {setAuthData} from "./authReducer";
+//import {initializeAC} from "./appReducer";
 
 const ADD_POST = 'ADD-POST'
 const SET_CURRENT_PROFILE = 'SET_CURRENT_PROFILE'
@@ -17,7 +19,7 @@ let initialState = {
         {id: 6, msg: "Lets go", likes: 4},
     ],
     profile: null,
-    status: 'set status...'
+    status: null
 }
 
 export const profileReducer = (state = initialState, action) => {
@@ -53,7 +55,6 @@ export const profileReducer = (state = initialState, action) => {
 export const addPost = (postMsg) => ({type: ADD_POST, postMsg})
 export const setCurrentProfile = (currentProfile) => ({type: SET_CURRENT_PROFILE, currentProfile})
 export const setProfileStatus = (status) => ({type: SET_STATUS, status})
-
 export const setProfilePhoto = (photos) => ({type: SET_PHOTOS, photos})
 
 export const setProfile = (userId) => {
@@ -64,21 +65,36 @@ export const setProfile = (userId) => {
             dispatch(callPreloader(true))
             console.log('requestAPI')
             requestAPI.getProfile(userId).then(response => {
+                dispatch(getStatus(userId))
                 dispatch(setCurrentProfile(response.data))
-                dispatch(callPreloader(false))
-            })
+            }).catch(err => alert(err))
         }
     }
 }
 
-export const setStatus = (status) => {
+export const setStatus = (value, inputName) => {
+
     return (dispatch) => {
-        console.log('requestAPI (setStatus)')
-        requestAPI.setStatus(status).then(response => {
-            if (response.data.resultCode === 0) {
-                dispatch(setProfileStatus(status))
-            }
-        })
+        switch (inputName) {
+
+            case "status":
+                console.log('requestAPI (setStatus)')
+                return requestAPI.setStatus(value).then(response => {
+                    if (response.data.resultCode === 0) {
+                        dispatch(setProfileStatus(value))
+                    }
+                })
+            case "lookingForAJobDescription":
+                console.log('requestAPI (lookingForAJobDescription)')
+                return requestAPI.setStatus(value).then(response => {
+                    if (response.data.resultCode === 0) {
+                        dispatch(setProfileStatus(value))
+                    }
+                })
+            default:
+                //debugger
+                return
+        }
     }
 }
 
@@ -86,7 +102,9 @@ export const getStatus = (userId) => {
     return (dispatch) => {
         console.log('requestAPI (getStatus)')
         requestAPI.getStatus(userId).then(response => {
-                dispatch(setProfileStatus(response.data))
+            console.log(response.data)
+            dispatch(setProfileStatus(response.data))
+            dispatch(callPreloader(false))
         })
     }
 }

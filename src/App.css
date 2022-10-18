@@ -33,4 +33,10 @@
     border-radius: 5px;
 }
 
+.mainPreloader {
+    padding-top: 200px;
+    max-width: 50px;
+    margin: auto;
+}
+
 

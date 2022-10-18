@@ -1,5 +1,5 @@
 import css from "./Profile.module.css";
-import StatusUpdate from "./StatusUpdate";
+import UpdateInputOnClick from "./UpdateInputOnClick";
 import React from "react";
 import {NavLink} from "react-router-dom";
 import photo from "../../../avatars/dart.png";
@@ -21,10 +21,18 @@ const ProfileOwner = (props) => {
                     </div>
                     <div>
                         <div className={css.fullName}>{props.profile.fullName}</div>
-                        <div className={css.aboutMe}>{props.profile.aboutMe}</div>
+
                         <div className={css.status}>
-                            <StatusUpdate status={props.status} setStatus={props.setStatus}/>
+                            
+                            <UpdateInputOnClick textValue={props.status} setStatus={props.setStatus}/>
+
                         </div>
+
+                        <div className={css.lookingForAJob}>{props.profile.lookingForAJob}</div>
+                        <div className={css.lookingForAJobDescription}>{props.profile.lookingForAJobDescription}</div>
+
+
+
                     </div>
 
                 </div>

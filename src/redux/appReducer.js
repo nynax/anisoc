@@ -1,5 +1,6 @@
 import produce from "immer"
 import {setAuthData} from "./authReducer";
+import {callPreloader} from "./usersReducer";
 
 const INITIALIZING = 'INITIALIZING'
 
@@ -25,8 +26,9 @@ export const initializeAC = () => ({type: INITIALIZING})
 export const initializeApp = () => (dispatch) => {
 
     let auth = dispatch(setAuthData())
-
+    dispatch(callPreloader(true))
     Promise.all([auth]).then(() => {
         dispatch(initializeAC())
+        dispatch(callPreloader(false))
     })
 }
