@@ -5,6 +5,7 @@ import {NavLink} from "react-router-dom";
 import photo from "../../../images/dart.png";
 import AddPost from "./AddPost";
 import UploadPhoto from "./UploadPhoto";
+import ProfileContacts from "./ProfileContacts";
 
 const ProfileOwner = (props) => {
     console.log('ProfileOwner')
@@ -36,9 +37,6 @@ const ProfileOwner = (props) => {
                         <div className={css.lookingForAJobDescription}>
                             <UpdateInputOnClick textValue={props.profile.lookingForAJobDescription} setValue={props.setStatus} inputName="lookingForAJobDescription"/>
                         </div>
-
-
-
                     </div>
 
                 </div>
@@ -52,7 +50,7 @@ const ProfileOwner = (props) => {
 
             </div>
             <div className={css.profileContacts}>
-                <div className={css.contacts}>hello</div>
+                <div className={css.contacts}><ProfileContacts contacts={props.profile.contacts}/></div>
             </div>
         </div>
 

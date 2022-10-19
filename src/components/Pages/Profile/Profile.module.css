@@ -1,5 +1,5 @@
 .inputOnClick{
-
+height: 20px;
 }
 
 .editsvg {
@@ -12,14 +12,12 @@
 }
 
 .profileContacts {
-    padding-top: 10px;
     display: inline-block;
     width: 45%;
     vertical-align:top;
 }
 
 .contacts {
-    padding-top: 10px;
 }
 
 .profilePage {
@@ -41,7 +39,8 @@
 }
 
 .status, .lookingForAJobDescription, .aboutMe, .fullName{
-     padding-left: 10px;
+    padding-left: 10px;
+    font-size: small;
 }
 
 .photo img{
@@ -121,10 +120,11 @@
 
 /* Style the submit button */
 .formInline button {
-    padding: 10px 20px;
+    padding: 5px 10px;
     background-color: dodgerblue;
     border: 1px solid #ddd;
     color: white;
+    border-radius: 5px;
 }
 
 .formInline button:hover {
