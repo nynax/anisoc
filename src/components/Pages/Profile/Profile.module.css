@@ -38,9 +38,14 @@
     margin-left: 5px;
 }
 
-.contactFields{
+.contactFieldsOwner{
     padding-top: 5px;
-    padding-left: 10px;
+    padding-left: 2px;
+}
+
+.contactFields{
+    padding-top: 30px;
+    padding-left: 2px;
 }
 
 .contactRow {
@@ -48,6 +53,7 @@
 }
 
 .contacts {
+    margin-top: -5px;
 }
 
 .profilePage {

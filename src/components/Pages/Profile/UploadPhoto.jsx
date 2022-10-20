@@ -18,7 +18,8 @@ const UploadPhoto = (props) => {
                 <input type="file" {...register("photo", {
                     required: "Select file please"
                 })} />
-                <button>Upload</button>
+
+               <button>Upload</button>
 
             </form>
 

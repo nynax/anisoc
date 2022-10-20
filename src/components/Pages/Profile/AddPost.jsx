@@ -9,7 +9,7 @@ const AddPost = (props) => {
 
     //render add post form
     return (
-        <div>
+        <div className={css.addPost}>
             <form className={css.formInline} onSubmit={handleSubmit((data) => {
                 //add post and clear form
                 props.addPost(data.postMsg)

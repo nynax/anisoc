@@ -46,12 +46,13 @@ const ProfileContacts = (props) => {
                  :  contactsProfile[contactName] ?  <div className={css.contactRow} key={contactName}>
                                                     <img className={css.contactLabel} alt='sn contact' src={nameReplace[contactName]}/>
                                                     <div className={css.contactValue}>
-                                                    <a href={contactsProfile[contactName]} target="_blank">{contactsProfile[contactName]}</a></div></div>
+                                                    <a href={contactsProfile[contactName]} target="_blank" rel="noopener noreferrer">{contactsProfile[contactName]}</a></div></div>
                                                  :  null
     ))
 
-    //render contact form
+    //render contact form if owner profile, else render read only
     return (<div>
+            {props.isAuth ?
                 <form className={css.formInline} onSubmit={handleSubmit((data) => {
 
                     // if edited and changed contacts, do dispatch
@@ -61,10 +62,13 @@ const ProfileContacts = (props) => {
                     }
                     setEditMode(!editMode)
                 })}>
-                    {editMode ? <div><button>Save</button><input className={css.cancelButton} onClick={()=>{setEditMode(false)}} type="button" value="Cancel"/></div>
+                    {editMode ? <div><button>Save</button>
+                                <input className={css.cancelButton} onClick={()=>{setEditMode(false)}} type="button" value="Cancel"/></div>
                               : <button>Edit</button>}
-                    <div className={css.contactFields}>{allContacts}</div>
+                    <div className={css.contactFieldsOwner}>{allContacts}</div>
                 </form>
+                : <div className={css.contactFields}>{allContacts}</div>
+            }
             </div>
         )
 }
