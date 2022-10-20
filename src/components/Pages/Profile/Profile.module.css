@@ -1,5 +1,5 @@
 .inputOnClick{
-height: 20px;
+    height: 20px;
 }
 
 .editsvg {
@@ -15,6 +15,36 @@ height: 20px;
     display: inline-block;
     width: 45%;
     vertical-align:top;
+}
+
+.contactLabel {
+    height: 18px;
+    vertical-align: middle;
+    padding-right: 5px;
+}
+
+.contactValue{
+    display: inline-block;
+    vertical-align: middle;
+    padding-bottom: 2px;
+    font-size: small;
+}
+
+.cancelButton {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-left: 5px;
+}
+
+.contactFields{
+    padding-top: 5px;
+    padding-left: 10px;
+}
+
+.contactRow {
+    height: 30px;
 }
 
 .contacts {
@@ -112,8 +142,9 @@ height: 20px;
 /* Style the input fields */
 .formInline input {
     vertical-align: middle;
-    margin: 5px 10px 5px 0;
-    padding: 10px;
+    /*margin: 5px 10px 5px 0;
+    padding: 10px;*/
+
     background-color: #fff;
     border: 1px solid #ddd;
 }

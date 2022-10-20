@@ -3,18 +3,17 @@ import React from "react";
 import {useForm} from "react-hook-form";
 
 const UploadPhoto = (props) => {
-    console.log('AddPost')
+    console.log('UploadPhoto')
 
     const {register, handleSubmit, reset, formState: {errors}} = useForm()
 
-
-
+    //render upload file form
     return (
         <div>
            <form className={css.formInline} onSubmit={handleSubmit((data) => {
-                //console.log(data)
+                //upload photo and reset form data
                 props.updatePhoto(data.photo)
-                reset() //clear form
+                reset()
             })}>
                 <input type="file" {...register("photo", {
                     required: "Select file please"
@@ -23,14 +22,7 @@ const UploadPhoto = (props) => {
 
             </form>
 
-            {/*<input type={"file"} onChange={handleSubmit((data) => {
-                console.log(data)
-                props.updatePhoto(data.photo)
-                reset() //clear form
-            })} {...register("photo", {
-                required: "Select file please"
-            })} />*/}
-
+            {/*show errors if have*/}
             <div className={css.errors}>
                 {errors.photo !== undefined && <div>{errors.photo.message}</div>}
             </div>

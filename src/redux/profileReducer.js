@@ -8,6 +8,7 @@ const ADD_POST = 'ADD-POST'
 const SET_CURRENT_PROFILE = 'SET_CURRENT_PROFILE'
 const SET_STATUS = 'SET_STATUS'
 const SET_PHOTOS = 'SET_PHOTOS'
+const SET_PROFILE_ERROR = 'SET_PROFILE_ERROR'
 
 let initialState = {
     posts: [
@@ -19,7 +20,8 @@ let initialState = {
         {id: 6, msg: "Lets go", likes: 4},
     ],
     profile: null,
-    status: null
+    status: null,
+    profileError: null,
 }
 
 export const profileReducer = (state = initialState, action) => {
@@ -45,6 +47,10 @@ export const profileReducer = (state = initialState, action) => {
         case SET_STATUS:
             return produce(state, draft => {
                 draft.status = action.status
+            })
+        case SET_PROFILE_ERROR:
+            return produce(state, draft => {
+                draft.profileError = action.errorMsg
             })
         default:
             //debugger
@@ -72,7 +78,7 @@ export const setProfile = (userId) => {
     }
 }
 
-export const setStatus = (value, inputName) => {
+export const updateProfile = (value, inputName) => {
 
     return (dispatch, getState) => {
 
@@ -84,6 +90,7 @@ export const setStatus = (value, inputName) => {
             case "lookingForAJobDescription":
             case "fullName":
             case "aboutMe":
+            case "contacts":
                 let profile = {...getState().pageProfile.profile}
 
                 //method API required aboutMe forever!

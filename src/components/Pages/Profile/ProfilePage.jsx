@@ -4,16 +4,13 @@ import Post from "./Post"
 import ProfileInfo from "./ProfileInfo";
 
 const ProfilePage = (props) => {
-    console.log('Step 5: ProfilePage')
-    console.log(props)
+    console.log('ProfilePage')
 
-    let posts = props.posts
+    //generate posts via map
+    let allPosts = props.posts.map( post => <Post post={post} key={post.id} photo={props.profile != null && props.profile.photos.small ? props.profile.photos.small : null}/>)
 
-    // debugger
-    let allPosts = posts.map( post => <Post post={post} key={post.id} photo={props.profile != null && props.profile.photos.small ? props.profile.photos.small : null}/>)
-
+    //if has profile, show im
     if (props.profile) {
-
         return (<div className={css.profilePage}>
                 <div>
                     <ProfileInfo {...props}/>
@@ -22,7 +19,6 @@ const ProfilePage = (props) => {
                     {allPosts}
                 </div>
             </div>
-
         )
     }
 }

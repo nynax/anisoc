@@ -7,11 +7,11 @@ const AddPost = (props) => {
 
     const {register, handleSubmit, reset, formState: {errors}} = useForm()
 
-
+    //render add post form
     return (
         <div>
             <form className={css.formInline} onSubmit={handleSubmit((data) => {
-                //console.log(data)
+                //add post and clear form
                 props.addPost(data.postMsg)
                 reset() //clear form
             })}>
@@ -21,7 +21,7 @@ const AddPost = (props) => {
                 <button>Send</button>
 
             </form>
-
+            {/*show errors if have*/}
             <div className={css.errors}>
                 {errors.postMsg !== undefined && <div>{errors.postMsg.message}</div>}
             </div>

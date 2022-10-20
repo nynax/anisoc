@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {addPost, getStatus, setCurrentProfile, setProfile, setStatus, updatePhoto} from "../../../redux/profileReducer";
+import {addPost, getStatus, setCurrentProfile, setProfile, updateProfile, updatePhoto} from "../../../redux/profileReducer";
 import ProfilePage from "./ProfilePage";
 import {connect} from "react-redux";
 import {withAuthRedirect} from "../../../hoc/withAuthRedirect";
@@ -11,18 +11,14 @@ import {getShowPreloader} from "../../../redux/usersSelector";
 
 
 const ProfileContainer = (props) => {
-    //props.setProfile(null)
 
-    //if userid for profile page was changed, update
+    //if userid for profile page was changed, update profile global state
     useEffect(() => {
-        console.log('iam here!')
         let userId = props.userId ? props.userId : props.myUserId
         props.setProfile(userId)
-        //props.getStatus(userId)
     },[props.userId]);
 
-    console.log('Step 4 PostsContainer > return')
-    //console.log(props)
+
     if (!props.showPreloader){
         return <ProfilePage {...props} />
     }
@@ -30,8 +26,7 @@ const ProfileContainer = (props) => {
 }
 
 const mapStateToProps = (state) => {
-    console.log('Step 2: mapStateToProps')
-    //console.log(state.pageProfile)
+
     return {
         posts: getPageProfilePosts(state),
         profile: getPageProfileProfile(state),
@@ -47,26 +42,9 @@ export default compose(
         addPost,
         setCurrentProfile,
         setProfile,
-        setStatus,
+        updateProfile,
         getStatus,
         updatePhoto
     }),
     withAuthRedirect
 )(ProfileContainer)
-
-
-/*export default withAuthRedirect(connect(mapStateToProps, {
-    addPost,
-    updateArea,
-    setCurrentProfile,
-    setProfile
-})(PostsContainer))*/
-
-
-//Передаем в connect текущий state и массив с ActionCreate функциями в dispatch и функциональную компонету WithRouterComponent
-// export default connect(mapStateToProps, {
-//     addPost,
-//     updateArea,
-//     setCurrentProfile,
-//     setProfile
-// })(AuthRedirectComponent)

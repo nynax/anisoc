@@ -9,7 +9,6 @@ import ProfileContacts from "./ProfileContacts";
 
 const ProfileOwner = (props) => {
     console.log('ProfileOwner')
-    console.log(props)
 
     return (
         <div>
@@ -18,24 +17,23 @@ const ProfileOwner = (props) => {
                     <NavLink to={'/profile/26002'}>&gt;&gt;</NavLink></div>
                 <div className={css.dashboard}>
                     <div className={css.photo}>
-                        <img src={props.profile.photos.large ? props.profile.photos.large : photo} alt='ohuenno'/>
-
+                        <img src={props.profile.photos.large ? props.profile.photos.large : photo} alt='profile photo'/>
                     </div>
                     <div>
                         <div className={css.fullName}>
-                            <UpdateInputOnClick textValue={props.profile.fullName} setValue={props.setStatus} inputName="fullName"/>
+                            <UpdateInputOnClick textValue={props.profile.fullName} setValue={props.updateProfile} inputName="fullName"/>
                         </div>
                         <div className={css.aboutMe}>
-                            <UpdateInputOnClick textValue={props.profile.aboutMe} setValue={props.setStatus} inputName="aboutMe"/>
+                            <UpdateInputOnClick textValue={props.profile.aboutMe} setValue={props.updateProfile} inputName="aboutMe"/>
                         </div>
                         <div className={css.status}>
-                            <UpdateInputOnClick textValue={props.status} setValue={props.setStatus} inputName="status"/>
+                            <UpdateInputOnClick textValue={props.status} setValue={props.updateProfile} inputName="status"/>
                         </div>
 
                         <div className={css.lookingForAJob}>{props.profile.lookingForAJob}</div>
 
                         <div className={css.lookingForAJobDescription}>
-                            <UpdateInputOnClick textValue={props.profile.lookingForAJobDescription} setValue={props.setStatus} inputName="lookingForAJobDescription"/>
+                            <UpdateInputOnClick textValue={props.profile.lookingForAJobDescription} setValue={props.updateProfile} inputName="lookingForAJobDescription"/>
                         </div>
                     </div>
 
@@ -43,14 +41,13 @@ const ProfileOwner = (props) => {
 
                 <UploadPhoto {...props}/>
 
-
                 <div className={css.addPost}>
                     <AddPost addPost={props.addPost}/>
                 </div>
 
             </div>
             <div className={css.profileContacts}>
-                <div className={css.contacts}><ProfileContacts contacts={props.profile.contacts}/></div>
+                <div className={css.contacts}><ProfileContacts contacts={props.profile.contacts} setValue={props.updateProfile}/></div>
             </div>
         </div>
 

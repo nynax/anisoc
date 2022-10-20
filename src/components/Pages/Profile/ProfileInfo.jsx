@@ -7,8 +7,7 @@ import ProfileOwner from "./ProfileOwner";
 
 const ProfileInfo = (props) => {
 
-    // Add post form hook
-
+    //if request profile auth user, show ProfileOwner with edit mode
     if (props.profile && props.profile.userId === props.myUserId){
         return <ProfileOwner {...props}/>
     }else{
