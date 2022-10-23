@@ -1,8 +1,6 @@
 import produce from "immer";
 import {requestAPI} from "../api/api";
 import {callPreloader} from "./usersReducer";
-//import {setAuthData} from "./authReducer";
-//import {initializeAC} from "./appReducer";
 
 const ADD_POST = 'ADD-POST'
 const SET_CURRENT_PROFILE = 'SET_CURRENT_PROFILE'
@@ -62,6 +60,7 @@ export const addPost = (postMsg) => ({type: ADD_POST, postMsg})
 export const setCurrentProfile = (currentProfile) => ({type: SET_CURRENT_PROFILE, currentProfile})
 export const setProfileStatus = (status) => ({type: SET_STATUS, status})
 export const setProfilePhoto = (photos) => ({type: SET_PHOTOS, photos})
+export const setProfileErrorAC = (errorMsg) => ({type: SET_PROFILE_ERROR, errorMsg})
 
 export const setProfile = (userId) => {
     return (dispatch) => {
@@ -78,12 +77,15 @@ export const setProfile = (userId) => {
     }
 }
 
+export const setProfileError = (errorMsg) => (dispatch) => {
+    return dispatch(setProfileErrorAC(errorMsg))
+}
+
 export const updateProfile = (value, inputName) => {
 
     return (dispatch, getState) => {
 
         switch (inputName) {
-
             case "status":
                 console.log('requestAPI (setStatus)')
                 return requestAPI.setStatus(value)
@@ -103,7 +105,12 @@ export const updateProfile = (value, inputName) => {
                     profile.aboutMe = "Tell me about you, baby ;)"
                 }
 
-                return requestAPI.setProfile(profile)
+                return requestAPI.setProfile(profile).then(response => {
+                    if (response.data.resultCode !== 0) {
+                        dispatch(setProfileError(response.data.messages[0]))
+                    }
+                })
+
 
             default:
                 //debugger

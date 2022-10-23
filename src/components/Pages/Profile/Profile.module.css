@@ -125,7 +125,7 @@
 
 
 .errors {
-    padding: 10px;
+    padding-left: 25px;
     font-size: smaller;
     color: brown;
 }
@@ -164,9 +164,18 @@
     border-radius: 5px;
 }
 
-.formInline button:hover {
+.formInline button:hover:enabled {
     background-color: royalblue;
 }
+
+button:disabled,
+button[disabled]{
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+}
+
+
 
 /* Add responsiveness - display the form controls vertically instead of horizontally on screens that are less than 800px wide */
 @media (max-width: 800px) {

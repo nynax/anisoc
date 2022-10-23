@@ -8,7 +8,7 @@ import UploadPhoto from "./UploadPhoto";
 import AddPost from "./AddPost";
 
 
-const ProfileInfo = (props) => {
+const ProfileInfo = React.memo ((props) => {
 
     //generate content from auth info. Owner can edit mine profile, but cant edit profile data other users
     let isAuth = false
@@ -51,10 +51,10 @@ const ProfileInfo = (props) => {
 
             </div>
             <div className={css.profileContacts}>
-                <div className={css.contacts}><ProfileContacts contacts={props.profile.contacts} isAuth={isAuth} setValue={props.updateProfile}/></div>
+                <div className={css.contacts}><ProfileContacts contacts={props.profile.contacts} isAuth={isAuth} setValue={props.updateProfile} profileError={props.profileError} setProfileError={props.setProfileError}/></div>
             </div>
         </div>
     )
-}
+})
 
 export default ProfileInfo

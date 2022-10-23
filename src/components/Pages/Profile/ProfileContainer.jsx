@@ -1,11 +1,24 @@
 import React, {useEffect} from "react";
-import {addPost, getStatus, setCurrentProfile, setProfile, updateProfile, updatePhoto} from "../../../redux/profileReducer";
+import {
+    addPost,
+    getStatus,
+    setCurrentProfile,
+    setProfile,
+    updateProfile,
+    updatePhoto,
+    setProfileError
+} from "../../../redux/profileReducer";
 import ProfilePage from "./ProfilePage";
 import {connect} from "react-redux";
 import {withAuthRedirect} from "../../../hoc/withAuthRedirect";
 import {compose} from "redux";
 import {getAuthData, getIsAuth} from "../../../redux/authSelector";
-import {getPageProfilePosts, getPageProfileProfile, getPageProfileStatus} from "../../../redux/profileSelector";
+import {
+    getPageProfileError,
+    getPageProfilePosts,
+    getPageProfileProfile,
+    getPageProfileStatus
+} from "../../../redux/profileSelector";
 import {getShowPreloader} from "../../../redux/usersSelector";
 
 
@@ -33,7 +46,8 @@ const mapStateToProps = (state) => {
         myUserId: getAuthData(state).id,
         isAuth: getIsAuth(state),
         status: getPageProfileStatus(state),
-        showPreloader: getShowPreloader(state)
+        showPreloader: getShowPreloader(state),
+        profileError: getPageProfileError(state)
     }
 }
 
@@ -44,7 +58,8 @@ export default compose(
         setProfile,
         updateProfile,
         getStatus,
-        updatePhoto
+        updatePhoto,
+        setProfileError
     }),
     withAuthRedirect
 )(ProfileContainer)

@@ -23,3 +23,11 @@ const getPageProfileStatusSelector = (state) => {
 export const getPageProfileStatus = createSelector(getPageProfileStatusSelector, (pageProfileStatus) => {
     return pageProfileStatus
 })
+
+const getPageProfileErrorSelector = (state) => {
+    return state.pageProfile.profileError
+}
+
+export const getPageProfileError = createSelector(getPageProfileErrorSelector, (pageProfileError) => {
+    return pageProfileError
+})

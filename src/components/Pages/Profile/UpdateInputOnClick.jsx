@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import editsvg from "../../../images/pencil.svg"
+import editsvg from "../../../images/svg/pencil.svg"
 import css from "./Profile.module.css";
 
 const UpdateInputOnClick = (props) => {
@@ -19,14 +19,6 @@ const UpdateInputOnClick = (props) => {
         setTextInput(value)
     }
 
-    //replace for info block
-    const nameReplace = {
-        lookingForAJobDescription: null,
-        status: null,
-        fullName: null,
-        aboutMe: null
-    }
-
     //render input
     return (
     <>
@@ -39,7 +31,6 @@ const UpdateInputOnClick = (props) => {
                 }
             }} value={textInput}></input></div>
             : <div className={css.inputOnClick} onClick={() => setEditMode(true)}>
-                    <b>{nameReplace[props.inputName]}</b>
                     {textInput ? textInput : "touch me"}
                     &emsp;<object className={css.editsvg} type="image/svg+xml" data={editsvg} width="10" height="10">Your browser does not support SVG</object>
              </div>
