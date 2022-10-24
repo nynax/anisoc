@@ -7,9 +7,6 @@ import Settings from "./components/Pages/Settings/Settings"
 import Footer from "./components/Footer/Footer"
 import {Route, Routes, BrowserRouter} from "react-router-dom"
 import HeaderContainer from "./components/Header/HeaderContainer";
-/*import DialogsContainer from "./components/Pages/Dialogs/DialogsContainer";
-import UsersContainer from "./components/Pages/Users/UsersContainer";
-import ProfileContainer from "./components/Pages/Profile/ProfileContainer";*/
 
 import {connect} from "react-redux";
 import {initializeApp} from "./redux/appReducer";
@@ -46,10 +43,6 @@ class App extends React.Component {
                             <Route path='/users' element={<Suspense><UsersContainer store={this.props.store}/></Suspense>}/>
                             <Route path="/profile/" element={<Suspense><ProfileContainer store={this.props.store}/></Suspense>}/>
                             <Route path="/profile/:userId" element={<Suspense><ProfileContainer store={this.props.store}/></Suspense>}/>
-                            {/*<Route path='/dialogs/*' element={<DialogsContainer store={this.props.store}/>}/>
-                            <Route path='/users' element={<UsersContainer store={this.props.store}/>}/>
-                            <Route path="/profile/" element={<ProfileContainer store={this.props.store}/>}/>
-                            <Route path="/profile/:userId" element={<ProfileContainer store={this.props.store}/>}/>*/}
                             <Route path='/news' element={<News/>}/>
                             <Route path='/music' element={<Music/>}/>
                             <Route path='/settings' element={<Settings/>}/>

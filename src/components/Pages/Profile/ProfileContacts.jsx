@@ -33,7 +33,7 @@ const ProfileContacts = (props) => {
                         <input {...register(contactName,{value: contactsProfile[contactName],
                                                                     pattern: {
                                                                     value: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\\+.~#?&/=]*)/,
-                                                                    message: 'Incorrect site url' // JS only: <p>error message</p> TS only support string
+                                                                    message: 'Incorrect url for: ' + contactName // JS only: <p>error message</p> TS only support string
                                                                 }
 
                     })}/>

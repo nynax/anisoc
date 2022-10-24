@@ -28,13 +28,9 @@ const LoginContainer = (props) => {
 
                 <input id="login" {...register("login", {
                     required: "Login is required",
-                    minLength:{
-                        value: 5,
-                        message: "Login minLength is 5"
-                    },
-                    maxLength:{
-                        value: 50,
-                        message: "Login maxLength is 50"
+                    pattern: {
+                        value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                        message: "Email is incorrect"
                     }
                 })} placeholder="Type login here..."  />
 
