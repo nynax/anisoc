@@ -29,6 +29,7 @@ const ProfileContacts = (props) => {
     //create single input for contact form
     let allContacts = contactNames.map ( contactName => (
 
+
         editMode ?  <div className={css.contactRow} key={contactName}>
                     <img className={css.contactLabel} alt='sn contact' src={require('../../../images/svg/' + contactName + '.svg')}/>
                         <input {...register(contactName,{value: contactsProfile[contactName],
@@ -43,9 +44,11 @@ const ProfileContacts = (props) => {
                  :  contactsProfile[contactName] ?  <div className={css.contactRow} key={contactName}>
                                                     <img className={css.contactLabel} alt='sn contact' src={require('../../../images/svg/' + contactName + '.svg')}/>
                                                     <div className={css.contactValue}>
-                                                    <a href={contactsProfile[contactName]} target="_blank" rel="noopener noreferrer">{contactsProfile[contactName]}</a></div></div>
+                                                    <a href={!contactsProfile[contactName].toLowerCase().includes('http')
+                                                                ? 'http://' + contactsProfile[contactName].toLowerCase()
+                                                                : contactsProfile[contactName].toLowerCase()} target="_blank" rel="noopener noreferrer">{contactsProfile[contactName].toLowerCase()}</a></div></div>
                                                  :  null
-    ))
+))
 
     //render contact form if owner profile, else render read only
     return (<div>
