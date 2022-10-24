@@ -2,7 +2,6 @@ import css from "./Profile.module.css";
 import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import {isEqual} from 'lodash';
-import editsvg from "../../../images/svg/pencil.svg"
 
 
 
@@ -31,7 +30,7 @@ const ProfileContacts = (props) => {
     let allContacts = contactNames.map ( contactName => (
 
         editMode ?  <div className={css.contactRow} key={contactName}>
-                    <img className={css.contactLabel} alt='sn contact' src={editsvg}/>
+                    <img className={css.contactLabel} alt='sn contact' src={require('../../../images/svg/' + contactName + '.svg')}/>
                         <input {...register(contactName,{value: contactsProfile[contactName],
                                                                     pattern: {
                                                                     value: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\\+.~#?&/=]*)/,
@@ -42,7 +41,7 @@ const ProfileContacts = (props) => {
 
         </div>
                  :  contactsProfile[contactName] ?  <div className={css.contactRow} key={contactName}>
-                                                    <img className={css.contactLabel} alt='sn contact' src={editsvg}/>
+                                                    <img className={css.contactLabel} alt='sn contact' src={require('../../../images/svg/' + contactName + '.svg')}/>
                                                     <div className={css.contactValue}>
                                                     <a href={contactsProfile[contactName]} target="_blank" rel="noopener noreferrer">{contactsProfile[contactName]}</a></div></div>
                                                  :  null

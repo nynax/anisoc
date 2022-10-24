@@ -1,16 +1,11 @@
 import produce from "immer"
 import {requestAPI} from "../api/api";
 import {callPreloader} from "./usersReducer";
+import {DataType} from "../types/types";
 
-const SET_USER_DATA = 'SET_USER_DATA'
-const SET_AUTH_ERROR = 'SET_AUTH_ERROR'
-const SET_CAPTCHA = 'SET_CAPTCHA'
-
-type DataType = {
-    id: number | null,
-    login: string | null,
-    email: string | null
-}
+const SET_USER_DATA = 'AUTH/SET_USER_DATA'
+const SET_AUTH_ERROR = 'AUTH/SET_AUTH_ERROR'
+const SET_CAPTCHA = 'AUTH/SET_CAPTCHA'
 
 type InitStateType = {
     data: DataType,
@@ -30,7 +25,7 @@ let initialState: InitStateType = {
     captcha: null
 }
 
-export const authReducer = (state = initialState, action:any) => {
+export const authReducer = (state = initialState, action:any):InitStateType => {
 
     switch (action.type) {
         case SET_USER_DATA:
@@ -51,17 +46,34 @@ export const authReducer = (state = initialState, action:any) => {
     }
 }
 
-export const setAuthDataAC = (data:DataType, isAuth: boolean) => ({type: SET_USER_DATA, data: data, isAuth: isAuth})
-export const setAuthErrorAC = (errorMsg:string) => ({type: SET_AUTH_ERROR, errorMsg})
-export const setCaptchaAC = (captchaUrl:string|null) => ({type: SET_CAPTCHA, captchaUrl})
+type SetAuthDataType = {
+    type: typeof SET_USER_DATA,
+    data: DataType,
+    isAuth: boolean
+}
 
+type SetAuthErrorType = {
+    type: typeof SET_AUTH_ERROR,
+    errorMsg: string | null
+}
+
+type SetCaptchaType = {
+    type: typeof SET_CAPTCHA,
+    captchaUrl: string | null
+}
+
+//ACs
+export const setAuthDataAC = (data:DataType, isAuth: boolean):SetAuthDataType => ({type: SET_USER_DATA, data: data, isAuth: isAuth})
+export const setAuthErrorAC = (errorMsg:string|null):SetAuthErrorType => ({type: SET_AUTH_ERROR, errorMsg})
+export const setCaptchaAC = (captchaUrl:string|null):SetCaptchaType => ({type: SET_CAPTCHA, captchaUrl})
+
+//thunks
 export const setAuthData = () => (dispatch:any) => {
-
-        return requestAPI.authMe().then(response => {
-            if (response.data.resultCode === 0){
-                dispatch(setAuthDataAC(response.data.data, true))
-            }
-        })
+    return requestAPI.authMe().then(response => {
+        if (response.data.resultCode === 0){
+            dispatch(setAuthDataAC(response.data.data, true))
+        }
+    })
 }
 
 export const setAuthError = (errorMsg:string) => (dispatch:any) => {
@@ -73,7 +85,6 @@ export const setCaptcha = (captchaUrl:string|null) => (dispatch:any) => {
 }
 
 export const login = (email:string, password:string, rememberMe = false, captcha:string|null) => {
-
     return (dispatch:any) => {
         dispatch(callPreloader(true))
         dispatch(setCaptcha(null))
@@ -89,7 +100,6 @@ export const login = (email:string, password:string, rememberMe = false, captcha
                     })
                 }
                 dispatch(setAuthError(response.data.messages[0]))
-
             }
             dispatch(callPreloader(false))
         })
@@ -97,7 +107,6 @@ export const login = (email:string, password:string, rememberMe = false, captcha
 }
 
 export const logout = () => {
-
     return (dispatch:any) => {
         requestAPI.authLogout().then(response => {
             if (response.data.resultCode === 0){

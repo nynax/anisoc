@@ -1,4 +1,5 @@
 import produce from "immer";
+import {ChatsType, MsgType} from "../types/types";
 const ADD_MSG = 'ADD-MSG'
 
 let initialState = {
@@ -8,7 +9,7 @@ let initialState = {
         {id: 3, msg: "I need help", likes: 7, ts: '15:49'},
         {id: 4, msg: "WTF?", likes: 12, ts: '15:51'},
         {id: 5, msg: "Iam die", likes: 1, ts: '15:55'},
-        {id: 6, msg: ":)", likes: 4, ts: '16:01'}],
+        {id: 6, msg: ":)", likes: 4, ts: '16:01'}] as Array<MsgType>,
     chats: [
         {id: 1, name: "Victor", likes: 3},
         {id: 2, name: "Ivan", likes: 5},
@@ -16,10 +17,12 @@ let initialState = {
         {id: 4, name: "Masha", likes: 12},
         {id: 5, name: "Vanya", likes: 1},
         {id: 6, name: "Dima", likes: 4}
-    ]
+    ] as Array<ChatsType>
 }
 
-export const dialogsReducer = (state = initialState, action) => {
+type InitialStateType = typeof initialState
+
+export const dialogsReducer = (state = initialState, action : any) : InitialStateType => {
     switch(action.type){
         case ADD_MSG:
             let newMsg = {
@@ -36,4 +39,9 @@ export const dialogsReducer = (state = initialState, action) => {
     }
 }
 
-export const addMsg = (dialogMsg) => ({type: ADD_MSG, dialogMsg})
+type AddMsgType = {
+    type: typeof ADD_MSG
+    dialogMsg: string
+}
+
+export const addMsg = (dialogMsg : string) : AddMsgType => ({type: ADD_MSG, dialogMsg})

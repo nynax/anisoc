@@ -4,11 +4,15 @@ import {callPreloader} from "./usersReducer";
 
 const INITIALIZING = 'INITIALIZING'
 
-let initialState = {
+type InitialStateType = {
+    initialize: boolean
+}
+
+let initialState: InitialStateType = {
     initialize: false
 }
 
-export const appReducer = (state = initialState, action) => {
+export const appReducer = (state = initialState, action:any):InitialStateType => {
 
     switch (action.type) {
         case INITIALIZING:
@@ -21,9 +25,13 @@ export const appReducer = (state = initialState, action) => {
     }
 }
 
-export const initializeAC = () => ({type: INITIALIZING})
+type InitializeType = {
+    type: typeof INITIALIZING
+}
 
-export const initializeApp = () => (dispatch) => {
+export const initializeAC = ():InitializeType => ({type: INITIALIZING})
+
+export const initializeApp = () => (dispatch:any) => {
 
     let auth = dispatch(setAuthData())
     dispatch(callPreloader(true))

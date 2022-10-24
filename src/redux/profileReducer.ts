@@ -1,6 +1,7 @@
 import produce from "immer";
 import {requestAPI} from "../api/api";
 import {callPreloader} from "./usersReducer";
+import {PhotoType, PostsType, ProfileType} from "../types/types";
 
 const ADD_POST = 'ADD-POST'
 const SET_CURRENT_PROFILE = 'SET_CURRENT_PROFILE'
@@ -16,13 +17,15 @@ let initialState = {
         {id: 4, msg: "My name is Victor", likes: 12},
         {id: 5, msg: "Iam fine", likes: 1},
         {id: 6, msg: "Lets go", likes: 4},
-    ],
-    profile: null,
-    status: null,
-    profileError: null,
+    ] as Array<PostsType>,
+    profile: null as ProfileType | null,
+    status: null as string | null,
+    profileError: null as string | null,
 }
 
-export const profileReducer = (state = initialState, action) => {
+type InitialStateType = typeof initialState
+
+export const profileReducer = (state = initialState, action : any) : InitialStateType => {
 
     switch (action.type){
         case ADD_POST:
@@ -40,7 +43,9 @@ export const profileReducer = (state = initialState, action) => {
             })
         case SET_PHOTOS:
             return produce(state, draft => {
-                draft.profile.photos = action.photos
+                if (draft.profile !== null){
+                    draft.profile.photos = action.photos
+                }
             })
         case SET_STATUS:
             return produce(state, draft => {
@@ -56,14 +61,36 @@ export const profileReducer = (state = initialState, action) => {
     }
 }
 
-export const addPost = (postMsg) => ({type: ADD_POST, postMsg})
-export const setCurrentProfile = (currentProfile) => ({type: SET_CURRENT_PROFILE, currentProfile})
-export const setProfileStatus = (status) => ({type: SET_STATUS, status})
-export const setProfilePhoto = (photos) => ({type: SET_PHOTOS, photos})
-export const setProfileErrorAC = (errorMsg) => ({type: SET_PROFILE_ERROR, errorMsg})
+type AddPostType = {
+    type: typeof ADD_POST
+    postMsg: string
+}
+type SetCurrentProfileType = {
+    type: typeof SET_CURRENT_PROFILE
+    currentProfile: ProfileType | null
+}
+type SetProfileStatusType = {
+    type: typeof SET_STATUS
+    status: string | null
+}
+type StProfilePhotoType = {
+    type: typeof SET_PHOTOS
+    photos: PhotoType
+}
+type SetProfileErrorType = {
+    type: typeof SET_PROFILE_ERROR
+    errorMsg: string | null
+}
 
-export const setProfile = (userId) => {
-    return (dispatch) => {
+
+export const addPost = (postMsg : string):AddPostType => ({type: ADD_POST, postMsg})
+export const setCurrentProfile = (currentProfile : ProfileType | null) : SetCurrentProfileType => ({type: SET_CURRENT_PROFILE, currentProfile})
+export const setProfileStatus = (status : string | null) : SetProfileStatusType => ({type: SET_STATUS, status})
+export const setProfilePhoto = (photos : PhotoType) : StProfilePhotoType => ({type: SET_PHOTOS, photos})
+export const setProfileErrorAC = (errorMsg : string | null) : SetProfileErrorType => ({type: SET_PROFILE_ERROR, errorMsg})
+
+export const setProfile = (userId : number) => {
+    return (dispatch : any) => {
         if(userId === null){
             dispatch(setCurrentProfile(null))
         }else{
@@ -77,13 +104,13 @@ export const setProfile = (userId) => {
     }
 }
 
-export const setProfileError = (errorMsg) => (dispatch) => {
+export const setProfileError = (errorMsg : string) => (dispatch : any) => {
     return dispatch(setProfileErrorAC(errorMsg))
 }
 
-export const updateProfile = (value, inputName) => {
+export const updateProfile = (value : string, inputName : string) => {
 
-    return (dispatch, getState) => {
+    return (dispatch : any, getState : any) => {
 
         switch (inputName) {
             case "status":
@@ -111,7 +138,6 @@ export const updateProfile = (value, inputName) => {
                     }
                 })
 
-
             default:
                 //debugger
                 return
@@ -119,8 +145,8 @@ export const updateProfile = (value, inputName) => {
     }
 }
 
-export const getStatus = (userId) => {
-    return (dispatch) => {
+export const getStatus = (userId : number) => {
+    return (dispatch : any) => {
         console.log('requestAPI (getStatus)')
         requestAPI.getStatus(userId).then(response => {
             console.log(response.data)
@@ -130,8 +156,8 @@ export const getStatus = (userId) => {
     }
 }
 
-export const updatePhoto = (photo) => {
-    return (dispatch) => {
+export const updatePhoto = (photo : PhotoType) => {
+    return (dispatch : any) => {
         console.log('requestAPI (setPhoto)')
         requestAPI.setPhoto(photo).then(response => {
             console.log(response.data)

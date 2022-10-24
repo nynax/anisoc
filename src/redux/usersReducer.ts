@@ -1,5 +1,6 @@
 import produce from "immer";
 import {requestAPI} from "../api/api";
+import {UserType} from "../types/types";
 
 const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
@@ -9,16 +10,19 @@ const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE'
 const CALL_PRELOADER = 'CALL_PRELOADER'
 const SET_FOLLOW_IN_PROGRESS = 'SET_FOLLOW_IN_PROGRESS'
 
+
 let initialState = {
-    users: [],
+    users: [] as Array<UserType>,
     totalUsers: 0,
     currentPage: 1,
     usersPerPage: 20,
     showPreloader: false,
-    followInProgress: []
+    followInProgress: [] as Array<number>
 }
 
-export const usersReducer = (state = initialState, action) => {
+type InitialStateType = typeof initialState
+
+export const usersReducer = (state = initialState, action : any):InitialStateType => {
     //debugger
     switch (action.type){
 
@@ -72,18 +76,54 @@ export const usersReducer = (state = initialState, action) => {
     }
 }
 
-export const follow = (userId) => ({type: FOLLOW, userId})
-export const unfollow = (userId) => ({type: UNFOLLOW, userId})
-export const setUsers = (users) => ({type: SET_USERS, users})
-export const setTotalUsers = (totalUsers) => ({type: SET_TOTAL_USERS, totalUsers})
-export const setCurrentPage = (currentPage) => ({type: SET_CURRENT_PAGE, currentPage})
-export const callPreloader = (showPreloader) => ({type: CALL_PRELOADER, showPreloader})
-export const setFollowInProgress = (userId) => ({type: SET_FOLLOW_IN_PROGRESS, userId})
+type FollowType = {
+    type: typeof FOLLOW
+    userId: number
+}
+
+type UnfollowType = {
+    type: typeof UNFOLLOW
+    userId: number
+}
+
+type SetUsersType = {
+    type: typeof SET_USERS
+    users: Array<number>
+}
+
+type SetTotalUsersType = {
+    type: typeof SET_TOTAL_USERS
+    totalUsers: number
+}
+
+type SetCurrentPageType = {
+    type: typeof SET_CURRENT_PAGE
+    currentPage: number
+}
+
+type CallPreloaderType = {
+    type: typeof CALL_PRELOADER
+    showPreloader: boolean
+}
+
+type SetFollowInProgressType = {
+    type: typeof SET_FOLLOW_IN_PROGRESS
+    userId: number
+}
+
+//ACs
+export const follow = (userId : number) : FollowType => ({type: FOLLOW, userId})
+export const unfollow = (userId : number) : UnfollowType => ({type: UNFOLLOW, userId})
+export const setUsers = (users : Array<number>) : SetUsersType => ({type: SET_USERS, users})
+export const setTotalUsers = (totalUsers : number) : SetTotalUsersType => ({type: SET_TOTAL_USERS, totalUsers})
+export const setCurrentPage = (currentPage : number) : SetCurrentPageType => ({type: SET_CURRENT_PAGE, currentPage})
+export const callPreloader = (showPreloader : boolean) : CallPreloaderType => ({type: CALL_PRELOADER, showPreloader})
+export const setFollowInProgress = (userId : number) : SetFollowInProgressType => ({type: SET_FOLLOW_IN_PROGRESS, userId})
 
 
 //thunks
-export const requestUsers = (usersPerPage, currentPage) => {
-    return (dispatch) => {
+export const requestUsers = (usersPerPage : number, currentPage : number) => {
+    return (dispatch : any) => {
         dispatch(callPreloader(true))
         requestAPI.getUsers(usersPerPage, currentPage).then(response => {
             dispatch(callPreloader(false))
@@ -93,15 +133,15 @@ export const requestUsers = (usersPerPage, currentPage) => {
     }
 }
 
-export const changePage = (pageNumber) => {
-    return (dispatch) => {
+export const changePage = (pageNumber : number) => {
+    return (dispatch : any) => {
         dispatch(setCurrentPage(pageNumber))
         dispatch(requestUsers(initialState.usersPerPage, pageNumber))
     }
 }
 
-export const followAndUnfollow = (isFollow, userId) => {
-    return (dispatch) => {
+export const followAndUnfollow = (isFollow : boolean, userId : number) => {
+    return (dispatch : any) => {
         dispatch(setFollowInProgress(userId))
         if (isFollow){
             requestAPI.follow(userId).then(response => {
