@@ -1,6 +1,7 @@
 import {createSelector} from "reselect";
+import {AppStateType} from "./reduxStore";
 
-const getPageDialogsSelector = (state) => {
+const getPageDialogsSelector = (state : AppStateType) => {
     return state.pageDialogs
 }
 
@@ -8,7 +9,7 @@ export const getPageDialogs = createSelector(getPageDialogsSelector, (pageDialog
     return pageDialogs
 })
 
-const getPageDialogsMsgSelector = (state) => {
+const getPageDialogsMsgSelector = (state : AppStateType) => {
     return state.pageDialogs.msg
 }
 
@@ -16,7 +17,7 @@ export const getPageDialogsMsg = createSelector(getPageDialogsMsgSelector, (page
     return pageDialogsMsg
 })
 
-const getPageDialogsChatsSelector = (state) => {
+const getPageDialogsChatsSelector = (state : AppStateType) => {
     return state.pageDialogs.chats
 }
 

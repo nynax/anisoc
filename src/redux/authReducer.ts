@@ -8,9 +8,9 @@ const SET_AUTH_ERROR = 'AUTH/SET_AUTH_ERROR'
 const SET_CAPTCHA = 'AUTH/SET_CAPTCHA'
 
 type InitStateType = {
-    data: DataType,
-    isAuth: boolean,
-    authError: string | null ,
+    data: DataType
+    isAuth: boolean
+    authError: string | null
     captcha: string | null
 }
 
@@ -76,7 +76,7 @@ export const setAuthData = () => (dispatch:any) => {
     })
 }
 
-export const setAuthError = (errorMsg:string) => (dispatch:any) => {
+export const setAuthError = (errorMsg:string|null) => (dispatch:any) => {
     return dispatch(setAuthErrorAC(errorMsg))
 }
 
@@ -84,7 +84,7 @@ export const setCaptcha = (captchaUrl:string|null) => (dispatch:any) => {
     return dispatch(setCaptchaAC(captchaUrl))
 }
 
-export const login = (email:string, password:string, rememberMe = false, captcha:string|null) => {
+export const loginMe = (email:string, password:string, rememberMe = false, captcha:string|null) => {
     return (dispatch:any) => {
         dispatch(callPreloader(true))
         dispatch(setCaptcha(null))
@@ -106,7 +106,7 @@ export const login = (email:string, password:string, rememberMe = false, captcha
     }
 }
 
-export const logout = () => {
+export const logoutMe = () => {
     return (dispatch:any) => {
         requestAPI.authLogout().then(response => {
             if (response.data.resultCode === 0){

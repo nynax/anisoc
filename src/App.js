@@ -25,37 +25,42 @@ class App extends React.Component {
 
         if (!this.props.initialize) {
             return <div className="mainPreloader"><Preloader showPreloader={true}/></div>
+        }else {
+            return (
+                <BrowserRouter>
+                    <div className='app-wrapper'>
+                        <div className='header'>
+                            <HeaderContainer store={this.props.store}/>
+                        </div>
+                        <div className='navbar'>
+                            <Navbar store={this.props.store}/>
+                        </div>
+                        <div className='content'>
+                            <Routes>
+                                <Route path='/dialogs/*'
+                                       element={<Suspense><DialogsContainer store={this.props.store}/></Suspense>}/>
+                                <Route path='/users'
+                                       element={<Suspense><UsersContainer store={this.props.store}/></Suspense>}/>
+                                <Route path="/profile/"
+                                       element={<Suspense><ProfileContainer store={this.props.store}/></Suspense>}/>
+                                <Route path="/profile/:userId"
+                                       element={<Suspense><ProfileContainer store={this.props.store}/></Suspense>}/>
+                                <Route path='/news' element={<News/>}/>
+                                <Route path='/music' element={<Music/>}/>
+                                <Route path='/settings' element={<Settings/>}/>
+                                <Route path='/*'
+                                       element={<Suspense><ProfileContainer store={this.props.store}/></Suspense>}/>
+                                <Route path='/'
+                                       element={<Suspense><ProfileContainer store={this.props.store}/></Suspense>}/>
+                            </Routes>
+                        </div>
+                        <div className='footer'>
+                            <Footer/>
+                        </div>
+                    </div>
+                </BrowserRouter>
+            )
         }
-
-
-        return (
-            <BrowserRouter>
-                <div className='app-wrapper'>
-                    <div className='header'>
-                        <HeaderContainer store={this.props.store}/>
-                    </div>
-                    <div className='navbar'>
-                        <Navbar store={this.props.store}/>
-                    </div>
-                    <div className='content'>
-                        <Routes>
-                            <Route path='/dialogs/*' element={<Suspense><DialogsContainer store={this.props.store}/></Suspense>}/>
-                            <Route path='/users' element={<Suspense><UsersContainer store={this.props.store}/></Suspense>}/>
-                            <Route path="/profile/" element={<Suspense><ProfileContainer store={this.props.store}/></Suspense>}/>
-                            <Route path="/profile/:userId" element={<Suspense><ProfileContainer store={this.props.store}/></Suspense>}/>
-                            <Route path='/news' element={<News/>}/>
-                            <Route path='/music' element={<Music/>}/>
-                            <Route path='/settings' element={<Settings/>}/>
-                            <Route path='/*' element={<Suspense><ProfileContainer store={this.props.store}/></Suspense>}/>
-                            <Route path='/' element={<Suspense><ProfileContainer store={this.props.store}/></Suspense>}/>
-                        </Routes>
-                    </div>
-                    <div className='footer'>
-                        <Footer/>
-                    </div>
-                </div>
-            </BrowserRouter>
-        )
     }
 }
 

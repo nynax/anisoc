@@ -1,12 +1,27 @@
-import React, {useEffect} from "react"
+import React, {FC, useEffect} from "react"
 import css from "./Login.module.css"
 import { useForm }from "react-hook-form"
 import {connect} from "react-redux";
-import {login, setAuthError, setCaptcha} from "../../../redux/authReducer";
+import {loginMe, setAuthError, setCaptcha} from "../../../redux/authReducer";
+import {AppStateType} from "../../../redux/reduxStore";
+import {getAuthError, getCaptcha, getIsAuth} from "../../../redux/authSelector";
 
+type LoginType = {
+    loginMe: (email: string, password: string, rememberMe: boolean, captcha: string | null) => void
+    setAuthError: (errorMsg: string | null) => any
+    setCaptcha: (captchaUrl: string | null) => any
+    authError: string | null
+    captcha: string | null
+}
 
+type FormType = {
+    login: string
+    password: string
+    rememberMe: boolean
+    captcha: string
+}
 
-const LoginContainer = (props) => {
+const LoginContainer : FC<LoginType> = (props) => {
 
     //return state to default
     useEffect(() => {
@@ -17,13 +32,13 @@ const LoginContainer = (props) => {
 
     console.log(props)
     //Form Init
-    const { register, handleSubmit, formState: { errors } } = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm<FormType>()
     //console.log(errors)
     //debugger
     return (
         <div className={css.form}>
             <form className={css.formInline} onSubmit={handleSubmit ((data) => {
-                props.login(data.login, data.password, data.rememberMe, data.captcha ? data.captcha : null)
+                props.loginMe(data.login, data.password, data.rememberMe, data.captcha ? data.captcha : null)
             })}>
 
                 <input id="login" {...register("login", {
@@ -59,13 +74,25 @@ const LoginContainer = (props) => {
     )
 }
 
-const mapStateToProps = (state) => {
+type StateToPropsType = {
+    isAuth: boolean
+    authError: string | null
+    captcha: string | null
+}
+
+type DispatchToPropsType = {
+    loginMe: (email: string, password: string, rememberMe: boolean, captcha: string | null) => (dispatch: any) => void
+    setAuthError: (errorMsg: string | null) => (dispatch: any) => any
+    setCaptcha: (captchaUrl: string | null) => (dispatch: any) => any
+}
+
+const mapStateToProps = (state : AppStateType) : StateToPropsType => {
     return {
-        isAuth: state.auth.isAuth,
-        authError: state.auth.authError,
-        captcha: state.auth.captcha
+        isAuth: getIsAuth(state),
+        authError: getAuthError(state),
+        captcha: getCaptcha(state)
     }
 }
 
 
-export default connect(mapStateToProps, {login, setAuthError, setCaptcha})(LoginContainer)
+export default connect<StateToPropsType, DispatchToPropsType, {}, AppStateType>(mapStateToProps, {loginMe, setAuthError, setCaptcha})(LoginContainer)

@@ -1,18 +1,29 @@
-import React from "react"
+import React, {FC} from "react"
 import css from "./Dialogs.module.css"
-import Messages from "./Chats/Messages/Messages"
+import Messages from "./Chats/Messages"
 import Chats from "./Chats/Chats"
 import {useForm} from "react-hook-form";
+import {ChatsType, MsgType} from "../../../types/types";
 
-const Dialogs = (props) => {
+type DialogsType = {
+    chatsData: Array<ChatsType>
+    messagesData: Array<MsgType>
+    addMsg: (dialogMsg : string) => void
+}
+
+type FormValuesType = {
+    dialogMsg: string
+}
+
+const Dialogs: FC<DialogsType> = (props) => {
 
     let chatsData = props.chatsData
     let messagesData = props.messagesData
 
     let allChats = chatsData.map ( chat => <Chats name={chat.name} key={chat.id}/>)
-    let allMessages = messagesData.msg.map ( msg => <Messages msg={msg.msg} ts={msg.ts} key={msg.id}/>)
+    let allMessages = messagesData.map ( msg => <Messages msg={msg.msg} ts={msg.ts} key={msg.id}/>)
 
-    const { register, handleSubmit, formState: { errors } } = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm<FormValuesType>()
 
     return (
         <div className={css.dialogs}>
@@ -26,7 +37,7 @@ const Dialogs = (props) => {
                     props.addMsg(data.dialogMsg)
                 })}>
                     <textarea {...register("dialogMsg", {
-                        required: "Cant be empty"})} cols='30' placeholder='Type any message here...' />
+                        required: "Cant be empty"})} cols={30} placeholder='Type any message here...' />
                     <button>Send</button>
 
                 </form>
