@@ -1,7 +1,8 @@
 import produce from "immer"
 import {requestAPI} from "../api/api";
-import {callPreloader} from "./usersReducer";
+import {callPreloader, CallPreloaderType} from "./usersReducer";
 import {DataType} from "../types/types";
+import {Dispatch} from "redux";
 
 const SET_USER_DATA = 'AUTH/SET_USER_DATA'
 const SET_AUTH_ERROR = 'AUTH/SET_AUTH_ERROR'
@@ -25,7 +26,7 @@ let initialState: InitStateType = {
     captcha: null
 }
 
-export const authReducer = (state = initialState, action:any):InitStateType => {
+export const authReducer = (state = initialState, action : ActionsType) : InitStateType => {
 
     switch (action.type) {
         case SET_USER_DATA:
@@ -46,29 +47,33 @@ export const authReducer = (state = initialState, action:any):InitStateType => {
     }
 }
 
-type SetAuthDataType = {
+type SetAuthDataACType = {
     type: typeof SET_USER_DATA,
     data: DataType,
     isAuth: boolean
 }
 
-type SetAuthErrorType = {
+type SetAuthErrorACType = {
     type: typeof SET_AUTH_ERROR,
     errorMsg: string | null
 }
 
-type SetCaptchaType = {
+type SetCaptchaACType = {
     type: typeof SET_CAPTCHA,
     captchaUrl: string | null
 }
 
-//ACs
-export const setAuthDataAC = (data:DataType, isAuth: boolean):SetAuthDataType => ({type: SET_USER_DATA, data: data, isAuth: isAuth})
-export const setAuthErrorAC = (errorMsg:string|null):SetAuthErrorType => ({type: SET_AUTH_ERROR, errorMsg})
-export const setCaptchaAC = (captchaUrl:string|null):SetCaptchaType => ({type: SET_CAPTCHA, captchaUrl})
+type SetAuthDataType = () => any
 
-//thunks
-export const setAuthData = () => (dispatch:any) => {
+export type ActionsType = SetAuthDataACType | SetAuthErrorACType | SetCaptchaACType | CallPreloaderType
+
+//ACs
+const setAuthDataAC = (data:DataType, isAuth : boolean) : SetAuthDataACType => ({type: SET_USER_DATA, data: data, isAuth: isAuth})
+const setAuthErrorAC = (errorMsg : string|null) : SetAuthErrorACType => ({type: SET_AUTH_ERROR, errorMsg})
+const setCaptchaAC = (captchaUrl : string|null) : SetCaptchaACType => ({type: SET_CAPTCHA, captchaUrl})
+
+//Thunks
+export const setAuthData : SetAuthDataType = () => (dispatch : Dispatch<ActionsType>) => {
     return requestAPI.authMe().then(response => {
         if (response.data.resultCode === 0){
             dispatch(setAuthDataAC(response.data.data, true))
@@ -76,18 +81,24 @@ export const setAuthData = () => (dispatch:any) => {
     })
 }
 
-export const setAuthError = (errorMsg:string|null) => (dispatch:any) => {
+type SetAuthErrorType = (errorMsg: string | null) => (dispatch: Dispatch<ActionsType>) => void
+
+export const setAuthError : SetAuthErrorType = (errorMsg:string|null) => (dispatch:Dispatch<ActionsType>) => {
     return dispatch(setAuthErrorAC(errorMsg))
 }
 
-export const setCaptcha = (captchaUrl:string|null) => (dispatch:any) => {
+type SetCaptchaType = (captchaUrl: string | null) => (dispatch: Dispatch<ActionsType>) => void
+
+export const setCaptcha : SetCaptchaType = (captchaUrl:string|null) => (dispatch:Dispatch<ActionsType>) => {
     return dispatch(setCaptchaAC(captchaUrl))
 }
 
-export const loginMe = (email:string, password:string, rememberMe = false, captcha:string|null) => {
-    return (dispatch:any) => {
+type LoginMeType =  (email: string, password: string, rememberMe: boolean, captcha: string | null) => (dispatch: Dispatch<ActionsType>) => void
+
+export const loginMe : LoginMeType = (email:string, password:string, rememberMe = false, captcha:string|null) => {
+    return (dispatch:Dispatch<ActionsType>) => {
         dispatch(callPreloader(true))
-        dispatch(setCaptcha(null))
+        dispatch(setCaptchaAC(null))
         requestAPI.authLogin(email, password, rememberMe, captcha).then(response => {
             if (response.data.resultCode === 0){
                 dispatch(setAuthData())
@@ -96,10 +107,10 @@ export const loginMe = (email:string, password:string, rememberMe = false, captc
                 if (response.data.messages[0] === "Incorrect anti-bot symbols"){
                     requestAPI.getCaptcha().then(response => {
                         console.log(response)
-                        dispatch(setCaptcha(response.data.url))
+                        dispatch(setCaptchaAC(response.data.url))
                     })
                 }
-                dispatch(setAuthError(response.data.messages[0]))
+                dispatch(setAuthErrorAC(response.data.messages[0]))
             }
             dispatch(callPreloader(false))
         })

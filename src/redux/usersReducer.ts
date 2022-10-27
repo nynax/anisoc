@@ -2,13 +2,13 @@ import produce from "immer";
 import {requestAPI} from "../api/api";
 import {UserType} from "../types/types";
 
-const FOLLOW = 'FOLLOW'
-const UNFOLLOW = 'UNFOLLOW'
-const SET_USERS = 'SET_USERS'
-const SET_TOTAL_USERS = 'SET_TOTAL_USERS'
-const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE'
-const CALL_PRELOADER = 'CALL_PRELOADER'
-const SET_FOLLOW_IN_PROGRESS = 'SET_FOLLOW_IN_PROGRESS'
+const FOLLOW = 'USERS/FOLLOW'
+const UNFOLLOW = 'USERS/UNFOLLOW'
+const SET_USERS = 'USERS/SET_USERS'
+const SET_TOTAL_USERS = 'USERS/SET_TOTAL_USERS'
+const SET_CURRENT_PAGE = 'USERS/SET_CURRENT_PAGE'
+const CALL_PRELOADER = 'USERS/CALL_PRELOADER'
+const SET_FOLLOW_IN_PROGRESS = 'USERS/SET_FOLLOW_IN_PROGRESS'
 
 
 let initialState = {
@@ -101,7 +101,7 @@ type SetCurrentPageType = {
     currentPage: number
 }
 
-type CallPreloaderType = {
+export type CallPreloaderType = {
     type: typeof CALL_PRELOADER
     showPreloader: boolean
 }

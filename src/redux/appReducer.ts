@@ -12,7 +12,7 @@ let initialState: InitialStateType = {
     initialize: false
 }
 
-export const appReducer = (state = initialState, action:any):InitialStateType => {
+export const appReducer = (state = initialState, action: InitializeType): InitialStateType => {
 
     switch (action.type) {
         case INITIALIZING:

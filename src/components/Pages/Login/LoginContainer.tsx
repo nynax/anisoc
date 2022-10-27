@@ -2,14 +2,15 @@ import React, {FC, useEffect} from "react"
 import css from "./Login.module.css"
 import { useForm }from "react-hook-form"
 import {connect} from "react-redux";
-import {loginMe, setAuthError, setCaptcha} from "../../../redux/authReducer";
+import {ActionsType, loginMe, setAuthError, setCaptcha} from "../../../redux/authReducer";
 import {AppStateType} from "../../../redux/reduxStore";
 import {getAuthError, getCaptcha, getIsAuth} from "../../../redux/authSelector";
+import {Dispatch} from "redux";
 
 type LoginType = {
-    loginMe: (email: string, password: string, rememberMe: boolean, captcha: string | null) => void
-    setAuthError: (errorMsg: string | null) => any
-    setCaptcha: (captchaUrl: string | null) => any
+    loginMe: (email: string, password: string, rememberMe: boolean, captcha: string | null) => (dispatch:Dispatch<ActionsType>) => any
+    setAuthError: (errorMsg: string | null) => (dispatch:Dispatch<ActionsType>)=> any
+    setCaptcha: (captchaUrl: string | null) => (dispatch:Dispatch<ActionsType>)=> any
     authError: string | null
     captcha: string | null
 }
@@ -81,9 +82,9 @@ type StateToPropsType = {
 }
 
 type DispatchToPropsType = {
-    loginMe: (email: string, password: string, rememberMe: boolean, captcha: string | null) => (dispatch: any) => void
-    setAuthError: (errorMsg: string | null) => (dispatch: any) => any
-    setCaptcha: (captchaUrl: string | null) => (dispatch: any) => any
+    loginMe: (email: string, password: string, rememberMe: boolean, captcha: string | null) => (dispatch:Dispatch<ActionsType>) => any
+    setAuthError: (errorMsg: string | null) => (dispatch:Dispatch<ActionsType>) => any
+    setCaptcha: (captchaUrl: string | null) => (dispatch:Dispatch<ActionsType>) => any
 }
 
 const mapStateToProps = (state : AppStateType) : StateToPropsType => {
@@ -93,6 +94,5 @@ const mapStateToProps = (state : AppStateType) : StateToPropsType => {
         captcha: getCaptcha(state)
     }
 }
-
 
 export default connect<StateToPropsType, DispatchToPropsType, {}, AppStateType>(mapStateToProps, {loginMe, setAuthError, setCaptcha})(LoginContainer)
