@@ -8,12 +8,17 @@ const SET_USER_DATA = 'AUTH/SET_USER_DATA'
 const SET_AUTH_ERROR = 'AUTH/SET_AUTH_ERROR'
 const SET_CAPTCHA = 'AUTH/SET_CAPTCHA'
 
-type InitStateType = {
-    data: DataType
-    isAuth: boolean
+export type InitAuthType = {
+    isAuth?: boolean
     authError: string | null
     captcha: string | null
 }
+
+type InitDataType = {
+    data: DataType
+}
+
+type InitStateType = InitAuthType & InitDataType
 
 let initialState: InitStateType = {
     data: {
@@ -63,9 +68,7 @@ type SetCaptchaACType = {
     captchaUrl: string | null
 }
 
-type SetAuthDataType = () => any
-
-export type ActionsType = SetAuthDataACType | SetAuthErrorACType | SetCaptchaACType | CallPreloaderType
+type ActionsType = SetAuthDataACType | SetAuthErrorACType | SetCaptchaACType | CallPreloaderType
 
 //ACs
 const setAuthDataAC = (data:DataType, isAuth : boolean) : SetAuthDataACType => ({type: SET_USER_DATA, data: data, isAuth: isAuth})
@@ -73,7 +76,7 @@ const setAuthErrorAC = (errorMsg : string|null) : SetAuthErrorACType => ({type: 
 const setCaptchaAC = (captchaUrl : string|null) : SetCaptchaACType => ({type: SET_CAPTCHA, captchaUrl})
 
 //Thunks
-export const setAuthData : SetAuthDataType = () => (dispatch : Dispatch<ActionsType>) => {
+export const setAuthData : () => any = () => (dispatch : Dispatch<ActionsType>) => {
     return requestAPI.authMe().then(response => {
         if (response.data.resultCode === 0){
             dispatch(setAuthDataAC(response.data.data, true))
@@ -81,19 +84,19 @@ export const setAuthData : SetAuthDataType = () => (dispatch : Dispatch<ActionsT
     })
 }
 
-type SetAuthErrorType = (errorMsg: string | null) => (dispatch: Dispatch<ActionsType>) => void
+export type SetAuthErrorType = (errorMsg: string | null) => (dispatch: Dispatch<ActionsType>) => any
 
 export const setAuthError : SetAuthErrorType = (errorMsg:string|null) => (dispatch:Dispatch<ActionsType>) => {
     return dispatch(setAuthErrorAC(errorMsg))
 }
 
-type SetCaptchaType = (captchaUrl: string | null) => (dispatch: Dispatch<ActionsType>) => void
+export type SetCaptchaType = (captchaUrl: string | null) => (dispatch: Dispatch<ActionsType>) => any
 
 export const setCaptcha : SetCaptchaType = (captchaUrl:string|null) => (dispatch:Dispatch<ActionsType>) => {
     return dispatch(setCaptchaAC(captchaUrl))
 }
 
-type LoginMeType =  (email: string, password: string, rememberMe: boolean, captcha: string | null) => (dispatch: Dispatch<ActionsType>) => void
+export type LoginMeType =  (email: string, password: string, rememberMe: boolean, captcha: string | null) => (dispatch: Dispatch<ActionsType>) => any
 
 export const loginMe : LoginMeType = (email:string, password:string, rememberMe = false, captcha:string|null) => {
     return (dispatch:Dispatch<ActionsType>) => {
@@ -117,8 +120,8 @@ export const loginMe : LoginMeType = (email:string, password:string, rememberMe 
     }
 }
 
-export const logoutMe = () => {
-    return (dispatch:any) => {
+export const logoutMe : () => void = () => {
+    return (dispatch:Dispatch<ActionsType>) => {
         requestAPI.authLogout().then(response => {
             if (response.data.resultCode === 0){
                 dispatch(setAuthDataAC(initialState.data, false ))

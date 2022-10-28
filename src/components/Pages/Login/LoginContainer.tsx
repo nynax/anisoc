@@ -2,18 +2,18 @@ import React, {FC, useEffect} from "react"
 import css from "./Login.module.css"
 import { useForm }from "react-hook-form"
 import {connect} from "react-redux";
-import {ActionsType, loginMe, setAuthError, setCaptcha} from "../../../redux/authReducer";
+import {
+    InitAuthType,
+    loginMe, LoginMeType,
+    setAuthError,
+    SetAuthErrorType,
+    setCaptcha,
+    SetCaptchaType
+} from "../../../redux/authReducer";
 import {AppStateType} from "../../../redux/reduxStore";
 import {getAuthError, getCaptcha, getIsAuth} from "../../../redux/authSelector";
-import {Dispatch} from "redux";
 
-type LoginType = {
-    loginMe: (email: string, password: string, rememberMe: boolean, captcha: string | null) => (dispatch:Dispatch<ActionsType>) => any
-    setAuthError: (errorMsg: string | null) => (dispatch:Dispatch<ActionsType>)=> any
-    setCaptcha: (captchaUrl: string | null) => (dispatch:Dispatch<ActionsType>)=> any
-    authError: string | null
-    captcha: string | null
-}
+type LoginType = InitAuthType & DispatchToPropsType
 
 type FormType = {
     login: string
@@ -75,16 +75,12 @@ const LoginContainer : FC<LoginType> = (props) => {
     )
 }
 
-type StateToPropsType = {
-    isAuth: boolean
-    authError: string | null
-    captcha: string | null
-}
+type StateToPropsType = InitAuthType
 
 type DispatchToPropsType = {
-    loginMe: (email: string, password: string, rememberMe: boolean, captcha: string | null) => (dispatch:Dispatch<ActionsType>) => any
-    setAuthError: (errorMsg: string | null) => (dispatch:Dispatch<ActionsType>) => any
-    setCaptcha: (captchaUrl: string | null) => (dispatch:Dispatch<ActionsType>) => any
+    loginMe: LoginMeType
+    setAuthError: SetAuthErrorType
+    setCaptcha: SetCaptchaType
 }
 
 const mapStateToProps = (state : AppStateType) : StateToPropsType => {
