@@ -1,6 +1,7 @@
 import produce from "immer"
 import {setAuthData} from "./authReducer";
-import {callPreloader} from "./usersReducer";
+import {callPreloaderAC, CallPreloaderACType} from "./usersReducer";
+import {Dispatch} from "redux";
 
 const INITIALIZING = 'INITIALIZING'
 
@@ -12,7 +13,7 @@ let initialState: InitialStateType = {
     initialize: false
 }
 
-export const appReducer = (state = initialState, action: InitializeType): InitialStateType => {
+export const appReducer = (state = initialState, action: ActionsType): InitialStateType => {
 
     switch (action.type) {
         case INITIALIZING:
@@ -29,14 +30,18 @@ type InitializeType = {
     type: typeof INITIALIZING
 }
 
-export const initializeAC = ():InitializeType => ({type: INITIALIZING})
+type ActionsType = InitializeType | CallPreloaderACType
 
-export const initializeApp = () => (dispatch:any) => {
+export const initializeAC = () : InitializeType => ({type: INITIALIZING})
+
+export type InitializeAppType = () => (dispatch: Dispatch<ActionsType>) => any
+
+export const initializeApp : InitializeAppType= () => (dispatch : Dispatch<ActionsType>) => {
 
     let auth = dispatch(setAuthData())
-    dispatch(callPreloader(true))
+    dispatch(callPreloaderAC(true))
     Promise.all([auth]).then(() => {
         dispatch(initializeAC())
-        dispatch(callPreloader(false))
+        dispatch(callPreloaderAC(false))
     })
 }

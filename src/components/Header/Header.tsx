@@ -2,12 +2,12 @@ import React, {FC} from "react"
 import logo from "../../logo.svg"
 import css from "./Header.module.css"
 import {NavLink} from "react-router-dom";
-import {DataType} from "../../types/types";
+import {AuthDataType} from "../../types/types";
 
 type HeaderType = {
     isAuth: boolean
     logoutMe: () => void
-    auth: DataType
+    auth: AuthDataType
 }
 
 const Header: FC<HeaderType> = (props) => {

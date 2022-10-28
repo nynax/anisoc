@@ -1,6 +1,7 @@
 import produce from "immer";
 import {ChatsType, MsgType} from "../types/types";
-const ADD_MSG = 'ADD-MSG'
+import {Dispatch} from "redux";
+const ADD_MSG = 'DIALOGS/ADD-MSG'
 
 let initialState = {
     msg: [
@@ -22,7 +23,7 @@ let initialState = {
 
 type InitialStateType = typeof initialState
 
-export const dialogsReducer = (state = initialState, action : any) : InitialStateType => {
+export const dialogsReducer = (state = initialState, action : ActionsType) : InitialStateType => {
     switch(action.type){
         case ADD_MSG:
             let newMsg = {
@@ -39,9 +40,17 @@ export const dialogsReducer = (state = initialState, action : any) : InitialStat
     }
 }
 
-type AddMsgType = {
+type AddMsgACType = {
     type: typeof ADD_MSG
     dialogMsg: string
 }
 
-export const addMsg = (dialogMsg : string) : AddMsgType => ({type: ADD_MSG, dialogMsg})
+type ActionsType = AddMsgACType
+
+const addMsgAC = (dialogMsg : string) : AddMsgACType => ({type: ADD_MSG, dialogMsg})
+
+export type AddMsgType = (dialogMsg: string) => (dispatch: Dispatch<ActionsType>) => any
+
+export const addMsg : AddMsgType = (dialogMsg : string) => (dispatch:Dispatch<ActionsType>) => {
+    return dispatch(addMsgAC(dialogMsg))
+}

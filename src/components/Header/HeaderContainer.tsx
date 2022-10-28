@@ -4,10 +4,10 @@ import {connect} from "react-redux";
 import {logoutMe} from "../../redux/authReducer";
 import {getAuthData, getIsAuth} from "../../redux/authSelector";
 import {AppStateType} from "../../redux/reduxStore";
-import {DataType} from "../../types/types";
+import {AuthDataType} from "../../types/types";
 
 type StateToPropsType = {
-    auth: DataType
+    auth: AuthDataType
     isAuth: boolean
 }
 

@@ -1,24 +1,19 @@
 import produce from "immer"
 import {requestAPI} from "../api/api";
-import {callPreloader, CallPreloaderType} from "./usersReducer";
-import {DataType} from "../types/types";
+import {callPreloaderAC, CallPreloaderACType} from "./usersReducer";
+import {AuthDataType, AuthType} from "../types/types";
 import {Dispatch} from "redux";
 
 const SET_USER_DATA = 'AUTH/SET_USER_DATA'
 const SET_AUTH_ERROR = 'AUTH/SET_AUTH_ERROR'
 const SET_CAPTCHA = 'AUTH/SET_CAPTCHA'
 
-export type InitAuthType = {
-    isAuth: boolean
-    authError: string | null
-    captcha: string | null
-}
 
 type InitDataType = {
-    data: DataType
+    data: AuthDataType
 }
 
-type InitStateType = InitAuthType & InitDataType
+type InitStateType = AuthType & InitDataType
 
 let initialState: InitStateType = {
     data: {
@@ -54,7 +49,7 @@ export const authReducer = (state = initialState, action : ActionsType) : InitSt
 
 type SetAuthDataACType = {
     type: typeof SET_USER_DATA,
-    data: DataType,
+    data: AuthDataType,
     isAuth: boolean
 }
 
@@ -68,10 +63,10 @@ type SetCaptchaACType = {
     captchaUrl: string | null
 }
 
-type ActionsType = SetAuthDataACType | SetAuthErrorACType | SetCaptchaACType | CallPreloaderType
+type ActionsType = SetAuthDataACType | SetAuthErrorACType | SetCaptchaACType | CallPreloaderACType
 
 //ACs
-const setAuthDataAC = (data:DataType, isAuth : boolean) : SetAuthDataACType => ({type: SET_USER_DATA, data: data, isAuth: isAuth})
+const setAuthDataAC = (data:AuthDataType, isAuth : boolean) : SetAuthDataACType => ({type: SET_USER_DATA, data: data, isAuth: isAuth})
 const setAuthErrorAC = (errorMsg : string|null) : SetAuthErrorACType => ({type: SET_AUTH_ERROR, errorMsg})
 const setCaptchaAC = (captchaUrl : string|null) : SetCaptchaACType => ({type: SET_CAPTCHA, captchaUrl})
 
@@ -84,23 +79,23 @@ export const setAuthData : () => any = () => (dispatch : Dispatch<ActionsType>) 
     })
 }
 
-export type SetAuthErrorType = (errorMsg: string | null) => (dispatch: Dispatch<ActionsType>) => any
+export type SetAuthErrorType = (errorMsg: string | null) => any
 
 export const setAuthError : SetAuthErrorType = (errorMsg:string|null) => (dispatch:Dispatch<ActionsType>) => {
     return dispatch(setAuthErrorAC(errorMsg))
 }
 
-export type SetCaptchaType = (captchaUrl: string | null) => (dispatch: Dispatch<ActionsType>) => any
+export type SetCaptchaType = (captchaUrl: string | null) => any
 
 export const setCaptcha : SetCaptchaType = (captchaUrl:string|null) => (dispatch:Dispatch<ActionsType>) => {
     return dispatch(setCaptchaAC(captchaUrl))
 }
 
-export type LoginMeType =  (email: string, password: string, rememberMe: boolean, captcha: string | null) => (dispatch: Dispatch<ActionsType>) => any
+export type LoginMeType =  (email: string, password: string, rememberMe: boolean, captcha: string | null) => any
 
 export const loginMe : LoginMeType = (email:string, password:string, rememberMe = false, captcha:string|null) => {
     return (dispatch:Dispatch<ActionsType>) => {
-        dispatch(callPreloader(true))
+        dispatch(callPreloaderAC(true))
         dispatch(setCaptchaAC(null))
         requestAPI.authLogin(email, password, rememberMe, captcha).then(response => {
             if (response.data.resultCode === 0){
@@ -115,18 +110,20 @@ export const loginMe : LoginMeType = (email:string, password:string, rememberMe 
                 }
                 dispatch(setAuthErrorAC(response.data.messages[0]))
             }
-            dispatch(callPreloader(false))
+            dispatch(callPreloaderAC(false))
         })
     }
 }
 
-export const logoutMe = () => {
+export type LogoutMeType =  () => void
+
+export const logoutMe : LogoutMeType = () => {
     return (dispatch:Dispatch<ActionsType>) => {
         requestAPI.authLogout().then(response => {
             if (response.data.resultCode === 0){
                 dispatch(setAuthDataAC(initialState.data, false ))
             }
         })
-        dispatch(callPreloader(false))
+        dispatch(callPreloaderAC(false))
     }
 }

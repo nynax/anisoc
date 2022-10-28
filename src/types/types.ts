@@ -1,7 +1,13 @@
-export type DataType = {
+export type AuthDataType = {
     id: number | null,
     login: string | null,
     email: string | null
+}
+
+export type AuthType = {
+    isAuth: boolean
+    authError: string | null
+    captcha: string | null
 }
 
 export type MsgType = {

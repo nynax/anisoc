@@ -1,12 +1,17 @@
 import Users from "./Users";
 import {connect} from "react-redux";
 import {
-    setCurrentPage,
     setFollowInProgress,
     requestUsers,
-    followAndUnfollow, changePage
+    followAndUnfollow,
+    changePage,
+    FollowAndUnfollowType,
+    RequestUsersType,
+    SetFollowInProgressType,
+    ChangePageType,
+    UsersStateType
 } from "../../../redux/usersReducer";
-import React, {useEffect} from "react";
+import React, {FC, useEffect} from "react";
 import {
     getCurrentPage,
     getFollowInProgress,
@@ -15,8 +20,12 @@ import {
     getUsers,
     getUsersPerPage
 } from "../../../redux/usersSelector";
+import {AppStateType} from "../../../redux/reduxStore";
 
-const UsersContainer = (props) => {
+
+export type UsersContainerType = UsersStateType & DispatchToPropsType
+
+const UsersContainer : FC<UsersContainerType> = (props) => {
 
     useEffect(() => {
         props.requestUsers(props.usersPerPage, props.currentPage)
@@ -26,7 +35,7 @@ const UsersContainer = (props) => {
     return <Users {...props} />
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state : AppStateType) : StateToPropsType=> {
     return {
         users: getUsers(state),
         totalUsers: getTotalUsers(state),
@@ -37,8 +46,16 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {
-    setCurrentPage,
+type StateToPropsType = UsersStateType
+
+type DispatchToPropsType = {
+    setFollowInProgress:SetFollowInProgressType
+    requestUsers:RequestUsersType
+    followAndUnfollow:FollowAndUnfollowType
+    changePage:ChangePageType
+}
+
+export default connect<StateToPropsType, DispatchToPropsType, {}, AppStateType>(mapStateToProps, {
     setFollowInProgress,
     requestUsers,
     followAndUnfollow,

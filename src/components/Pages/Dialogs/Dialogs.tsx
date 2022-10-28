@@ -4,11 +4,12 @@ import Messages from "./Chats/Messages"
 import Chats from "./Chats/Chats"
 import {useForm} from "react-hook-form";
 import {ChatsType, MsgType} from "../../../types/types";
+import {AddMsgType} from "../../../redux/dialogsReducer";
 
 type DialogsType = {
     chatsData: Array<ChatsType>
     messagesData: Array<MsgType>
-    addMsg: (dialogMsg : string) => void
+    addMsg: AddMsgType
 }
 
 type FormValuesType = {
@@ -23,7 +24,7 @@ const Dialogs: FC<DialogsType> = (props) => {
     let allChats = chatsData.map ( chat => <Chats name={chat.name} key={chat.id}/>)
     let allMessages = messagesData.map ( msg => <Messages msg={msg.msg} ts={msg.ts} key={msg.id}/>)
 
-    const { register, handleSubmit, formState: { errors } } = useForm<FormValuesType>()
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<FormValuesType>()
 
     return (
         <div className={css.dialogs}>
@@ -35,6 +36,7 @@ const Dialogs: FC<DialogsType> = (props) => {
                 <form className={css.formInline} onSubmit={handleSubmit ((data) => {
                     console.log(data)
                     props.addMsg(data.dialogMsg)
+                    reset()
                 })}>
                     <textarea {...register("dialogMsg", {
                         required: "Cant be empty"})} cols={30} placeholder='Type any message here...' />

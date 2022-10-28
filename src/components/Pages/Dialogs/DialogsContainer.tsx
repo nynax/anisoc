@@ -1,4 +1,4 @@
-import {addMsg} from "../../../redux/dialogsReducer";
+import {addMsg, AddMsgType} from "../../../redux/dialogsReducer";
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
 import {withAuthRedirect} from "../../../hoc/withAuthRedirect";
@@ -14,7 +14,7 @@ type StateToPropsType = {
 }
 
 type DispatchToPropsType = {
-    addMsg: (dialogMsg : string) => void
+    addMsg: AddMsgType
 }
 
 const mapStateToProps = (state : AppStateType) : StateToPropsType  => {

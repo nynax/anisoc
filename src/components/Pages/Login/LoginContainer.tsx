@@ -3,7 +3,6 @@ import css from "./Login.module.css"
 import { useForm }from "react-hook-form"
 import {connect} from "react-redux";
 import {
-    InitAuthType,
     loginMe, LoginMeType,
     setAuthError,
     SetAuthErrorType,
@@ -12,8 +11,9 @@ import {
 } from "../../../redux/authReducer";
 import {AppStateType} from "../../../redux/reduxStore";
 import {getAuthError, getCaptcha, getIsAuth} from "../../../redux/authSelector";
+import {AuthType} from "../../../types/types";
 
-type LoginType = InitAuthType & DispatchToPropsType
+type LoginType = AuthType & DispatchToPropsType
 
 type FormType = {
     login: string
@@ -75,7 +75,7 @@ const LoginContainer : FC<LoginType> = (props) => {
     )
 }
 
-type StateToPropsType = InitAuthType
+type StateToPropsType = AuthType
 
 type DispatchToPropsType = {
     loginMe: LoginMeType
