@@ -9,7 +9,7 @@ const SET_AUTH_ERROR = 'AUTH/SET_AUTH_ERROR'
 const SET_CAPTCHA = 'AUTH/SET_CAPTCHA'
 
 export type InitAuthType = {
-    isAuth?: boolean
+    isAuth: boolean
     authError: string | null
     captcha: string | null
 }
@@ -120,7 +120,7 @@ export const loginMe : LoginMeType = (email:string, password:string, rememberMe 
     }
 }
 
-export const logoutMe : () => void = () => {
+export const logoutMe = () => {
     return (dispatch:Dispatch<ActionsType>) => {
         requestAPI.authLogout().then(response => {
             if (response.data.resultCode === 0){
