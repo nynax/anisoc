@@ -1,11 +1,21 @@
 import css from "./Profile.module.css";
-import React from "react";
+import React, {FC} from "react";
 import {useForm} from "react-hook-form";
+import {UpdatePhotoType} from "../../../redux/profileReducer";
+import {PhotoType} from "../../../types/types";
 
-const UploadPhoto = (props) => {
+type UploadPhotoType = {
+    updatePhoto: UpdatePhotoType
+}
+
+type FormValuesType = {
+    photo: PhotoType
+}
+
+const UploadPhoto : FC<UploadPhotoType> = (props) => {
     console.log('UploadPhoto')
 
-    const {register, handleSubmit, reset, formState: {errors}} = useForm()
+    const {register, handleSubmit, reset, formState: {errors}} = useForm<FormValuesType>()
 
     //render upload file form
     return (

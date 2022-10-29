@@ -1,11 +1,20 @@
 import css from "./Profile.module.css";
-import React from "react";
+import React, {FC} from "react";
 import {useForm} from "react-hook-form";
 
-const AddPost = (props) => {
+
+type FormValuesType = {
+    postMsg: string
+}
+
+type AddPostType = {
+    addPost : (postMsg : string) => void
+}
+
+const AddPost : FC<AddPostType> = (props) => {
     console.log('AddPost')
 
-    const {register, handleSubmit, reset, formState: {errors}} = useForm()
+    const {register, handleSubmit, reset, formState: {errors}} = useForm<FormValuesType>()
 
     //render add post form
     return (
@@ -17,7 +26,7 @@ const AddPost = (props) => {
             })}>
                 <textarea {...register("postMsg", {
                     required: "Cant be empty"
-                })} cols='30' placeholder='Type any message here...'/>
+                })} cols={30} placeholder='Type any message here...'/>
                 <button>Send</button>
 
             </form>

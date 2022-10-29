@@ -1,6 +1,7 @@
 import {createSelector} from "reselect";
+import {AppStateType} from "./reduxStore";
 
-const getPageProfilePostsSelector = (state) => {
+const getPageProfilePostsSelector = (state : AppStateType) => {
     return state.pageProfile.posts
 }
 
@@ -8,7 +9,7 @@ export const getPageProfilePosts = createSelector(getPageProfilePostsSelector, (
     return pageProfilePosts
 })
 
-const getPageProfileProfileSelector = (state) => {
+const getPageProfileProfileSelector = (state : AppStateType) => {
     return state.pageProfile.profile
 }
 
@@ -16,7 +17,7 @@ export const getPageProfileProfile = createSelector(getPageProfileProfileSelecto
     return pageProfileProfile
 })
 
-const getPageProfileStatusSelector = (state) => {
+const getPageProfileStatusSelector = (state : AppStateType) => {
     return state.pageProfile.status
 }
 
@@ -24,7 +25,7 @@ export const getPageProfileStatus = createSelector(getPageProfileStatusSelector,
     return pageProfileStatus
 })
 
-const getPageProfileErrorSelector = (state) => {
+const getPageProfileErrorSelector = (state : AppStateType) => {
     return state.pageProfile.profileError
 }
 

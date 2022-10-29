@@ -1,8 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import editsvg from "../../../images/svg/pencil.svg"
 import css from "./Profile.module.css";
+import {UpdateProfileType} from "../../../redux/profileReducer";
 
-const UpdateInputOnClick = (props) => {
+type UpdateInputOnClickType = {
+    textValue: string | null
+    setValue: UpdateProfileType
+    inputName: string
+}
+
+const UpdateInputOnClick : FC<UpdateInputOnClickType> = (props) => {
     console.log('UpdateInputOnClick')
 
     const [editMode, setEditMode] = useState(false);
@@ -14,7 +21,7 @@ const UpdateInputOnClick = (props) => {
     },[props.textValue]);
 
     //save local state if value any change
-    let onUpdateStatus = (e) => {
+    let onUpdateStatus = (e: React.ChangeEvent<HTMLInputElement>) => {
         let value = e.target.value
         setTextInput(value)
     }
@@ -29,7 +36,7 @@ const UpdateInputOnClick = (props) => {
                 if (props.textValue !== textInput){
                     props.setValue(textInput, props.inputName)
                 }
-            }} value={textInput}></input></div>
+            }} value={textInput as string}></input></div>
             : <div className={css.inputOnClick} onClick={() => setEditMode(true)}>
                     {textInput ? textInput : "touch me"}
                     &emsp;<object className={css.editsvg} type="image/svg+xml" data={editsvg} width="10" height="10">Your browser does not support SVG</object>

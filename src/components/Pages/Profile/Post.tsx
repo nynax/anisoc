@@ -1,8 +1,15 @@
-import React from "react"
+import React, {FC} from "react"
 import photo from "../../../images/dart.png";
 import css from "./Profile.module.css"
+import {PostsType} from "../../../types/types";
 
-const Post = React.memo((props) => {
+type PostType = {
+    photo: string | null
+    likes: number
+    post: PostsType
+}
+
+const Post : FC<PostType> = React.memo((props) => {
 
     //render post
     return (

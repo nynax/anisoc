@@ -1,12 +1,17 @@
-import React from 'react';
+import React, {FC} from 'react';
 import ReactPaginate from 'react-paginate';
 import css from "./Paginator.module.css"
+import {ChangePageType} from "../../../redux/usersReducer";
 
+type PaginatedItemsType = {
+    pagesCount: number
+    changePage: ChangePageType
+    currentPage: number
+}
 
+const PaginatedItems : FC<PaginatedItemsType> = ({pagesCount, changePage, currentPage}) => {
 
-function PaginatedItems({ pagesCount, changePage, currentPage}) {
-
-    const handlePageClick = (event) => {
+    const handlePageClick = (event : any) => {
         changePage(event.selected + 1)
     };
 
@@ -18,7 +23,7 @@ function PaginatedItems({ pagesCount, changePage, currentPage}) {
                 previousLabel="<<"
                 onPageChange={handlePageClick}
                 pageCount={pagesCount}
-                renderOnZeroPageCount={null}
+                //renderOnZeroPageCount={null}
                 pageRangeDisplayed={3}
                 marginPagesDisplayed={1}
                 activeClassName={css.active}

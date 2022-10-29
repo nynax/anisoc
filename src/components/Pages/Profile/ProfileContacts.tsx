@@ -1,20 +1,27 @@
 import css from "./Profile.module.css";
-import React, {useEffect, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import {isEqual} from 'lodash';
+import {ContactsType} from "../../../types/types";
+import {SetProfileErrorType, UpdateProfileType} from "../../../redux/profileReducer";
 
+type ProfileContactsType = {
+    contacts: ContactsType
+    profileError: string
+    isAuth: boolean
+    setValue: UpdateProfileType
+    setProfileError: SetProfileErrorType
+}
 
-
-const ProfileContacts = (props) => {
+const ProfileContacts : FC<ProfileContactsType> = (props) => {
     console.log('ProfileContacts')
     //console.log(props)
 
-    const {register, handleSubmit, formState: { errors  }} = useForm()
-
+    const {register, handleSubmit, formState: { errors }} = useForm()
 
     const [editMode, setEditMode] = useState(false)
     const contactNames = Object.keys(props.contacts)
-    const [contactsProfile, setContactsProfile] = useState(props.contacts);
+    const [contactsProfile, setContactsProfile] = useState<any>(props.contacts);
 
     //update local state if props changed
     useEffect(() => {
@@ -51,9 +58,10 @@ const ProfileContacts = (props) => {
 ))
 
     //render contact form if owner profile, else render read only
+
     return (<div>
             {props.isAuth ?
-                <form className={css.formInline} onSubmit={handleSubmit((data) => {
+                <form className={css.formInline} onSubmit={handleSubmit((data : any) => {
                     console.log('edit set')
                     // if edited and changed contacts, do dispatch
                     if (editMode && !isEqual(props.contacts, data)){
@@ -70,7 +78,8 @@ const ProfileContacts = (props) => {
                     <div className={css.contactFieldsOwner}>{allContacts}</div>
 
                     {contactNames.map ( contactName => (
-                            errors[contactName] !== undefined && <div  className={css.errors} key={contactName}>{errors[contactName]['message']}</div>
+                        // @ts-ignore
+                             errors[contactName] !== undefined && <div  className={css.errors} key={contactName}>{errors[contactName]['message']}</div>
                         ))}
                     {props.profileError !== null && <div className={css.errors}>{props.profileError}</div>}
                 </form>
