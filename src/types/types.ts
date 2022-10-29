@@ -46,7 +46,7 @@ export type ProfileType = {
     fullName: string | null
     contacts: ContactsType
     photos: PhotoType
-    aboutMe: string
+    aboutMe: string | null
 }
 
 export type PostsType = {

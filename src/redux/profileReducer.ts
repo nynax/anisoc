@@ -1,5 +1,5 @@
 import produce from "immer";
-import {requestAPI} from "../api/api";
+import {ApiCodesEnum, requestAPI} from "../api/api";
 import {callPreloaderAC, CallPreloaderACType} from "./usersReducer";
 import {PhotoType, PostsType, ProfileType} from "../types/types";
 import {Dispatch} from "redux";
@@ -85,32 +85,17 @@ type SetProfileErrorACType = {
 
 type ActionType = AddPostACType | SetCurrentProfileACType | SetProfileStatusACType | StProfilePhotoACType | SetProfileErrorACType | CallPreloaderACType
 
-export const addPostAC = (postMsg : string):AddPostACType => ({type: ADD_POST, postMsg})
-export const setCurrentProfileAC = (currentProfile : ProfileType | null) : SetCurrentProfileACType => ({type: SET_CURRENT_PROFILE, currentProfile})
-export const setProfileStatusAC = (status : string | null) : SetProfileStatusACType => ({type: SET_STATUS, status})
-export const setProfilePhotoAC = (photos : PhotoType) : StProfilePhotoACType => ({type: SET_PHOTOS, photos})
-export const setProfileErrorAC = (errorMsg : string | null) : SetProfileErrorACType => ({type: SET_PROFILE_ERROR, errorMsg})
+//ACs
+const addPostAC = (postMsg : string):AddPostACType => ({type: ADD_POST, postMsg})
+const setCurrentProfileAC = (currentProfile : ProfileType | null) : SetCurrentProfileACType => ({type: SET_CURRENT_PROFILE, currentProfile})
+const setProfileStatusAC = (status : string | null) : SetProfileStatusACType => ({type: SET_STATUS, status})
+const setProfilePhotoAC = (photos : PhotoType) : StProfilePhotoACType => ({type: SET_PHOTOS, photos})
+const setProfileErrorAC = (errorMsg : string | null) : SetProfileErrorACType => ({type: SET_PROFILE_ERROR, errorMsg})
 
-
+//Thunks
 export type AddPostType = (postMsg : string) =>  any
 export const addPost : AddPostType = (postMsg : string) => (dispatch : any) => {
     return dispatch(addPostAC(postMsg))
-}
-
-export type SetProfileType = (userId : number | null) =>  any
-export const setProfile : SetProfileType = (userId : number | null) => {
-    return (dispatch : Dispatch<ActionType>) => {
-        if(userId === null){
-            dispatch(setCurrentProfileAC(null))
-        }else{
-            dispatch(callPreloaderAC(true))
-            console.log('requestAPI')
-            requestAPI.getProfile(userId).then(response => {
-                dispatch(getStatus(userId))
-                dispatch(setCurrentProfileAC(response.data))
-            }).catch(err => alert(err))
-        }
-    }
 }
 
 export type SetProfileErrorType = (errorMsg : string | null) =>  any
@@ -118,27 +103,42 @@ export const setProfileError : SetProfileErrorType = (errorMsg : string | null) 
     return dispatch(setProfileErrorAC(errorMsg))
 }
 
+export type SetProfileType = (userId : number | null) =>  any
+export const setProfile : SetProfileType = (userId : number | null) => {
+    return async (dispatch : Dispatch<ActionType>) => {
+        if(userId === null){
+            dispatch(setCurrentProfileAC(null))
+        }else{
+            dispatch(callPreloaderAC(true))
+            console.log('requestAPI')
+            let resData = await requestAPI.getProfile(userId)
+            dispatch(getStatus(userId))
+            dispatch(setCurrentProfileAC(resData))
+        }
+    }
+}
+
 export type UpdateProfileType = (value : string | null, inputName : string) =>  any
 export const updateProfile : UpdateProfileType = (value : string | null, inputName : string) => {
 
-    return (dispatch : Dispatch<ActionType>, getState : any) => {
+    return async (dispatch : Dispatch<ActionType>, getState : any) => {
         let profile = {...getState().pageProfile.profile}
 
         switch (inputName) {
             case "status":
                 console.log('requestAPI (setStatus)')
-                return requestAPI.setStatus(value).then(response => {
-                    if (response.data.resultCode !== 0) {
-                        dispatch(setProfileErrorAC(response.data.messages[0]))
-                    }else{
-                        dispatch(setProfile(profile.userId))
-                    }
-                })
+                let resStatusData = await requestAPI.setStatus(value)
+                if (resStatusData.resultCode !== ApiCodesEnum.Success) {
+                    dispatch(setProfileErrorAC(resStatusData.messages[0]))
+                }else{
+                    dispatch(setProfile(profile.userId))
+                }
+
+                return
             case "lookingForAJobDescription":
             case "fullName":
             case "aboutMe":
             case "contacts":
-
 
                 //method API required aboutMe forever!
                 if (inputName === "aboutMe" && value === ""){
@@ -150,14 +150,14 @@ export const updateProfile : UpdateProfileType = (value : string | null, inputNa
                     profile.aboutMe = "Tell me about you, baby ;)"
                 }
 
-                return requestAPI.setProfile(profile).then(response => {
-                    if (response.data.resultCode !== 0) {
-                        dispatch(setProfileErrorAC(response.data.messages[0]))
-                    }else{
-                        dispatch(setProfile(profile.userId))
-                    }
-                })
+                let resProfileData = await requestAPI.setProfile(profile)
+                if (resProfileData.resultCode !== ApiCodesEnum.Success) {
+                    dispatch(setProfileErrorAC(resProfileData.messages[0]))
+                }else{
+                    dispatch(setProfile(profile.userId))
+                }
 
+                return
             default:
                 //debugger
                 return
@@ -167,23 +167,19 @@ export const updateProfile : UpdateProfileType = (value : string | null, inputNa
 
 export type GetStatusType = (userId : number) =>  any
 export const getStatus : GetStatusType = (userId : number) => {
-    return (dispatch : Dispatch<ActionType>) => {
+    return async (dispatch : Dispatch<ActionType>) => {
         console.log('requestAPI (getStatus)')
-        requestAPI.getStatus(userId).then(response => {
-            console.log(response.data)
-            dispatch(setProfileStatusAC(response.data))
-            dispatch(callPreloaderAC(false))
-        })
+        let resData = await requestAPI.getStatus(userId)
+        dispatch(setProfileStatusAC(resData))
+        dispatch(callPreloaderAC(false))
     }
 }
 
 export type UpdatePhotoType = (photo : PhotoType) =>  any
 export const updatePhoto : UpdatePhotoType = (photo : PhotoType) => {
-    return (dispatch : Dispatch<ActionType>) => {
+    return async (dispatch : Dispatch<ActionType>) => {
         console.log('requestAPI (setPhoto)')
-        requestAPI.setPhoto(photo).then(response => {
-            console.log(response.data)
-            dispatch(setProfilePhotoAC(response.data.data.photos))
-        })
+        let resData = await requestAPI.setPhoto(photo)
+        dispatch(setProfilePhotoAC(resData.data.photos))
     }
 }

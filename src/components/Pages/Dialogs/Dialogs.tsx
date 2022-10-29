@@ -21,7 +21,7 @@ const Dialogs: FC<DialogsType> = (props) => {
     let chatsData = props.chatsData
     let messagesData = props.messagesData
 
-    let allChats = chatsData.map ( chat => <Chats name={chat.name} key={chat.id}/>)
+    let allChats = chatsData.map ( chat => <Chats name={chat.name} key={chat.id} chatId={chat.id} />)
     let allMessages = messagesData.map ( msg => <Messages msg={msg.msg} ts={msg.ts} key={msg.id}/>)
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm<FormValuesType>()
