@@ -94,17 +94,17 @@ const setProfileErrorAC = (errorMsg : string | null) : SetProfileErrorACType => 
 
 //Thunks
 export type AddPostType = (postMsg : string) =>  any
-export const addPost : AddPostType = (postMsg : string) => (dispatch : any) => {
+export const addPost : AddPostType = (postMsg) => (dispatch : any) => {
     return dispatch(addPostAC(postMsg))
 }
 
 export type SetProfileErrorType = (errorMsg : string | null) =>  any
-export const setProfileError : SetProfileErrorType = (errorMsg : string | null) => (dispatch : any) => {
+export const setProfileError : SetProfileErrorType = (errorMsg) => (dispatch : any) => {
     return dispatch(setProfileErrorAC(errorMsg))
 }
 
 export type SetProfileType = (userId : number | null) =>  any
-export const setProfile : SetProfileType = (userId : number | null) => {
+export const setProfile : SetProfileType = (userId) => {
     return async (dispatch : Dispatch<ActionType>) => {
         if(userId === null){
             dispatch(setCurrentProfileAC(null))
@@ -119,7 +119,7 @@ export const setProfile : SetProfileType = (userId : number | null) => {
 }
 
 export type UpdateProfileType = (value : string | null, inputName : string) =>  any
-export const updateProfile : UpdateProfileType = (value : string | null, inputName : string) => {
+export const updateProfile : UpdateProfileType = (value, inputName) => {
 
     return async (dispatch : Dispatch<ActionType>, getState : any) => {
         let profile = {...getState().pageProfile.profile}
@@ -166,7 +166,7 @@ export const updateProfile : UpdateProfileType = (value : string | null, inputNa
 }
 
 export type GetStatusType = (userId : number) =>  any
-export const getStatus : GetStatusType = (userId : number) => {
+export const getStatus : GetStatusType = (userId) => {
     return async (dispatch : Dispatch<ActionType>) => {
         console.log('requestAPI (getStatus)')
         let resData = await requestAPI.getStatus(userId)
@@ -176,7 +176,7 @@ export const getStatus : GetStatusType = (userId : number) => {
 }
 
 export type UpdatePhotoType = (photo : PhotoType) =>  any
-export const updatePhoto : UpdatePhotoType = (photo : PhotoType) => {
+export const updatePhoto : UpdatePhotoType = (photo) => {
     return async (dispatch : Dispatch<ActionType>) => {
         console.log('requestAPI (setPhoto)')
         let resData = await requestAPI.setPhoto(photo)

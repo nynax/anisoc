@@ -51,6 +51,6 @@ const addMsgAC = (dialogMsg : string) : AddMsgACType => ({type: ADD_MSG, dialogM
 
 export type AddMsgType = (dialogMsg: string) => (dispatch: Dispatch<ActionsType>) => any
 
-export const addMsg : AddMsgType = (dialogMsg : string) => (dispatch:Dispatch<ActionsType>) => {
+export const addMsg : AddMsgType = (dialogMsg) => (dispatch:Dispatch<ActionsType>) => {
     return dispatch(addMsgAC(dialogMsg))
 }

@@ -36,7 +36,7 @@ export const initializeAC = () : InitializeType => ({type: INITIALIZING})
 
 export type InitializeAppType = () => (dispatch: Dispatch<ActionsType>) => any
 
-export const initializeApp : InitializeAppType= () => (dispatch : Dispatch<ActionsType>) => {
+export const initializeApp : InitializeAppType = () => (dispatch : Dispatch<ActionsType>) => {
 
     let auth = dispatch(setAuthData())
     dispatch(callPreloaderAC(true))

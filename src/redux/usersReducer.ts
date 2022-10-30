@@ -127,12 +127,12 @@ const setFollowInProgressAC = (userId : number) : SetFollowInProgressACType => (
 
 //Thunks
 export type SetFollowInProgressType = (userId : number) =>  any
-export const setFollowInProgress : SetFollowInProgressType = (userId : number) => (dispatch:Dispatch<ActionsType>) => {
+export const setFollowInProgress : SetFollowInProgressType = (userId) => (dispatch:Dispatch<ActionsType>) => {
     return dispatch(setFollowInProgressAC(userId))
 }
 
 export type RequestUsersType = (usersPerPage : number, currentPage : number) => any
-export const requestUsers : RequestUsersType = (usersPerPage : number, currentPage : number) => {
+export const requestUsers : RequestUsersType = (usersPerPage, currentPage) => {
     return async (dispatch : Dispatch<ActionsType>) => {
         dispatch(callPreloaderAC(true))
 
@@ -144,7 +144,7 @@ export const requestUsers : RequestUsersType = (usersPerPage : number, currentPa
 }
 
 export type ChangePageType = (pageNumber : number) => (dispatch: Dispatch<ActionsType>) => any
-export const changePage : ChangePageType  = (pageNumber : number) => {
+export const changePage : ChangePageType  = (pageNumber) => {
     return (dispatch : Dispatch<ActionsType>) => {
         dispatch(setCurrentPageAC(pageNumber))
         dispatch(requestUsers(initialState.usersPerPage, pageNumber))
@@ -152,7 +152,7 @@ export const changePage : ChangePageType  = (pageNumber : number) => {
 }
 
 export type FollowAndUnfollowType = (isFollow : boolean, userId : number) => (dispatch: Dispatch<ActionsType>) => any
-export const followAndUnfollow : FollowAndUnfollowType = (isFollow : boolean, userId : number) => {
+export const followAndUnfollow : FollowAndUnfollowType = (isFollow, userId) => {
     return async (dispatch : Dispatch<ActionsType>) => {
         dispatch(setFollowInProgressAC(userId))
         if (isFollow){
