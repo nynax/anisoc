@@ -17,7 +17,7 @@ const ProfileContacts : FC<ProfileContactsType> = (props) => {
     console.log('ProfileContacts')
     //console.log(props)
 
-    const {register, handleSubmit, formState: { errors }} = useForm()
+    const {register, handleSubmit, formState: { errors }, clearErrors} = useForm()
 
     const [editMode, setEditMode] = useState(false)
     const contactNames = Object.keys(props.contacts)
@@ -58,7 +58,6 @@ const ProfileContacts : FC<ProfileContactsType> = (props) => {
 ))
 
     //render contact form if owner profile, else render read only
-
     return (<div>
             {props.isAuth ?
                 <form className={css.formInline} onSubmit={handleSubmit((data : any) => {
@@ -73,7 +72,7 @@ const ProfileContacts : FC<ProfileContactsType> = (props) => {
                     setEditMode(!editMode)
                 })}>
                     {editMode ? <div><button disabled={Object.keys(errors).length !== 0}>Save</button>
-                                <input className={css.cancelButton} onClick={()=>{setEditMode(false)}} type="button" value="Cancel"/></div>
+                                <input className={css.cancelButton} onClick={()=>{setEditMode(false); clearErrors()}} type="button" value="Cancel"/></div>
                               : <button>Edit</button>}
                     <div className={css.contactFieldsOwner}>{allContacts}</div>
 

@@ -1,23 +1,22 @@
 import produce from "immer"
 import {setAuthData} from "./authReducer";
-import {callPreloaderAC, CallPreloaderACType} from "./usersReducer";
+import {callPreloaderAC} from "./usersReducer";
 import {Dispatch} from "redux";
+import {InferActionsTypes} from "./reduxStore";
 
-const INITIALIZING = 'INITIALIZING'
+const INITIALIZING = 'APP/INITIALIZING'
 
-type InitialStateType = {
-    initialize: boolean
-}
-
-let initialState: InitialStateType = {
+let initialState = {
     initialize: false
 }
+
+type InitialStateType = typeof initialState
+type ActionsType = InferActionsTypes<typeof actions>
 
 export const appReducer = (state = initialState, action: ActionsType): InitialStateType => {
 
     switch (action.type) {
         case INITIALIZING:
-
             return produce(state, draft => {
                 draft.initialize = true
             })
@@ -26,22 +25,18 @@ export const appReducer = (state = initialState, action: ActionsType): InitialSt
     }
 }
 
-type InitializeType = {
-    type: typeof INITIALIZING
+const actions = {
+    initializeAC: () => ({type: INITIALIZING} as const),
+    callPreloaderAC
 }
 
-type ActionsType = InitializeType | CallPreloaderACType
-
-export const initializeAC = () : InitializeType => ({type: INITIALIZING})
-
-export type InitializeAppType = () => (dispatch: Dispatch<ActionsType>) => any
-
-export const initializeApp : InitializeAppType = () => (dispatch : Dispatch<ActionsType>) => {
+type InitializeAppType = () => (dispatch: Dispatch<ActionsType>) => any
+export const initializeApp : InitializeAppType = () => (dispatch) => {
 
     let auth = dispatch(setAuthData())
     dispatch(callPreloaderAC(true))
     Promise.all([auth]).then(() => {
-        dispatch(initializeAC())
+        dispatch(actions.initializeAC())
         dispatch(callPreloaderAC(false))
     })
 }

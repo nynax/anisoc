@@ -2,6 +2,7 @@ import produce from "immer";
 import {ApiCodesEnum, requestAPI} from "../api/api";
 import {UserType} from "../types/types";
 import {Dispatch} from "redux";
+import {InferActionsTypes} from "./reduxStore";
 
 const FOLLOW = 'USERS/FOLLOW'
 const UNFOLLOW = 'USERS/UNFOLLOW'
@@ -49,11 +50,11 @@ export const usersReducer = (state = initialState, action : ActionsType) : Initi
             })
         case SET_FOLLOW_IN_PROGRESS:
             return produce(state, draft => {
-                let i = draft.followInProgress.indexOf(action.userId); //ищем индекс по значению
+                let i = draft.followInProgress.indexOf(action.userId); //search index by value
                 if(i >= 0) {
-                    draft.followInProgress.splice(i,1);//удаляем 1 элемент
+                    draft.followInProgress.splice(i,1);//remove one element
                 }else{
-                    draft.followInProgress.splice(0, 0, action.userId)//добавляем...
+                    draft.followInProgress.splice(0, 0, action.userId)//adding...
                 }
             })
         case SET_USERS:
@@ -78,57 +79,26 @@ export const usersReducer = (state = initialState, action : ActionsType) : Initi
     }
 }
 
-type FollowACType = {
-    type: typeof FOLLOW
-    userId: number
-}
-
-type UnfollowACType = {
-    type: typeof UNFOLLOW
-    userId: number
-}
-
-type SetUsersACType = {
-    type: typeof SET_USERS
-    users: Array<UserType>
-}
-
-type SetTotalUsersACType = {
-    type: typeof SET_TOTAL_USERS
-    totalUsers: number
-}
-
-type SetCurrentPageACType = {
-    type: typeof SET_CURRENT_PAGE
-    currentPage: number
-}
-
-export type CallPreloaderACType = {
-    type: typeof CALL_PRELOADER
-    showPreloader: boolean
-}
-
-type SetFollowInProgressACType = {
-    type: typeof SET_FOLLOW_IN_PROGRESS
-    userId: number
-}
-
-type ActionsType = FollowACType | UnfollowACType | SetUsersACType | SetTotalUsersACType | SetCurrentPageACType | CallPreloaderACType | SetFollowInProgressACType
+//Create type by Object [actions] structure
+type ActionsType = InferActionsTypes<typeof actions>
 
 //ACs
-const followAC = (userId : number) : FollowACType => ({type: FOLLOW, userId})
-const unfollowAC = (userId : number) : UnfollowACType => ({type: UNFOLLOW, userId})
-const setUsersAC = (users : Array<UserType>) : SetUsersACType => ({type: SET_USERS, users})
-const setTotalUsersAC = (totalUsers : number) : SetTotalUsersACType => ({type: SET_TOTAL_USERS, totalUsers})
-const setCurrentPageAC = (currentPage : number) : SetCurrentPageACType => ({type: SET_CURRENT_PAGE, currentPage})
-export const callPreloaderAC = (showPreloader : boolean) : CallPreloaderACType => ({type: CALL_PRELOADER, showPreloader})
-const setFollowInProgressAC = (userId : number) : SetFollowInProgressACType => ({type: SET_FOLLOW_IN_PROGRESS, userId})
+const actions = {
+    followAC: (userId : number) => ({type: FOLLOW, userId} as const),
+    unfollowAC: (userId : number) => ({type: UNFOLLOW, userId} as const),
+    setUsersAC: (users : Array<UserType>) => ({type: SET_USERS, users} as const),
+    setTotalUsersAC: (totalUsers : number) => ({type: SET_TOTAL_USERS, totalUsers} as const),
+    setCurrentPageAC: (currentPage : number) => ({type: SET_CURRENT_PAGE, currentPage} as const),
+    callPreloaderAC: (showPreloader : boolean) => ({type: CALL_PRELOADER, showPreloader} as const),
+    setFollowInProgressAC: (userId : number) => ({type: SET_FOLLOW_IN_PROGRESS, userId} as const)
+}
 
+export const callPreloaderAC = actions.callPreloaderAC;
 
 //Thunks
-export type SetFollowInProgressType = (userId : number) =>  any
-export const setFollowInProgress : SetFollowInProgressType = (userId) => (dispatch:Dispatch<ActionsType>) => {
-    return dispatch(setFollowInProgressAC(userId))
+export type SetFollowInProgressType = (userId : number) => (dispatch:Dispatch<ActionsType>) =>  any
+export const setFollowInProgress : SetFollowInProgressType = (userId) => (dispatch) => {
+    return dispatch(actions.setFollowInProgressAC(userId))
 }
 
 export type RequestUsersType = (usersPerPage : number, currentPage : number) => any
@@ -138,40 +108,40 @@ export const requestUsers : RequestUsersType = (usersPerPage, currentPage) => {
 
         let resData = await requestAPI.getUsers(usersPerPage, currentPage)
         dispatch(callPreloaderAC(false))
-        dispatch(setUsersAC(resData.items))
-        dispatch(setTotalUsersAC(resData.totalCount))
+        dispatch(actions.setUsersAC(resData.items))
+        dispatch(actions.setTotalUsersAC(resData.totalCount))
     }
 }
 
-export type ChangePageType = (pageNumber : number) => (dispatch: Dispatch<ActionsType>) => any
+export type ChangePageType = (pageNumber : number) => any
 export const changePage : ChangePageType  = (pageNumber) => {
     return (dispatch : Dispatch<ActionsType>) => {
-        dispatch(setCurrentPageAC(pageNumber))
+        dispatch(actions.setCurrentPageAC(pageNumber))
         dispatch(requestUsers(initialState.usersPerPage, pageNumber))
     }
 }
 
-export type FollowAndUnfollowType = (isFollow : boolean, userId : number) => (dispatch: Dispatch<ActionsType>) => any
+export type FollowAndUnfollowType = (isFollow : boolean, userId : number) => any
 export const followAndUnfollow : FollowAndUnfollowType = (isFollow, userId) => {
     return async (dispatch : Dispatch<ActionsType>) => {
-        dispatch(setFollowInProgressAC(userId))
+        dispatch(actions.setFollowInProgressAC(userId))
         if (isFollow){
             let resData = await requestAPI.follow(userId)
 
             if (resData.resultCode === ApiCodesEnum.Success) {
                 console.log('follow')
-                dispatch(followAC(userId))
+                dispatch(actions.followAC(userId))
             }
-            dispatch(setFollowInProgressAC(userId))
+            dispatch(actions.setFollowInProgressAC(userId))
 
         }else{
             let resData = await requestAPI.unfollow(userId)
 
             if (resData.resultCode === ApiCodesEnum.Success) {
                 console.log('unfollow')
-                dispatch(unfollowAC(userId))
+                dispatch(actions.unfollowAC(userId))
             }
-            dispatch(setFollowInProgressAC(userId))
+            dispatch(actions.setFollowInProgressAC(userId))
         }
     }
 }
