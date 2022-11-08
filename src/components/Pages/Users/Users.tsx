@@ -4,6 +4,7 @@ import avatar from "../../../images/maul.png";
 import {NavLink} from "react-router-dom";
 import PaginatedItems from "../../common/Paginator/Paginator";
 import {UsersContainerType} from "./UsersContainer";
+import {useForm} from "react-hook-form";
 
 type UsersType = UsersContainerType
 
@@ -16,6 +17,8 @@ let Users : FC<UsersType> = (props) => {
     let pagesCount = Math.ceil(props.totalUsers / props.usersPerPage)
 
     return <div className={css.users}>
+
+        <UsersFilterForm />
 
         <PaginatedItems pagesCount={pagesCount} changePage={props.changePage} currentPage={props.currentPage}/>
 
@@ -44,6 +47,38 @@ let Users : FC<UsersType> = (props) => {
                 </div>})}
             </div>
     </div>
+}
+
+type FormType = {
+    term: string
+    friend: 'null' | 'false' | 'true'
+}
+
+const UsersFilterForm = () => {
+    const { register, handleSubmit } = useForm<FormType>()
+
+    //console.log(errors)
+    //debugger
+    return (
+        <div className={css.form}>
+            <form className={css.formInline} onSubmit={handleSubmit ((data) => {
+                console.log(data)
+            })}>
+
+                <input id="term" {...register("term")} placeholder="Type name here..."  />
+
+
+                <select {...register("friend")}>
+                    <option value="null">All</option>
+                    <option value="true">Friends</option>
+                    <option value="false">Enemies</option>
+                </select>
+
+                <button>Find</button>
+            </form>
+
+        </div>
+    )
 }
 
 export default Users
