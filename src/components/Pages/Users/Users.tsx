@@ -5,12 +5,13 @@ import {NavLink} from "react-router-dom";
 import PaginatedItems from "../../common/Paginator/Paginator";
 import {UsersContainerType} from "./UsersContainer";
 import {useForm} from "react-hook-form";
+import {ChangePageType, RequestUsersType} from "../../../redux/usersReducer";
 
 type UsersType = UsersContainerType
 
 
 let Users : FC<UsersType> = (props) => {
-//    console.log(props)
+    console.log(props)
 
 
     //Divide totalUsers on usersPerPage from API and calculate pagesCount for next pagination mapping
@@ -18,9 +19,9 @@ let Users : FC<UsersType> = (props) => {
 
     return <div className={css.users}>
 
-        <UsersFilterForm />
+        <UsersFilterForm changePage={props.changePage} totalUsers={props.totalUsers} requestUsers={props.requestUsers} usersPerPage={props.usersPerPage} currentPage={props.currentPage} lastQuery={props.lastQuery}/>
 
-        <PaginatedItems pagesCount={pagesCount} changePage={props.changePage} currentPage={props.currentPage}/>
+        {<PaginatedItems pagesCount={pagesCount} changePage={props.changePage} currentPage={props.currentPage}/>}
 
         <div className={css.text}>
             {/*Users list*/}
@@ -54,15 +55,26 @@ type FormType = {
     friend: 'null' | 'false' | 'true'
 }
 
-const UsersFilterForm = () => {
-    const { register, handleSubmit } = useForm<FormType>()
+type UsersFilterFormType = {
+    requestUsers: RequestUsersType
+    changePage: ChangePageType
+    usersPerPage: number
+    totalUsers: number
+    currentPage: number
+    lastQuery: FormType
+}
 
-    //console.log(errors)
-    //debugger
+const UsersFilterForm : FC<UsersFilterFormType>= (props) => {
+
+    const { register, handleSubmit, setValue } = useForm<FormType>()
+
+    setValue('term', props.lastQuery.term)
+    setValue('friend', props.lastQuery.friend)
+
     return (
         <div className={css.form}>
             <form className={css.formInline} onSubmit={handleSubmit ((data) => {
-                console.log(data)
+                props.requestUsers( 1, data.term, data.friend)
             })}>
 
                 <input id="term" {...register("term")} placeholder="Type name here..."  />

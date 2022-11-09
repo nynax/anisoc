@@ -14,7 +14,7 @@ import {
 import React, {FC, useEffect} from "react";
 import {
     getCurrentPage,
-    getFollowInProgress,
+    getFollowInProgress, getLastQuery,
     getShowPreloader,
     getTotalUsers,
     getUsers,
@@ -28,7 +28,7 @@ export type UsersContainerType = UsersStateType & DispatchToPropsType
 const UsersContainer : FC<UsersContainerType> = (props) => {
 
     useEffect(() => {
-        props.requestUsers(props.usersPerPage, props.currentPage)
+        props.requestUsers(props.currentPage, props.lastQuery.term, props.lastQuery.friend)
     },[props.currentPage]);
 
     //console.log(props)
@@ -42,7 +42,8 @@ const mapStateToProps = (state : AppStateType) : StateToPropsType=> {
         currentPage: getCurrentPage(state),
         usersPerPage: getUsersPerPage(state),
         showPreloader: getShowPreloader(state),
-        followInProgress: getFollowInProgress(state)
+        followInProgress: getFollowInProgress(state),
+        lastQuery: getLastQuery(state)
     }
 }
 

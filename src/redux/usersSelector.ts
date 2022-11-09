@@ -49,3 +49,11 @@ export const getTotalUsers = createSelector(getTotalUsersSelector, (totalUsers) 
     return totalUsers
 })
 
+const getLastQuerySelector = (state: AppStateType) => {
+    return state.pageUsers.lastQuery
+}
+
+export const getLastQuery = createSelector(getLastQuerySelector, (lastQuery) => {
+    return lastQuery
+})
+

@@ -89,8 +89,11 @@ export const requestAPI =  {
     authLogout(){
         return axios(config('auth/login', 'delete')).then<DefaultApiType>(res => (res.data))
     },
-    getUsers(count:number, page:number){
-        return axios(config(`users/?count=${count}&page=${page}`, 'get')).then<GetUsersType>(res => (res.data))
+    getUsers(count:number, page:number, term:string, friend:'null'|'true'|'false'){
+        let termQuery = term ? `&term=${term}` : ''
+        let friendQuery = friend !== 'null' ? `&friend=${friend}` : ''
+
+        return axios(config(`users/?count=${count}&page=${page}` + termQuery + friendQuery, 'get')).then<GetUsersType>(res => (res.data))
     },
     getProfile(userId:number){
         return axios(config('profile/' + userId, 'get')).then<ProfileType>(res => (res.data))

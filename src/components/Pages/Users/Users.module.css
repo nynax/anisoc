@@ -25,6 +25,9 @@
     grid-template-columns: 1fr 11fr;
     padding-top: 10px;
 }
+.form {
+    padding: 10px;
+}
 
 
 
