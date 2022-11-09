@@ -5,7 +5,7 @@ import {NavLink} from "react-router-dom";
 import PaginatedItems from "../../common/Paginator/Paginator";
 import {UsersContainerType} from "./UsersContainer";
 import {useForm} from "react-hook-form";
-import {ChangePageType, RequestUsersType} from "../../../redux/usersReducer";
+import {RequestUsersType} from "../../../redux/usersReducer";
 
 type UsersType = UsersContainerType
 
@@ -19,9 +19,8 @@ let Users : FC<UsersType> = (props) => {
 
     return <div className={css.users}>
 
-        <UsersFilterForm changePage={props.changePage} totalUsers={props.totalUsers} requestUsers={props.requestUsers} usersPerPage={props.usersPerPage} currentPage={props.currentPage} lastQuery={props.lastQuery}/>
-
-        {<PaginatedItems pagesCount={pagesCount} changePage={props.changePage} currentPage={props.currentPage}/>}
+        <UsersFilterForm requestUsers={props.requestUsers} lastQuery={props.lastQuery}/>
+        <PaginatedItems pagesCount={pagesCount} changePage={props.changePage} currentPage={props.currentPage}/>
 
         <div className={css.text}>
             {/*Users list*/}
@@ -57,10 +56,6 @@ type FormType = {
 
 type UsersFilterFormType = {
     requestUsers: RequestUsersType
-    changePage: ChangePageType
-    usersPerPage: number
-    totalUsers: number
-    currentPage: number
     lastQuery: FormType
 }
 
