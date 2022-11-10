@@ -21,9 +21,10 @@ import {
     getUsersPerPage
 } from "../../../redux/usersSelector";
 import {AppStateType} from "../../../redux/reduxStore";
+import {getIsAuth} from "../../../redux/authSelector";
 
 
-export type UsersContainerType = UsersStateType & DispatchToPropsType
+export type UsersContainerType = StateToPropsType & DispatchToPropsType
 
 const UsersContainer : FC<UsersContainerType> = (props) => {
 
@@ -35,8 +36,15 @@ const UsersContainer : FC<UsersContainerType> = (props) => {
     return <Users {...props} />
 }
 
-const mapStateToProps = (state : AppStateType) : StateToPropsType=> {
+type isAuthType = {
+    isAuth: boolean
+}
+
+type StateToPropsType = UsersStateType & isAuthType
+
+const mapStateToProps = (state : AppStateType) : StateToPropsType => {
     return {
+        isAuth: getIsAuth(state),
         users: getUsers(state),
         totalUsers: getTotalUsers(state),
         currentPage: getCurrentPage(state),
@@ -47,7 +55,7 @@ const mapStateToProps = (state : AppStateType) : StateToPropsType=> {
     }
 }
 
-type StateToPropsType = UsersStateType
+
 
 type DispatchToPropsType = {
     setFollowInProgress:SetFollowInProgressType

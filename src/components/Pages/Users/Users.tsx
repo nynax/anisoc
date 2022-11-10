@@ -19,7 +19,7 @@ let Users : FC<UsersType> = (props) => {
 
     return <div className={css.users}>
 
-        <UsersFilterForm requestUsers={props.requestUsers} lastQuery={props.lastQuery}/>
+        <UsersFilterForm requestUsers={props.requestUsers} lastQuery={props.lastQuery} isAuth={props.isAuth}/>
         <PaginatedItems pagesCount={pagesCount} changePage={props.changePage} currentPage={props.currentPage}/>
 
         <div className={css.text}>
@@ -57,6 +57,7 @@ type FormType = {
 type UsersFilterFormType = {
     requestUsers: RequestUsersType
     lastQuery: FormType
+    isAuth: boolean
 }
 
 const UsersFilterForm : FC<UsersFilterFormType>= (props) => {
@@ -74,12 +75,13 @@ const UsersFilterForm : FC<UsersFilterFormType>= (props) => {
 
                 <input id="term" {...register("term")} placeholder="Type name here..."  />
 
-
-                <select {...register("friend")}>
-                    <option value="null">All</option>
-                    <option value="true">Friends</option>
-                    <option value="false">Enemies</option>
-                </select>
+                {props.isAuth &&
+                    <select {...register("friend")}>
+                        <option value="null">All</option>
+                        <option value="true">Friends</option>
+                        <option value="false">Enemies</option>
+                    </select>
+                }
 
                 <button>Find</button>
             </form>

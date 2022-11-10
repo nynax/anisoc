@@ -26,7 +26,7 @@ export const LoginContainer : FC<LoginType> = () => {
     const authError = useSelector(getAuthError)
     const captcha = useSelector(getCaptcha)
 
-    const _setAuthError = (errorMsg: string | null) => {
+/*    const _setAuthError = (errorMsg: string | null) => {
         dispatch(setAuthError(errorMsg))
     }
     const _loginMe = (email: string, password: string, rememberMe: boolean, captcha: string | null) => {
@@ -34,12 +34,12 @@ export const LoginContainer : FC<LoginType> = () => {
     }
     const _setCaptcha = (captchaUrl: string | null) => {
         dispatch(setCaptcha(captchaUrl))
-    }
+    }*/
 
     //return state to default
     useEffect(() => {
-        _setAuthError(null)
-        _setCaptcha(null)
+        dispatch(setAuthError(null))
+        dispatch(setCaptcha(null))
     },[]);
 
 
@@ -51,7 +51,8 @@ export const LoginContainer : FC<LoginType> = () => {
     return (
         <div className={css.form}>
             <form className={css.formInline} onSubmit={handleSubmit ((data) => {
-                _loginMe(data.login, data.password, data.rememberMe, data.captcha ? data.captcha : null)
+                //_loginMe(data.login, data.password, data.rememberMe, data.captcha ? data.captcha : null)
+                dispatch(loginMe(data.login, data.password, data.rememberMe, data.captcha ? data.captcha : null))
             })}>
 
                 <input id="login" {...register("login", {
