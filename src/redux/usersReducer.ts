@@ -114,12 +114,10 @@ export const requestUsers : RequestUsersType = (currentPage, term= '', friend= '
     return async (dispatch : Dispatch<ActionsType>) => {
         dispatch(callPreloaderAC(true))
         dispatch(actions.setLastQueryAC({term, friend}))
+        dispatch(actions.setCurrentPageAC(currentPage))
 
         let resData = await requestAPI.getUsers(initialState.usersPerPage, currentPage, term, friend)
         dispatch(callPreloaderAC(false))
-
-        console.log('api:' + term, friend)
-        dispatch(actions.setLastQueryAC({term, friend}))
 
         dispatch(actions.setUsersAC(resData.items))
         dispatch(actions.setTotalUsersAC(resData.totalCount))
