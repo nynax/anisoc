@@ -1,11 +1,11 @@
-import {applyMiddleware, combineReducers, compose, createStore} from "redux";
+import {Action, applyMiddleware, combineReducers, compose, createStore} from "redux";
 //import {configureStore} from "@reduxjs/toolkit";
 import {profileReducer} from "./profileReducer";
 import {dialogsReducer} from "./dialogsReducer";
 import {usersReducer} from "./usersReducer";
 import {authReducer} from "./authReducer";
 import {appReducer} from "./appReducer";
-import thunkMiddleware from "redux-thunk";
+import thunkMiddleware, {ThunkDispatch} from "redux-thunk";
 
 let rootReducer = combineReducers({
     pageProfile: profileReducer,
@@ -22,6 +22,9 @@ export type AppStateType = ReturnType<RootReducerType>
 type PropertiesTypes<T> = T extends {[key: string]: infer U} ? U : never
 export type InferActionsTypes<T extends {[key: string]: (...args: any[])=>any}> = ReturnType<PropertiesTypes<T>>
 
+//Type for useDispatch() with thunks
+export type TypedDispatch = ThunkDispatch<AppStateType, any, Action>
+
 //Создаем store. Добавляем reducers и включаем thunk
 //let store = configureStore({reducer: reducers}, applyMiddleware(thunkMiddleware))
 
@@ -29,6 +32,7 @@ export type InferActionsTypes<T extends {[key: string]: (...args: any[])=>any}> 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, /* preloadedState, */ composeEnhancers(applyMiddleware(thunkMiddleware)
 ));
+
 
 
 export default store

@@ -1,7 +1,7 @@
 import React from "react"
 import {connect} from "react-redux";
 import {useParams} from "react-router-dom";
-import LoginContainer from "../components/Pages/Login/LoginContainer";
+import {LoginContainer} from "../components/Pages/Login/LoginContainer";
 
 let mapStateToPropsRedirect = (state) => ({isAuth: state.auth.isAuth})
 
@@ -26,7 +26,7 @@ export const withAuthRedirect = (Component) => {
         },[]);*/
 
         if (!props.isAuth) {
-            return <LoginContainer {...props.store}/>
+            return <LoginContainer />
         }else{
             return <Component {...props} userId={params.userId ? params.userId : props.myUserId}/>
         }

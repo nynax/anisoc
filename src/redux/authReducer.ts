@@ -73,7 +73,7 @@ export const setAuthError : SetAuthErrorType = (errorMsg) => (dispatch) => {
 }
 
 export type SetCaptchaType = (captchaUrl: string | null) => (dispatch:Dispatch<ActionsType>) => any
-export const setCaptcha : SetCaptchaType = (captchaUrl) => (dispatch) => {
+export const setCaptcha : SetCaptchaType = (captchaUrl) => async (dispatch) => {
     return dispatch(actions.setCaptchaAC(captchaUrl))
 }
 
