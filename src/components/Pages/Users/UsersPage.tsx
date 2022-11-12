@@ -1,7 +1,7 @@
 import React, {FC, useEffect} from "react"
 import css from "./Users.module.css"
 import avatar from "../../../images/maul.png";
-import {NavLink} from "react-router-dom";
+import {NavLink, useSearchParams} from "react-router-dom";
 import PaginatedItems from "../../common/Paginator/Paginator";
 import {UsersFilterForm} from "./UsersFilterForm";
 import {useDispatch, useSelector} from "react-redux";
@@ -17,8 +17,15 @@ import {changePage, followAndUnfollow, requestUsers, RequestUsersType} from "../
 
 type UsersPageType = { }
 
-let UsersPage : FC<UsersPageType> = () => {
+/*type SearchParamsType = {
+    currentPage? : string
+    term? : string
+    friend? : "false" | "true" | "null"
+}*/
+
+let UsersPage : FC<UsersPageType> = React.memo(() => {
     //console.log(props)
+
 
     const dispatch = useDispatch<TypedDispatch>()
 
@@ -30,6 +37,11 @@ let UsersPage : FC<UsersPageType> = () => {
     const followInProgress = useSelector(getFollowInProgress)
     const lastQuery = useSelector(getLastQuery)
 
+    const [searchParams, setSearchParams] = useSearchParams();
+    console.log(searchParams.get('term'))
+    console.log(lastQuery)
+
+
     //dispatches
     const _changePage = (pageNumber : number) => {
         dispatch(changePage(pageNumber))
@@ -40,15 +52,30 @@ let UsersPage : FC<UsersPageType> = () => {
     }
 
     useEffect(() => {
+        console.log('useEffect: lastQuery')
+        if (currentPage != 1) {
+            setSearchParams({page: String(currentPage), term: lastQuery.term, friend: lastQuery.friend})
+        }
+        //let {page, term, friend} = searchParams.get
+        _requestUsers(Number(searchParams.get('page')), searchParams.get('term') as string, searchParams.get('friend') as "false" | "true" | "null")
+    },[]);
+
+    useEffect(() => {
         _requestUsers(currentPage, lastQuery.term, lastQuery.friend)
+        console.log('useEffect: currentPage')
+        if (currentPage != 1) {
+            setSearchParams({page: String(currentPage), term: lastQuery.term, friend: lastQuery.friend})
+        }
     },[currentPage]);
+
+
 
     //Divide totalUsers on usersPerPage from API and calculate pagesCount for next pagination mapping
     let pagesCount = Math.ceil(totalUsers / usersPerPage)
 
     return <div className={css.users}>
 
-        <UsersFilterForm requestUsers={_requestUsers} lastQuery={lastQuery}/>
+        <UsersFilterForm requestUsers={_requestUsers} lastQuery={lastQuery} setSearchParams={setSearchParams}/>
         <PaginatedItems pagesCount={pagesCount} changePage={_changePage} currentPage={currentPage}/>
 
         <div className={css.text}>
@@ -77,7 +104,7 @@ let UsersPage : FC<UsersPageType> = () => {
                 </div>})}
             </div>
     </div>
-}
+})
 
 
 
