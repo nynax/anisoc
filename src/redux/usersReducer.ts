@@ -21,7 +21,7 @@ let initialState = {
     usersPerPage: 20,
     showPreloader: false,
     followInProgress: [] as Array<number>,
-    lastQuery: {page: 1, term: '', friend:'null' as 'null' | 'false' | 'true'}
+    lastQuery: {page: 1, term: '', friend:'null' as 'null' | 'false' | 'true', query: false}
 }
 
 type LastQueryType = typeof initialState.lastQuery
@@ -114,7 +114,7 @@ export const requestUsers : RequestUsersType = (page, term= '', friend= 'null') 
     //debugger
     return async (dispatch : Dispatch<ActionsType>) => {
         dispatch(callPreloaderAC(true))
-        dispatch(actions.setLastQueryAC({page, term, friend}))
+        //dispatch(actions.setLastQueryAC({page, term, friend, query:true}))
         //dispatch(actions.setCurrentPageAC(currentPage))
 
         let resData = await requestAPI.getUsers(initialState.usersPerPage, page, term, friend)
@@ -126,8 +126,8 @@ export const requestUsers : RequestUsersType = (page, term= '', friend= 'null') 
 }
 
 //Don't need dispatch(requestUsers...), because using useEffect in UserContainer
-//export type SetLastQueryType = (page : number, term : string, friend : 'null' | 'false' | 'true') => any
-export const setLastQuery : RequestUsersType  = (page, term, friend) => {
+export type SetLastQueryType = (page : number, term : string, friend : 'null' | 'false' | 'true', query? : boolean) => any
+export const setLastQuery : SetLastQueryType  = (page, term, friend, query = true) => {
     //debugger
     return (dispatch : Dispatch<ActionsType>) => {
         //let lastQuery = {...getState().pageUsers.lastQuery}
@@ -137,8 +137,9 @@ export const setLastQuery : RequestUsersType  = (page, term, friend) => {
         if (friend === false) {
             friend = lastQuery.friend
         }*/
+
+        dispatch(actions.setLastQueryAC({page, term, friend, query}))
         //debugger
-        dispatch(actions.setLastQueryAC({page, term, friend}))
         //dispatch(actions.setCurrentPageAC(pageNumber))
     }
 }
