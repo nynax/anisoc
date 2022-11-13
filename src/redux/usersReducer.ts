@@ -21,11 +21,12 @@ let initialState = {
     usersPerPage: 20,
     showPreloader: false,
     followInProgress: [] as Array<number>,
-    lastQuery: {term: '', friend:'null' as 'null' | 'false' | 'true'}
+    lastQuery: {page: 1, term: '', friend:'null' as 'null' | 'false' | 'true'}
 }
 
+type LastQueryType = typeof initialState.lastQuery
 type InitialStateType = typeof initialState
-export type UsersStateType = InitialStateType
+//export type UsersStateType = InitialStateType
 
 export const usersReducer = (state = initialState, action : ActionsType) : InitialStateType => {
     //debugger
@@ -97,26 +98,26 @@ const actions = {
     setCurrentPageAC: (currentPage : number) => ({type: SET_CURRENT_PAGE, currentPage} as const),
     callPreloaderAC: (showPreloader : boolean) => ({type: CALL_PRELOADER, showPreloader} as const),
     setFollowInProgressAC: (userId : number) => ({type: SET_FOLLOW_IN_PROGRESS, userId} as const),
-    setLastQueryAC: (lastQuery : any ) => ({type: SET_LAST_QUERY, lastQuery} as const)
+    setLastQueryAC: (lastQuery : LastQueryType ) => ({type: SET_LAST_QUERY, lastQuery} as const)
 }
 
 export const callPreloaderAC = actions.callPreloaderAC;
 
 //Thunks
-export type SetFollowInProgressType = (userId : number) => (dispatch:Dispatch<ActionsType>) =>  any
-export const setFollowInProgress : SetFollowInProgressType = (userId) => (dispatch) => {
+/*export type SetFollowInProgressType = (userId : number) => (dispatch:Dispatch<ActionsType>) =>  any
+const setFollowInProgress : SetFollowInProgressType = (userId) => (dispatch) => {
     return dispatch(actions.setFollowInProgressAC(userId))
-}
+}*/
 
-export type RequestUsersType = (currentPage : number, term? : string, friend? : 'null' | 'false' | 'true') => any
-export const requestUsers : RequestUsersType = (currentPage, term= '', friend= 'null') => {
+export type RequestUsersType = (page : number, term : string, friend : 'null' | 'false' | 'true') => any
+export const requestUsers : RequestUsersType = (page, term= '', friend= 'null') => {
     //debugger
     return async (dispatch : Dispatch<ActionsType>) => {
         dispatch(callPreloaderAC(true))
-        dispatch(actions.setLastQueryAC({term, friend}))
-        dispatch(actions.setCurrentPageAC(currentPage))
+        dispatch(actions.setLastQueryAC({page, term, friend}))
+        //dispatch(actions.setCurrentPageAC(currentPage))
 
-        let resData = await requestAPI.getUsers(initialState.usersPerPage, currentPage, term, friend)
+        let resData = await requestAPI.getUsers(initialState.usersPerPage, page, term, friend)
         dispatch(callPreloaderAC(false))
 
         dispatch(actions.setUsersAC(resData.items))
@@ -124,12 +125,21 @@ export const requestUsers : RequestUsersType = (currentPage, term= '', friend= '
     }
 }
 
-//Dont need dispatch(requestUsers...), because using useEffect in UserContainer
-export type ChangePageType = (pageNumber : number) => any
-export const changePage : ChangePageType  = (pageNumber) => {
+//Don't need dispatch(requestUsers...), because using useEffect in UserContainer
+//export type SetLastQueryType = (page : number, term : string, friend : 'null' | 'false' | 'true') => any
+export const setLastQuery : RequestUsersType  = (page, term, friend) => {
     //debugger
     return (dispatch : Dispatch<ActionsType>) => {
-        dispatch(actions.setCurrentPageAC(pageNumber))
+        //let lastQuery = {...getState().pageUsers.lastQuery}
+       /* if (term === false) {
+            term = lastQuery.term
+        }
+        if (friend === false) {
+            friend = lastQuery.friend
+        }*/
+        //debugger
+        dispatch(actions.setLastQueryAC({page, term, friend}))
+        //dispatch(actions.setCurrentPageAC(pageNumber))
     }
 }
 

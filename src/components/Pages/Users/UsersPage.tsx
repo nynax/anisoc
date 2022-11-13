@@ -1,19 +1,18 @@
 import React, {FC, useEffect} from "react"
 import css from "./Users.module.css"
 import avatar from "../../../images/maul.png";
-import {NavLink, useSearchParams} from "react-router-dom";
+import {NavLink, useLocation, useSearchParams} from "react-router-dom";
 import PaginatedItems from "../../common/Paginator/Paginator";
 import {UsersFilterForm} from "./UsersFilterForm";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    getCurrentPage,
     getFollowInProgress, getLastQuery,
     getTotalUsers,
     getUsers,
     getUsersPerPage
 } from "../../../redux/usersSelector";
 import {TypedDispatch} from "../../../redux/reduxStore";
-import {changePage, followAndUnfollow, requestUsers, RequestUsersType} from "../../../redux/usersReducer";
+import {setLastQuery, followAndUnfollow, requestUsers} from "../../../redux/usersReducer";
 
 type UsersPageType = { }
 
@@ -32,41 +31,62 @@ let UsersPage : FC<UsersPageType> = React.memo(() => {
     //state
     const users = useSelector(getUsers)
     const totalUsers = useSelector(getTotalUsers)
-    const currentPage = useSelector(getCurrentPage)
+    //const currentPage = useSelector(getCurrentPage)
     const usersPerPage = useSelector(getUsersPerPage)
     const followInProgress = useSelector(getFollowInProgress)
     const lastQuery = useSelector(getLastQuery)
 
     const [searchParams, setSearchParams] = useSearchParams();
-    console.log(searchParams.get('term'))
+    //console.log(searchParams.get('term'))
     console.log(lastQuery)
-
+    console.log(searchParams)
+    let location = useLocation();
+    console.log(location)
 
     //dispatches
-    const _changePage = (pageNumber : number) => {
-        dispatch(changePage(pageNumber))
+    const _changePage = (pageNumber : number, term = lastQuery.term, friend = lastQuery.friend) => {
+        dispatch(setLastQuery(pageNumber, term, friend))
+        setSearchParams({page: String(pageNumber), term, friend})
     }
 
-    const _requestUsers : RequestUsersType = (currentPage, term, friend) => {
-        dispatch(requestUsers(currentPage, term, friend))
-    }
+/*    const _requestUsers : RequestUsersType = (page, term, friend) => {
+        dispatch(requestUsers(page === 0 ? 1 : page, term, friend))
+    }*/
 
-    useEffect(() => {
+/*    useEffect(() => {
         console.log('useEffect: lastQuery')
         if (currentPage != 1) {
             setSearchParams({page: String(currentPage), term: lastQuery.term, friend: lastQuery.friend})
         }
         //let {page, term, friend} = searchParams.get
-        _requestUsers(Number(searchParams.get('page')), searchParams.get('term') as string, searchParams.get('friend') as "false" | "true" | "null")
-    },[]);
+        _requestUsers(Number(searchParams.get('page')), searchParams.get('term')  as string, searchParams.get('friend') as "false" | "true" | "null")
+    },[]);*/
+
+    /*useEffect(() => {
+        _requestUsers(lastQuery.page, lastQuery.term, lastQuery.friend)
+        console.log('useEffect: lastQuery.page')
+        //if (location) {
+        //    setSearchParams({page: String(lastQuery.page), term: lastQuery.term, friend: lastQuery.friend})
+        //}
+    },[lastQuery.page]);*/
 
     useEffect(() => {
-        _requestUsers(currentPage, lastQuery.term, lastQuery.friend)
-        console.log('useEffect: currentPage')
-        if (currentPage != 1) {
-            setSearchParams({page: String(currentPage), term: lastQuery.term, friend: lastQuery.friend})
-        }
-    },[currentPage]);
+        //_requestUsers(lastQuery.page, lastQuery.term, lastQuery.friend)
+        dispatch(requestUsers(lastQuery.page, lastQuery.term, lastQuery.friend))
+        console.log('useEffect: lastQuery.term')
+        /*if (location.search) {
+            console.log('location.search is true')
+            setSearchParams({page: String(lastQuery.page), term: lastQuery.term, friend: lastQuery.friend})
+        }*/
+    },[lastQuery.term, lastQuery.friend, lastQuery.page])
+
+   /* useEffect(() => {
+        _requestUsers(lastQuery.page, lastQuery.term, lastQuery.friend)
+        console.log('useEffect: lastQuery.friend')
+        //if (currentPage != 1) {
+        //    setSearchParams({page: String(currentPage), term: lastQuery.term, friend: lastQuery.friend})
+        //}
+    },[lastQuery.friend]);*/
 
 
 
@@ -75,8 +95,9 @@ let UsersPage : FC<UsersPageType> = React.memo(() => {
 
     return <div className={css.users}>
 
-        <UsersFilterForm requestUsers={_requestUsers} lastQuery={lastQuery} setSearchParams={setSearchParams}/>
-        <PaginatedItems pagesCount={pagesCount} changePage={_changePage} currentPage={currentPage}/>
+        <UsersFilterForm lastQuery={lastQuery} setSearchParams={setSearchParams}/>
+        {/*@ts-ignore*/}
+        <PaginatedItems pagesCount={pagesCount} changePage={_changePage} currentPage={lastQuery.page}/>
 
         <div className={css.text}>
             {/*Users list*/}
