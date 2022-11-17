@@ -115,7 +115,7 @@ export const requestUsers : RequestUsersType = (page, term= '', friend= 'null') 
     return async (dispatch : Dispatch<ActionsType>) => {
         dispatch(callPreloaderAC(true))
         //dispatch(actions.setLastQueryAC({page, term, friend, query:true}))
-        //dispatch(actions.setCurrentPageAC(currentPage))
+        //dispatch(actions.setCurrentPageAC(page))
 
         let resData = await requestAPI.getUsers(initialState.usersPerPage, page, term, friend)
         dispatch(callPreloaderAC(false))
@@ -140,7 +140,7 @@ export const setLastQuery : SetLastQueryType  = (page, term, friend, query = tru
 
         dispatch(actions.setLastQueryAC({page, term, friend, query}))
         //debugger
-        //dispatch(actions.setCurrentPageAC(pageNumber))
+        dispatch(actions.setCurrentPageAC(page))
     }
 }
 

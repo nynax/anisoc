@@ -5,16 +5,16 @@ import css from "./Paginator.module.css"
 
 type PaginatedItemsType = {
     pagesCount: number
-    changePage: () => void
+    setQueryAndParams: () => void
     currentPage: number
 }
 
-const PaginatedItems : FC<PaginatedItemsType> = ({pagesCount, changePage, currentPage}) => {
+const PaginatedItems : FC<PaginatedItemsType> = ({pagesCount, setQueryAndParams, currentPage}) => {
 
     const handlePageClick = (event : any) => {
 
         //@ts-ignore
-        changePage(event.selected + 1)
+        setQueryAndParams(event.selected + 1)
     };
 
     return (

@@ -12,7 +12,7 @@ type FormType = {
 
 type UsersFilterFormType = {
     lastQuery: FormType
-    setSearchParams: any
+    setQueryAndParams: any
 }
 
 export const UsersFilterForm : FC<UsersFilterFormType>= (props) => {
@@ -25,14 +25,13 @@ export const UsersFilterForm : FC<UsersFilterFormType>= (props) => {
     setValue('term', props.lastQuery.term)
     setValue('friend', props.lastQuery.friend)
 
-    console.log('UsersFilterForm')
-    console.log(props.lastQuery)
+    console.log('UsersFilterForm, props.lastQuery:', props.lastQuery)
 
     return (
         <div className={css.form}>
             <form className={css.formInline} onSubmit={handleSubmit ((data) => {
                 //dispatch(setLastQuery( 1, data.term, data.friend))
-                props.setSearchParams({page: 1, term: data.term, friend: data.friend})
+                props.setQueryAndParams(1, data.term, data.friend)
             })}>
 
                 <input id="term" {...register("term")} placeholder="Type name here..."  />

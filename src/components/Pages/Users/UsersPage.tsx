@@ -6,13 +6,14 @@ import PaginatedItems from "../../common/Paginator/Paginator";
 import {UsersFilterForm} from "./UsersFilterForm";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    getFollowInProgress,
+    getFollowInProgress, getLastQuery,
     getTotalUsers,
     getUsers,
     getUsersPerPage
 } from "../../../redux/usersSelector";
 import {TypedDispatch} from "../../../redux/reduxStore";
-import {followAndUnfollow, requestUsers} from "../../../redux/usersReducer";
+import {followAndUnfollow, requestUsers, setLastQuery} from "../../../redux/usersReducer";
+import {Users} from "./Users";
 
 type UsersPageType = {}
 
@@ -34,12 +35,12 @@ let UsersPage: FC<UsersPageType> = React.memo(() => {
     //const currentPage = useSelector(getCurrentPage)
     const usersPerPage = useSelector(getUsersPerPage)
     const followInProgress = useSelector(getFollowInProgress)
-    //const lastQuery = useSelector(getLastQuery)
+    const lastQuery = useSelector(getLastQuery)
 
     const [searchParams, setSearchParams] = useSearchParams();
     //console.log(searchParams.get('term'))
     //console.log(lastQuery)
-    console.log(searchParams)
+
     let location = useLocation();
     console.log(location)
 
@@ -50,16 +51,19 @@ let UsersPage: FC<UsersPageType> = React.memo(() => {
     }
 
     //dispatches
-    const _changePage = (page: number, term = query.term, friend = query.friend) => {
-        //dispatch(setLastQuery(pageNumber, term, friend))
+    const setQueryAndParams = (page: number, term = query.term, friend = query.friend) => {
+        console.log('setQueryAndParams', page)
+
+        /*@ts-ignore*/
+        dispatch(setLastQuery(page, term, friend))
         /*@ts-ignore*/
         setSearchParams({ page, term, friend})
     }
 
-
+    //
     useEffect(() => {
-        console.log('useEffect: location.search')
-        console.log(query)
+        console.log('useEffect: lastQuery was changed')
+        //console.log(query)
         /*@ts-ignore*/
         dispatch(requestUsers(Number(query.page), query.term, query.friend ))
 
@@ -70,47 +74,32 @@ let UsersPage: FC<UsersPageType> = React.memo(() => {
         }*/ /*else {
             setSearchParams({})
         }*/
-    }, [location.search])
+    }, [lastQuery.page, lastQuery.term, lastQuery.friend, lastQuery.query])
+
+    //Если в урле нет параметров, нужно проверить наличие данных в последнем запросе и если они есть, отрендерить их
+    if (!location.search){
+        if (lastQuery.query){
+            console.log('lastQuery is true', lastQuery)
+            /*@ts-ignore*/
+            setSearchParams({ page:lastQuery.page, term:lastQuery.term, friend:lastQuery.friend})
+            //console.log(users)
+            return <Users lastQuery={lastQuery} setQueryAndParams={setQueryAndParams}/>
+        }
+    }
 
 
 
-    //Divide totalUsers on usersPerPage from API and calculate pagesCount for next pagination mapping
-    let pagesCount = Math.ceil(totalUsers / usersPerPage)
+    console.log(query)
 
-    return <div className={css.users}>
-        {/*@ts-ignore*/}
-        <UsersFilterForm lastQuery={query} setSearchParams={setSearchParams}/>
-        {/*@ts-ignore*/}
-        <PaginatedItems pagesCount={pagesCount} changePage={_changePage} currentPage={query.page}/>
 
-        <div className={css.text}>
-            {/*Users list*/}
-            {users.map(user => {
 
-                //Check if user in array followers
-                let isFollowed = followInProgress.some(userId => userId === user.id)
 
-                return <div className={css.user} key={user.id}>
-                    <div className={css.avatar}>
-                        <NavLink to={"/profile/" + user.id}><img alt='oxuenno ochen'
-                                                                 src={user.photos.small ? user.photos.small : avatar}/></NavLink>
-                        {/*follow and unfollow button*/}
-                        {user.followed
-                            ? <button disabled={isFollowed} onClick={() => {
-                                dispatch(followAndUnfollow(false, user.id))
-                            }}>Unfollow</button>
-                            : <button disabled={isFollowed} onClick={() => {
-                                dispatch(followAndUnfollow(true, user.id))
-                            }}>Follow</button>
-                        }
-                    </div>
-                    <div className={css.name}>{user.name}
-                        <div className={css.status}>{user.status}</div>
-                    </div>
-                </div>
-            })}
-        </div>
-    </div>
+
+
+    return <Users lastQuery={query} setQueryAndParams={setQueryAndParams}/>
+
+
+
 })
 
 
