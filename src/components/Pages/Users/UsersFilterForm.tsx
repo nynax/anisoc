@@ -6,6 +6,7 @@ import {getIsAuth} from "../../../redux/authSelector";
 //import {TypedDispatch} from "../../../redux/reduxStore";
 
 type FormType = {
+    disabled: boolean
     term: string
     friend: 'null' | 'false' | 'true'
 }
@@ -25,7 +26,7 @@ export const UsersFilterForm : FC<UsersFilterFormType>= (props) => {
     setValue('term', props.lastQuery.term)
     setValue('friend', props.lastQuery.friend)
 
-    console.log('UsersFilterForm, props.lastQuery:', props.lastQuery)
+    console.log('UsersFilterForm, props.lastQuery:', !props.lastQuery.disabled)
 
     return (
         <div className={css.form}>
@@ -45,6 +46,7 @@ export const UsersFilterForm : FC<UsersFilterFormType>= (props) => {
                 }
 
                 <button>Find</button>
+                <input disabled={!props.lastQuery.disabled} onClick={()=>{props.setQueryAndParams(1, '', 'null', false)}} type="button" value="Clear"/>
             </form>
 
         </div>

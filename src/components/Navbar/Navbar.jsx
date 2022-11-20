@@ -2,13 +2,20 @@ import React from "react"
 import css from "./Navabar.module.css"
 import {NavLink} from "react-router-dom"
 import Preloader from "../common/Preloader/Preloader";
-import {getShowPreloader} from "../../redux/usersSelector";
-import {connect} from "react-redux";
+import {getLastQuery, getShowPreloader} from "../../redux/usersSelector";
+import {connect, useSelector} from "react-redux";
 
 
 const Navbar = (props) => {
-    //console.log('Navbar')
-    //console.log(props)
+    console.log('Navbar', props)
+    const lastQuery = useSelector(getLastQuery)
+    console.log('lastQuery', lastQuery)
+
+    let query = '/users'
+    if (lastQuery.query){
+        query = '/users?page=' + lastQuery.page + '&term=' + lastQuery.term + '&friend=' + lastQuery.friend
+    }
+
     return (
         <nav className={css.navbar}>
             <div className={css.item}>
@@ -18,7 +25,7 @@ const Navbar = (props) => {
                 <NavLink to='/dialogs' className={({ isActive }) => isActive ? css.active : undefined}>Dialogs</NavLink>
             </div>
             <div className={css.item}>
-                <NavLink to='/users' className={({ isActive }) => isActive ? css.active : undefined}>Users</NavLink>
+                <NavLink to={query} className={({ isActive }) => isActive ? css.active : undefined}>Users</NavLink>
             </div>
             <div className={css.item}>
                 <NavLink to='/news' className={({ isActive }) => isActive ? css.active : undefined}>News</NavLink>

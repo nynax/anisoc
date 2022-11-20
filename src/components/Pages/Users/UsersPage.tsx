@@ -1,7 +1,7 @@
 import React, {FC, useEffect} from "react"
 import css from "./Users.module.css"
 import avatar from "../../../images/maul.png";
-import {NavLink, useLocation, useSearchParams} from "react-router-dom";
+import {NavLink, useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import PaginatedItems from "../../common/Paginator/Paginator";
 import {UsersFilterForm} from "./UsersFilterForm";
 import {useDispatch, useSelector} from "react-redux";
@@ -30,11 +30,11 @@ let UsersPage: FC<UsersPageType> = React.memo(() => {
     const dispatch = useDispatch<TypedDispatch>()
 
     //state
-    const users = useSelector(getUsers)
+    //const users = useSelector(getUsers)
     const totalUsers = useSelector(getTotalUsers)
     //const currentPage = useSelector(getCurrentPage)
-    const usersPerPage = useSelector(getUsersPerPage)
-    const followInProgress = useSelector(getFollowInProgress)
+    //const usersPerPage = useSelector(getUsersPerPage)
+    //const followInProgress = useSelector(getFollowInProgress)
     const lastQuery = useSelector(getLastQuery)
 
     const [searchParams, setSearchParams] = useSearchParams();
@@ -44,28 +44,51 @@ let UsersPage: FC<UsersPageType> = React.memo(() => {
     let location = useLocation();
     console.log(location)
 
-    let query = {
+    let params = {
         page : searchParams.get('page') ? searchParams.get('page') : 1,
         term : searchParams.get('term') ? searchParams.get('term') : '',
         friend : searchParams.get('friend') ? searchParams.get('friend') : 'null',
+        disabled: !!(searchParams.get('page') || searchParams.get('term') || searchParams.get('term'))
     }
 
+    console.log('------------')
+    console.log('Query: ', params)
+    console.log('lastQuery: ', lastQuery)
+    console.log('------------')
+
     //dispatches
-    const setQueryAndParams = (page: number, term = query.term, friend = query.friend) => {
+
+    const setQueryAndParams = (page: number, term = params.term, friend = params.friend, query = true) => {
         console.log('setQueryAndParams', page)
 
         /*@ts-ignore*/
-        dispatch(setLastQuery(page, term, friend))
-        /*@ts-ignore*/
-        setSearchParams({ page, term, friend})
+        dispatch(setLastQuery(page, term, friend, query))
+
+        if (query){
+            /*@ts-ignore*/
+            setSearchParams({ page, term, friend})
+        }else{
+            setSearchParams({})
+        }
+
     }
+
+    //const navigate = useNavigate();
+
+    useEffect(() => {
+        if (lastQuery.query) {
+            // @ts-ignore
+            setSearchParams({ page:lastQuery.page, term:lastQuery.term, friend:lastQuery.friend})
+            //navigate('/users?page=' + lastQuery.page + '&term=' + lastQuery.term + '&friend=' + lastQuery.friend);
+        }
+    }, [location.search]);
 
     //
     useEffect(() => {
         console.log('useEffect: lastQuery was changed')
-        //console.log(query)
+        console.log(params)
         /*@ts-ignore*/
-        dispatch(requestUsers(Number(query.page), query.term, query.friend ))
+        dispatch(requestUsers(Number(params.page), params.term, params.friend ))
 
         /*if (location.search) {
             console.log('location.search is true')
@@ -76,27 +99,27 @@ let UsersPage: FC<UsersPageType> = React.memo(() => {
         }*/
     }, [lastQuery.page, lastQuery.term, lastQuery.friend, lastQuery.query])
 
-    //Если в урле нет параметров, нужно проверить наличие данных в последнем запросе и если они есть, отрендерить их
-    if (!location.search){
+    //Если в урле нет параметров, нужно проверить наличие данных в последнем запросе и если они есть, отрендерить их и передать в URL
+    /*if (!location.search){
         if (lastQuery.query){
             console.log('lastQuery is true', lastQuery)
-            /*@ts-ignore*/
+            /!*@ts-ignore*!/
             setSearchParams({ page:lastQuery.page, term:lastQuery.term, friend:lastQuery.friend})
             //console.log(users)
             return <Users lastQuery={lastQuery} setQueryAndParams={setQueryAndParams}/>
         }
-    }
+    }*/
 
 
 
-    console.log(query)
+    //console.log(query)
 
 
 
 
 
 
-    return <Users lastQuery={query} setQueryAndParams={setQueryAndParams}/>
+    return <Users lastQuery={params} setQueryAndParams={setQueryAndParams}/>
 
 
 
