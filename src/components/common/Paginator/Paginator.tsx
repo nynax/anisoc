@@ -1,19 +1,16 @@
 import React, {FC} from 'react';
 import ReactPaginate from 'react-paginate';
 import css from "./Paginator.module.css"
-//import {ChangePageType} from "../../../redux/usersReducer";
 
 type PaginatedItemsType = {
     pagesCount: number
-    setQueryAndParams: () => void
+    setQueryAndParams: (page:number) => void
     currentPage: number
 }
 
 const PaginatedItems : FC<PaginatedItemsType> = ({pagesCount, setQueryAndParams, currentPage}) => {
 
     const handlePageClick = (event : any) => {
-
-        //@ts-ignore
         setQueryAndParams(event.selected + 1)
     };
 

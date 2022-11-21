@@ -8,7 +8,7 @@ const FOLLOW = 'USERS/FOLLOW'
 const UNFOLLOW = 'USERS/UNFOLLOW'
 const SET_USERS = 'USERS/SET_USERS'
 const SET_TOTAL_USERS = 'USERS/SET_TOTAL_USERS'
-const SET_CURRENT_PAGE = 'USERS/SET_CURRENT_PAGE'
+//const SET_CURRENT_PAGE = 'USERS/SET_CURRENT_PAGE'
 const CALL_PRELOADER = 'USERS/CALL_PRELOADER'
 const SET_FOLLOW_IN_PROGRESS = 'USERS/SET_FOLLOW_IN_PROGRESS'
 const SET_LAST_QUERY = 'USERS/SET_LAST_QUERY'
@@ -24,7 +24,7 @@ let initialState = {
     lastQuery: {page: 1, term: '', friend:'null' as 'null' | 'false' | 'true', query: false}
 }
 
-type LastQueryType = typeof initialState.lastQuery
+export type LastQueryType = typeof initialState.lastQuery
 type InitialStateType = typeof initialState
 //export type UsersStateType = InitialStateType
 
@@ -68,10 +68,10 @@ export const usersReducer = (state = initialState, action : ActionsType) : Initi
             return produce(state, draft => {
                 draft.totalUsers = action.totalUsers
             })
-        case SET_CURRENT_PAGE:
+        /*case SET_CURRENT_PAGE:
             return produce(state, draft => {
                 draft.currentPage = action.currentPage
-            })
+            })*/
         case CALL_PRELOADER:
             return produce(state, draft => {
                 draft.showPreloader = action.showPreloader
@@ -95,7 +95,7 @@ const actions = {
     unfollowAC: (userId : number) => ({type: UNFOLLOW, userId} as const),
     setUsersAC: (users : Array<UserType>) => ({type: SET_USERS, users} as const),
     setTotalUsersAC: (totalUsers : number) => ({type: SET_TOTAL_USERS, totalUsers} as const),
-    setCurrentPageAC: (currentPage : number) => ({type: SET_CURRENT_PAGE, currentPage} as const),
+    //setCurrentPageAC: (currentPage : number) => ({type: SET_CURRENT_PAGE, currentPage} as const),
     callPreloaderAC: (showPreloader : boolean) => ({type: CALL_PRELOADER, showPreloader} as const),
     setFollowInProgressAC: (userId : number) => ({type: SET_FOLLOW_IN_PROGRESS, userId} as const),
     setLastQueryAC: (lastQuery : LastQueryType ) => ({type: SET_LAST_QUERY, lastQuery} as const)
@@ -104,12 +104,8 @@ const actions = {
 export const callPreloaderAC = actions.callPreloaderAC;
 
 //Thunks
-/*export type SetFollowInProgressType = (userId : number) => (dispatch:Dispatch<ActionsType>) =>  any
-const setFollowInProgress : SetFollowInProgressType = (userId) => (dispatch) => {
-    return dispatch(actions.setFollowInProgressAC(userId))
-}*/
 
-export type RequestUsersType = (page : number, term : string, friend : 'null' | 'false' | 'true') => any
+type RequestUsersType = (page : number, term : string, friend : 'null' | 'false' | 'true') => any
 export const requestUsers : RequestUsersType = (page, term= '', friend= 'null') => {
     //debugger
     return async (dispatch : Dispatch<ActionsType>) => {
@@ -125,28 +121,19 @@ export const requestUsers : RequestUsersType = (page, term= '', friend= 'null') 
     }
 }
 
-//Don't need dispatch(requestUsers...), because using useEffect in UserContainer
-export type SetLastQueryType = (page : number, term : string, friend : 'null' | 'false' | 'true', query? : boolean) => any
+//Func setLastQuery need only for change link in Sidebar
+type SetLastQueryType = (page : number, term : string, friend : 'null' | 'false' | 'true', query? : boolean) => any
 export const setLastQuery : SetLastQueryType  = (page, term, friend, query = true) => {
     //debugger
     return (dispatch : Dispatch<ActionsType>) => {
-        //let lastQuery = {...getState().pageUsers.lastQuery}
-       /* if (term === false) {
-            term = lastQuery.term
-        }
-        if (friend === false) {
-            friend = lastQuery.friend
-        }*/
-
         dispatch(actions.setLastQueryAC({page, term, friend, query}))
-        //debugger
-        dispatch(actions.setCurrentPageAC(page))
     }
 }
 
-export type FollowAndUnfollowType = (isFollow : boolean, userId : number) => any
+type FollowAndUnfollowType = (isFollow : boolean, userId : number) => any
 export const followAndUnfollow : FollowAndUnfollowType = (isFollow, userId) => {
     return async (dispatch : Dispatch<ActionsType>) => {
+
         dispatch(actions.setFollowInProgressAC(userId))
         if (isFollow){
             let resData = await requestAPI.follow(userId)

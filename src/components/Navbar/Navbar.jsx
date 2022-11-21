@@ -3,14 +3,16 @@ import css from "./Navabar.module.css"
 import {NavLink} from "react-router-dom"
 import Preloader from "../common/Preloader/Preloader";
 import {getLastQuery, getShowPreloader} from "../../redux/usersSelector";
-import {connect, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 
 
-const Navbar = (props) => {
-    console.log('Navbar', props)
+const Navbar = React.memo(() => {
+    //console.log('Navbar', props)
     const lastQuery = useSelector(getLastQuery)
-    console.log('lastQuery', lastQuery)
+    const showPreloader = useSelector(getShowPreloader)
+    console.log('Navbar > lastQuery', lastQuery)
 
+    //add get params to link if lastQuery.query exist
     let query = '/users'
     if (lastQuery.query){
         query = '/users?page=' + lastQuery.page + '&term=' + lastQuery.term + '&friend=' + lastQuery.friend
@@ -37,16 +39,11 @@ const Navbar = (props) => {
                 <NavLink to='/settings' className={({ isActive }) => isActive ? css.active : undefined}>Settings</NavLink>
             </div>
             <div className={css.preloader}>
-            <Preloader showPreloader={props.showPreloader}/>
+            <Preloader showPreloader={showPreloader}/>
             </div>
         </nav>
     )
-}
+})
 
-const mapStateToProps = (state) => {
-    return {
-        showPreloader: getShowPreloader(state)
-    }
-}
 
-export default connect(mapStateToProps)(Navbar)
+export default Navbar

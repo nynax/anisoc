@@ -14,7 +14,7 @@ import Preloader from "./components/common/Preloader/Preloader";
 
 const ProfileContainer = React.lazy(() => import("./components/Pages/Profile/ProfileContainer"))
 const DialogsContainer = React.lazy(() => import("./components/Pages/Dialogs/DialogsContainer"))
-const UsersPage = React.lazy(() => import("./components/Pages/Users/UsersPage"))
+const UsersContainer = React.lazy(() => import("./components/Pages/Users/UsersContainer"))
 
 class App extends React.Component {
     componentDidMount() {
@@ -40,7 +40,7 @@ class App extends React.Component {
                                 <Route path='/dialogs/*'
                                        element={<Suspense><DialogsContainer store={this.props.store}/></Suspense>}/>
                                 <Route path='/users'
-                                       element={<Suspense><UsersPage /></Suspense>}/>
+                                       element={<Suspense><UsersContainer store={this.props.store}/></Suspense>}/>
                                 <Route path="/profile/"
                                        element={<Suspense><ProfileContainer store={this.props.store}/></Suspense>}/>
                                 <Route path="/profile/:userId"

@@ -3,35 +3,34 @@ import {useForm} from "react-hook-form";
 import css from "./Users.module.css";
 import {useSelector} from "react-redux";
 import {getIsAuth} from "../../../redux/authSelector";
-//import {TypedDispatch} from "../../../redux/reduxStore";
+import {UsersType} from "./Users";
 
 type FormType = {
     disabled: boolean
+    clear: string
     term: string
-    friend: 'null' | 'false' | 'true'
+    friend: UsersType["getParams"]["friend"]
 }
 
 type UsersFilterFormType = {
-    lastQuery: FormType
-    setQueryAndParams: any
+    getParams: UsersType["getParams"]
+    setQueryAndParams: UsersType["setQueryAndParams"]
 }
 
-export const UsersFilterForm : FC<UsersFilterFormType>= (props) => {
+export const UsersFilterForm : FC<UsersFilterFormType>= React.memo((props) => {
 
     const isAuth = useSelector(getIsAuth)
-    //const dispatch = useDispatch<TypedDispatch>()
 
     const { register, handleSubmit, setValue } = useForm<FormType>()
 
-    setValue('term', props.lastQuery.term)
-    setValue('friend', props.lastQuery.friend)
-
-    console.log('UsersFilterForm, props.lastQuery:', !props.lastQuery.disabled)
+    //set default values from getParams
+    setValue('term', props.getParams.term)
+    setValue('friend', props.getParams.friend)
 
     return (
         <div className={css.form}>
             <form className={css.formInline} onSubmit={handleSubmit ((data) => {
-                //dispatch(setLastQuery( 1, data.term, data.friend))
+                //forever go to first page
                 props.setQueryAndParams(1, data.term, data.friend)
             })}>
 
@@ -46,9 +45,9 @@ export const UsersFilterForm : FC<UsersFilterFormType>= (props) => {
                 }
 
                 <button>Find</button>
-                <input disabled={!props.lastQuery.disabled} onClick={()=>{props.setQueryAndParams(1, '', 'null', false)}} type="button" value="Clear"/>
+                <input id="clear" {...register("clear")} disabled={!props.getParams.query} onClick={()=>{props.setQueryAndParams(1, '', 'null', false)}} type="button" value="Clear"/>
             </form>
 
         </div>
     )
-}
+})

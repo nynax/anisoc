@@ -9,13 +9,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {getFollowInProgress, getTotalUsers, getUsers, getUsersPerPage} from "../../../redux/usersSelector";
 import {TypedDispatch} from "../../../redux/reduxStore";
 
-type UsersType = {
-    setQueryAndParams: any
-    lastQuery: any
+export type UsersType = {
+    setQueryAndParams: (page: number, term?: string, friend?: "null" | "false" | "true", query?: boolean) => void
+    getParams: {page: string | number, term: string, friend: "null" | "false" | "true", query: boolean}
 }
 
 
-export let Users: FC<UsersType> = React.memo((props) => {
+export const Users: FC<UsersType> = React.memo((props) => {
 
     const dispatch = useDispatch<TypedDispatch>()
 
@@ -24,14 +24,15 @@ export let Users: FC<UsersType> = React.memo((props) => {
     const totalUsers = useSelector(getTotalUsers)
     const followInProgress = useSelector(getFollowInProgress)
 
-
     let pagesCount = Math.ceil(totalUsers / usersPerPage)
 
     return <div className={css.users}>
-        {/*@ts-ignore*/}
-        <UsersFilterForm lastQuery={props.lastQuery} setQueryAndParams={props.setQueryAndParams}/>
-        {/*@ts-ignore*/}
-        <PaginatedItems pagesCount={pagesCount} setQueryAndParams={props.setQueryAndParams} currentPage={props.lastQuery.page}/>
+
+        {/*find form*/}
+        <UsersFilterForm getParams={props.getParams} setQueryAndParams={props.setQueryAndParams}/>
+
+        {/*find form*/}
+        <PaginatedItems pagesCount={pagesCount} setQueryAndParams={props.setQueryAndParams} currentPage={Number(props.getParams.page)}/>
 
         <div className={css.text}>
             {/*Users list*/}
