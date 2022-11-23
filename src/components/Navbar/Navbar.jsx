@@ -27,6 +27,9 @@ const Navbar = React.memo(() => {
                 <NavLink to='/dialogs' className={({ isActive }) => isActive ? css.active : undefined}>Dialogs</NavLink>
             </div>
             <div className={css.item}>
+                <NavLink to='/chat' className={({ isActive }) => isActive ? css.active : undefined}>Chat</NavLink>
+            </div>
+            <div className={css.item}>
                 <NavLink to={query} className={({ isActive }) => isActive ? css.active : undefined}>Users</NavLink>
             </div>
             <div className={css.item}>
